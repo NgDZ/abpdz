@@ -35,7 +35,8 @@
       "@abpdz/ng.theme.material": [
         "dist/theme-material/theme-material",
         "dist/theme-material"
-      ]
+      ],
+      "@abpdz/utils": ["dist/utils/utils", "dist/utils"]
     }
   },
   "angularCompilerOptions": {
