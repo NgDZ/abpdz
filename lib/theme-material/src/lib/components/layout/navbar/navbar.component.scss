@@ -1,0 +1,20 @@
+// @import "../../../../styles/core.scss";
+
+::ng-deep {
+  .nav-menu {
+    min-width: 480px;
+  }
+  mat-nav-list,
+  mat-list {
+    // [mat-list-item].active {
+    //   mat-icon[matListAvatar] {
+    //     background-color: mat-color($theme-primary);
+    //     color: mat-color($theme-primary, default-contrast);
+    //   }
+    //   mat-icon[matListIcon] {
+    //     color: mat-color($theme-primary);
+    //   }
+    // }
+  }
+  $step: 5;
+}

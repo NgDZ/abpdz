@@ -1,0 +1,91 @@
+<mat-toolbar id="toolbar" class="p-0 mat-elevation-z1">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch">
+    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start stretch">
+      <button mat-button (click)="toggleNav.emit(true)" class="h-full">
+        <mat-icon openTabCount>menu</mat-icon>
+      </button>
+
+      <div class="toolbar-separator" fxHide.gt-md></div>
+    </div>
+
+    <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+      <ng-container *ngIf="authService.currentUser$ | async; let currentUser">
+        <button
+          *ngIf="currentUser.isAuthenticated; else loginBtn"
+          mat-button
+          [matMenuTriggerFor]="userMenu"
+          class="h-full"
+        >
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <img class="avatar" src="assets/avatar.png" />
+            <span class="username mx-2" fxHide fxShow.gt-sm>
+              {{ currentUser?.userName }}
+            </span>
+            <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+          </div>
+        </button>
+        <ng-template #loginBtn>
+          <button (click)="authService.login()" class="h-full" mat-button>
+            {{ "AbpAccount::Login" | abpLocalization }}
+          </button>
+        </ng-template>
+      </ng-container>
+      <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+        <a mat-menu-item routerLink="/account/manage-profile">
+          {{ "AbpAccount::ManageYourProfile" | abpLocalization }}
+        </a>
+
+        <!-- <a mat-menu-item routerLink="//setting-management">
+          {{ 'AbpAccount::Setting' | abpLocalization }}
+        </a> -->
+        <button mat-menu-item (click)="logout()">
+          {{ "AbpUi::Logout" | abpLocalization }}
+        </button>
+      </mat-menu>
+
+      <div class="toolbar-separator"></div>
+      <button
+        mat-button
+        fxHide
+        fxShow.gt-xs
+        class="h-full"
+        [matMenuTriggerFor]="languageMenu"
+      >
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <!-- <img
+            class="flag mr-8"
+            [src]="'assets/icons/flags/' + selectedLanguage.flag + '.png'"
+          /> -->
+          <span class="iso text-uppercase">
+            {{ (session.selectedCulture$ | async)?.nativeName }}</span
+          >
+        </div>
+      </button>
+
+      <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
+        <button
+          mat-menu-item
+          *ngFor="let lang of dropdownLanguages$ | async"
+          (click)="onChangeLang(lang.cultureName)"
+        >
+          <span fxLayout="row" fxLayoutAlign="start center">
+            <!-- <img
+              class="flag mr-16"
+              [src]="'assets/icons/flags/' + lang.flag + '.png'"
+            /> -->
+            <span class="iso">{{ lang.displayName }}</span>
+          </span>
+        </button>
+      </mat-menu>
+      <div class="toolbar-separator"></div>
+      <button
+        mat-icon-button
+        class="quick-panel-toggle-button"
+        (click)="toggleQuickPannel.emit(true)"
+        aria-label="Toggle quick panel"
+      >
+        <mat-icon openTabCount>format_align_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>

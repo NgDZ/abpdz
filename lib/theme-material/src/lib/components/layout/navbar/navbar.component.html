@@ -1,0 +1,58 @@
+<mat-nav-list class="nav-menu">
+  <ng-container
+    *ngFor="let route of routes.visible$ | async; trackBy: trackByFn"
+    [ngTemplateOutlet]="isDropdown(route) ? dropdownLink : defaultLink"
+    [ngTemplateOutletContext]="{ $implicit: route, pad: 0 }"
+  >
+  </ng-container>
+
+  <ng-template #defaultLink let-route let-pad="pad">
+    <ng-container *abpPermission="route.requiredPolicy">
+      <ng-container *ngIf="route.path; else noLinkDefault">
+        <a
+          mat-list-item
+          [routerLink]="[route.path]"
+          [routerLinkActive]="['mat-color-primary']"
+        >
+          <div
+            class="flex flex-row items-center"
+            [ngClass]="(dir.value == 'rtl' ? 'pr-' : 'pl-') + pad"
+          >
+            <mat-icon *ngIf="route.iconClass" matListIcon>
+              {{ route.iconClass }}
+            </mat-icon>
+            {{ route.name | abpLocalization }}
+          </div>
+        </a>
+      </ng-container>
+      <ng-template #noLinkDefault>
+        <h2 matSubheader>
+          <mat-icon *ngIf="route.iconClass" matListIcon>
+            {{ route.iconClass }}
+          </mat-icon>
+          {{ route.name | abpLocalization }}
+        </h2>
+        <mat-divider *ngIf="pad == 0"></mat-divider>
+      </ng-template>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #dropdownLink let-route let-pad="pad">
+    <ng-container
+      *ngTemplateOutlet="defaultLink; context: { $implicit: route, pad: pad }"
+    >
+    </ng-container>
+    <ng-container
+      *ngTemplateOutlet="forTemplate; context: { $implicit: route, pad: pad }"
+    ></ng-container>
+  </ng-template>
+
+  <ng-template #forTemplate let-route let-pad="pad">
+    <ng-container *ngFor="let child of route.children">
+      <ng-template
+        [ngTemplateOutlet]="child.children?.length ? dropdownLink : defaultLink"
+        [ngTemplateOutletContext]="{ $implicit: child, pad: pad + 2 }"
+      ></ng-template>
+    </ng-container>
+  </ng-template>
+</mat-nav-list>

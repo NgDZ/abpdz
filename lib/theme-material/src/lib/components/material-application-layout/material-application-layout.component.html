@@ -1,0 +1,23 @@
+<div class="h-full flex flex-col" *ngIf="ready$ | async">
+  <mtheme-toolbar
+    style="z-index: 2"
+    (toggleNav)="drawer.toggle()"
+  ></mtheme-toolbar>
+
+  <mat-drawer-container class="flex-grow">
+    <mat-drawer
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    >
+      <mtheme-navbar></mtheme-navbar>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="app-router-outlet-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
