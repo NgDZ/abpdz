@@ -12,7 +12,31 @@
     "target": "es2015",
     "module": "es2020",
     "lib": ["es2018", "dom"],
-    "paths": {}
+    "paths": {
+      "@abpdz/ng.core": ["dist/core/core", "dist/core"],
+      "@abpdz/ng.account": ["dist/account/account", "dist/account"],
+      "@abpdz/ng.identity": ["dist/identity/identity", "dist/identity"],
+      "@abpdz/ng.permission-management": [
+        "dist/permission-management/permission-management",
+        "dist/permission-management"
+      ],
+      "@abpdz/ng.setting-management": [
+        "dist/setting-management/setting-management",
+        "dist/setting-management"
+      ],
+      "@abpdz/ng.theme.shared": [
+        "dist/theme-shared/theme-shared",
+        "dist/theme-shared"
+      ],
+      "@abpdz/ng.theme.basic": [
+        "dist/theme-basic/theme-basic",
+        "dist/theme-basic"
+      ],
+      "@abpdz/ng.theme.material": [
+        "dist/theme-material/theme-material",
+        "dist/theme-material"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

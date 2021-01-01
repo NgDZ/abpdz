@@ -1,0 +1,8 @@
+{
+  "name": "@abpdz/ng.permission-management",
+  "version": "0.0.1",
+  "peerDependencies": { 
+  },
+  "dependencies": { 
+  }
+}
