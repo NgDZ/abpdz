@@ -1,0 +1,99 @@
+<div id="login" fxLayout="column" class="mat-wpbg">
+  <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div
+      id="login-form"
+      *ngIf="ready$ | async"
+      class="mat-card mat-elevation-z12"
+      [@animate]="{ value: '*', params: { duration: '300ms', y: '100px' } }"
+    >
+      <div class="logo-container mat-bg-primary mat-elevation-z1">
+        <div class="logo">
+          <img src="assets/logo.png" />
+        </div>
+
+        <div class="title">LOGIN TO YOUR ACCOUNT</div>
+      </div>
+
+      <form name="loginForm" [formGroup]="loginForm" novalidate>
+        <div class="login-form-inputs">
+          <mat-form-field appearance="outline">
+            <mat-label>
+              {{ "AbpIdentity::DisplayName:UserName" | abpLocalization }}
+            </mat-label>
+            <input matInput formControlName="username" />
+            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+            <mat-error *ngIf="loginForm.get('username').hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error
+              *ngIf="
+                !loginForm.get('username').hasError('required') &&
+                loginForm.get('username').hasError('username')
+              "
+            >
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>
+              {{ "AbpIdentity::DisplayName:Password" | abpLocalization }}
+            </mat-label>
+            <input matInput type="password" formControlName="password" />
+            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+            <mat-error> Password is required </mat-error>
+          </mat-form-field>
+
+          <div
+            class="remember-forgot-password"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+          >
+            <mat-checkbox
+              formControlName="rememberMe"
+              class="remember-me"
+              aria-label="Remember Me"
+            >
+              Remember Me
+            </mat-checkbox>
+
+            <a
+              class="forgot-password"
+              [routerLink]="'/pages/auth/forgot-password'"
+            >
+              Forgot Password?
+            </a>
+          </div>
+        </div>
+        <div class="mat-actions flex flex-col items-center p-4">
+          <button
+            mat-raised-button
+            color="accent"
+            class="submit-button"
+            aria-label="LOG IN"
+            [disabled]="loading"
+            (click)="login()"
+            [disabled]="loginForm.invalid"
+          >
+            LOGIN
+          </button>
+        </div>
+      </form>
+      <!-- 
+      <div class="separator">
+        <span class="text">OR</span>
+      </div>
+
+      <button mat-raised-button class="google">Log in with Google</button>
+
+      <button mat-raised-button class="facebook">Log in with Facebook</button>
+
+      <div class="register" fxLayout="column" fxLayoutAlign="center center">
+        <span class="text">Don't have an account?</span>
+        <a class="link" [routerLink]="'/pages/auth/register'"
+          >Create an account</a
+        >
+      </div> -->
+    </div>
+  </div>
+</div>

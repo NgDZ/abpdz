@@ -1,0 +1,130 @@
+<mat-toolbar class="mat-elevation-z1" fxLayout="row" color="primary">
+  <span fxFlex>
+    {{ "AbpPermissionManagement::Permissions" | abpLocalization }}
+  </span>
+  <button (click)="dialogRef.close()" class="self-center" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+<div style="min-height: 70vh">
+  <div class="m-2 px-8">
+    <mat-checkbox
+      [checked]="selectAllTab"
+      (change)="onClickSelectAll($event.checked)"
+      [indeterminate]="intermediateAllSelection()"
+    >
+      {{ "AbpPermissionManagement::SelectAllInAllTabs" | abpLocalization }}
+    </mat-checkbox>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div fxLayout="row">
+    <div fxFlex="40">
+      <div class="nav material2">
+        <ng-container *ngFor="let group of groups$ | async; trackBy: trackByFn">
+          <a
+            *ngIf="{ assignedCount: getAssignedCount(group.name) } as data"
+            class="nav-item"
+            matRipple
+            (click)="onChangeGroup(group)"
+            mat-list-item
+          >
+            <div
+              class="nav-link"
+              [class.accent]="selectedGroup?.name === group?.name"
+              [class.font-bold]="data.assignedCount"
+            >
+              {{ group?.displayName }}
+              <span>({{ data.assignedCount }})</span>
+            </div>
+          </a>
+          <pre></pre>
+        </ng-container>
+      </div>
+    </div>
+    <div fxFlex="60">
+      <h3 class="mb-4">
+        {{ selectedGroup?.displayName }}
+      </h3>
+
+      <mat-divider></mat-divider>
+      <div>
+        <div class="p-2">
+          <mat-checkbox
+            id="select-all-in-this-tabs"
+            name="select-all-in-this-tabs"
+            [checked]="selectThisTab"
+            [indeterminate]="selectThisTabIntermediate"
+            (change)="onClickSelectThisTab($event.checked)"
+          >
+            {{
+              "AbpPermissionManagement::SelectAllInAllTabs" | abpLocalization
+            }}
+          </mat-checkbox>
+        </div>
+        <mat-divider></mat-divider>
+        <div
+          *ngFor="
+            let permission of selectedGroupPermissions$ | async;
+            let i = index;
+            trackBy: trackByFn
+          "
+          [ngStyle]="permission.style"
+          class="p-2"
+        >
+          <!-- <label
+                [attr.for]="permission.name"
+                (click)="onClickCheckbox(permission, permissionCheckbox.value)"
+              >
+              </label> -->
+
+          <mat-checkbox
+            [(ngModel)]="permission.isGranted"
+            [disabled]="
+              isGrantedByOtherProviderName(permission.grantedProviders)
+            "
+            (ngModelChange)="onClickCheckbox(permission, $event)"
+          >
+            {{ permission.displayName }}
+            <ng-container *ngIf="!hideBadges">
+              <span
+                *ngFor="let provider of permission.grantedProviders"
+                class="badge badge-light"
+                >{{ provider.providerName }}: {{ provider.providerKey }}</span
+              >
+            </ng-container>
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="p-2 mat-actions"
+  fxLayout="row"
+  fxLayoutAlign="end "
+  fxLayoutGap="5px"
+>
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="dialogRef.close()"
+  >
+    {{ "AbpUi::Cancel" | abpLocalization }}
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submit()"
+    type="submit"
+    [disabled]="!canSave()"
+  >
+    <mat-icon>save</mat-icon>
+    {{ "AbpUi::Save" | abpLocalization }}
+  </button>
+</div>
+<div class="ngdz-loading-shade" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>

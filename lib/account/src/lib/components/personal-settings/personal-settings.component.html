@@ -1,0 +1,97 @@
+<form validateOnSubmit *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+  <div>
+    <mat-form-field>
+      <mat-label>
+        {{ "AbpIdentity::DisplayName:UserName" | abpLocalization }}
+      </mat-label>
+      <input
+        matInput
+        type="text"
+        id="username"
+        
+        formControlName="userName"
+        autofocus
+        (keydown.space)="$event.preventDefault()"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div class="flex">
+    <div class="col md:w6/12">
+      <div>
+        <mat-form-field>
+          <mat-label>
+            {{ "AbpIdentity::DisplayName:Name" | abpLocalization }}
+          </mat-label>
+          <input
+            matInput
+            type="text"
+            id="name"
+            
+            formControlName="name"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col md:w6/12">
+      <div>
+        <mat-form-field>
+          <mat-label>
+            {{ "AbpIdentity::DisplayName:Surname" | abpLocalization }}
+          </mat-label>
+          <input
+            matInput
+            type="text"
+            id="surname"
+            
+            formControlName="surname"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>
+        {{ "AbpIdentity::DisplayName:Email" | abpLocalization }}
+      </mat-label>
+      <input
+        matInput
+        required
+        type="text"
+        id="email-address"
+        
+        formControlName="email"
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>
+        {{ "AbpIdentity::DisplayName:PhoneNumber" | abpLocalization }}
+      </mat-label>
+      <input
+        matInput
+        type="text"
+        id="phone-number"
+        
+        formControlName="phoneNumber"
+      />
+    </mat-form-field>
+  </div>
+  <!-- <abp-button
+      buttonType="submit"
+      iconClass="checked"
+      buttonClass="btn btn-primary color-white"
+      [loading]="inProgress"
+      [disabled]="form?.invalid"
+    >
+      {{ "AbpIdentity::Save" | abpLocalization }}</abp-button
+    > -->
+
+  <button [disabled]="form?.invalid" type="submit" mat-raised-button>
+    <mat-icon>checked</mat-icon>
+    <!-- [loading]="inProgress" -->
+    {{ "AbpIdentity::Save" | abpLocalization }}
+  </button>
+</form>

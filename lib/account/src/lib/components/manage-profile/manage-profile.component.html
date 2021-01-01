@@ -1,0 +1,102 @@
+<div class="page-layout carded h-full" fxLayout="column">
+  <div class="toolbar">
+    <!-- APP TITLE -->
+    <div class="m-4" fxLayout="row" fxLayoutAlign="start center">
+      <button
+        mat-icon-button
+        class="sidebar-toggle mr-12"
+        fxHide.r-sm
+        (click)="drawer.toggle()"
+      >
+        <!--  -->
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <mat-icon
+        class="mx-2"
+        [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+        >account_box
+      </mat-icon>
+      <h1
+        class="mx-2"
+        [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
+      >
+        {{ "AbpAccount::ManageYourProfile" | abpLocalization }}
+      </h1>
+    </div>
+    <!-- / APP TITLE -->
+  </div>
+
+  <div class="content-card" fxFlex>
+    <mat-drawer-container class="sidenav-container">
+      <mat-drawer
+        #drawer
+        class="sidenav"
+        fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false"
+      >
+        <!-- SIDEBAR CONTENT -->
+        <div class="content py-16" fusePerfectScrollbar>
+          <div class="nav material2">
+            <div class="nav-item">
+              <a
+                class="nav-link"
+                matRipple
+                (click)="isHandset ? drawer.toggle() : false; selectedTab = 0"
+                [ngClass]="{ 'active accent': selectedTab === 0 }"
+              >
+                <span class="title">
+                  {{ "AbpIdentity::ChangePassword" | abpLocalization }}
+                </span>
+              </a>
+            </div>
+            <div class="nav-item">
+              <a
+                class="nav-link"
+                matRipple
+                (click)="isHandset ? drawer.toggle() : false; selectedTab = 1"
+                [ngClass]="{ 'active accent': selectedTab === 1 }"
+              >
+                <span class="title">
+                  {{ "AbpIdentity::PersonalSettings" | abpLocalization }}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </mat-drawer>
+      <mat-drawer-content>
+        <div *ngIf="isProfileLoaded" class="p-8">
+          <mat-card>
+            <div
+              *ngIf="selectedTab === 0"
+              [@animate]="{ value: '*', params: { y: '100%' } }"
+            >
+              <div class="tab-pane active" role="tabpanel">
+                <h4 class="text-2xl">
+                  {{ "AbpIdentity::ChangePassword" | abpLocalization }}
+                  <hr />
+                </h4>
+                <abp-change-password-form></abp-change-password-form>
+              </div>
+            </div>
+            <div
+              *ngIf="selectedTab === 1"
+              [@animate]="{ value: '*', params: { y: '100%' } }"
+            >
+              <div class="tab-pane active" role="tabpanel">
+                <h4 class="text-2xl">
+                  {{ "AbpIdentity::PersonalSettings" | abpLocalization }}
+                  <hr />
+                </h4>
+                <abp-personal-settings-form></abp-personal-settings-form>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
+</div>

@@ -1,0 +1,272 @@
+<div class="page-layout carded fullwidth inner-scroll">
+  <!-- HEADER -->
+  <div class="toolbar">
+    <div
+      class="m-4 px-4"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayout.gt-sm="row"
+      fxLayoutGap.lt-md="8px"
+      fxLayoutAlign.gt-sm="space-between center"
+    >
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon> supervised_user_circle </mat-icon>
+        <h1 [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+          {{ "AbpIdentity::Users" | abpLocalization }}
+        </h1>
+      </div>
+      <!-- / APP TITLE -->
+
+      <div class="search-wrapper mx-1">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+          <input
+            (ngModelChange)="filter = { filter: $event }"
+            placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
+          />
+          <mat-icon>search</mat-icon>
+        </div>
+      </div>
+      <button
+        mat-raised-button
+        *abpPermission="'AbpIdentity.Users.Create'"
+        (click)="newUser()"
+        @slideInRight
+      >
+        <mat-icon>add</mat-icon>
+        <span>{{ "AbpIdentity::NewUser" | abpLocalization }}</span>
+      </button>
+    </div>
+  </div>
+  <div class="content-card">
+    <table
+      mat-table
+      class="mat-elevation-z3 w-full"
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="sort$.next($event)"
+    >
+      <mat-text-column
+        name="userName"
+        [headerText]="'AbpIdentity::UserName' | abpLocalization"
+      ></mat-text-column>
+      <mat-text-column
+        name="email"
+        [headerText]="'AbpIdentity::EmailAddress' | abpLocalization"
+      ></mat-text-column>
+      <mat-text-column
+        name="phoneNumber"
+        [headerText]="'AbpIdentity::PhoneNumber' | abpLocalization"
+      ></mat-text-column>
+
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef style="width: 48px"></th>
+        <td mat-cell style="width: 48px" *matCellDef="let element">
+          <button mat-mini-fab color="default" [matMenuTriggerFor]="editEmnu">
+            <mat-icon class="mat-18">more_vert </mat-icon>
+          </button>
+          <mat-menu
+            #editEmnu="matMenu"
+            x-position="after"
+            y-position="below"
+            [overlapTrigger]="false"
+          >
+            <button
+              mat-menu-item
+              color="primary"
+              *abpPermission="'AbpIdentity.Users.Update'"
+              (click)="editUser(element)"
+            >
+              <mat-icon>edit </mat-icon>
+              {{ "AbpUi::Edit" | abpLocalization }}
+            </button>
+
+            <button
+              *abpPermission="'AbpIdentity.Users.ManagePermissions'"
+              mat-menu-item
+              (click)="openPermissionsModal(element.id)"
+            >
+              <mat-icon>verified_user</mat-icon>
+              {{ "AbpIdentity::Permissions" | abpLocalization }}
+            </button>
+            <button
+              mat-menu-item
+              color="warn"
+              *abpPermission="'AbpIdentity.Users.Delete'"
+              (click)="delete(element)"
+              color="warn"
+            >
+              <mat-icon>delete </mat-icon>
+              {{ "AbpUi::Delete" | abpLocalization }}
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+      showFirstLastButtons
+      [length]="dataSource?.count$ | async"
+      (page)="page$.next($event)"
+      [pageSize]="page.pageSize"
+      [pageIndex]="page.pageIndex"
+      [pageSizeOptions]="[1, 5, 10, 25, 100]"
+    >
+    </mat-paginator>
+    <ng-template #editDialog let-data let-DialogRef="DialogRef">
+      <mat-toolbar
+        style="top: 0; position: sticky"
+        class="mat-elevation-z4 size-height-48"
+        color="primary"
+        >:
+        <span>
+          {{
+            (current?.id ? "AbpIdentity::Edit" : "AbpIdentity::NewUser")
+              | abpLocalization
+          }}
+        </span>
+      </mat-toolbar>
+      <ng-template #loaderRef>
+        <mat-spinner style="display: inline-block"></mat-spinner>
+      </ng-template>
+
+      <form
+        style="min-width: 70vw"
+        *ngIf="editForm; else loaderRef"
+        [formGroup]="editForm"
+        (ngSubmit)="saveUser()"
+      >
+        <mat-tab-group dynamicHeight>
+          <mat-tab [label]="'AbpIdentity::UserInformations' | abpLocalization">
+            <div fxLayout="row wrap" class="px-4" fxLayoutGap="5px">
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::UserName" | abpLocalization }}
+                </mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="user-name"
+                  required
+                  formControlName="userName"
+                  autofocus
+                />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::DisplayName:Name" | abpLocalization }}
+                </mat-label>
+                <input matInput type="text" id="name" formControlName="name" />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::DisplayName:Surname" | abpLocalization }}
+                </mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="surname"
+                  formControlName="surname"
+                />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::Password" | abpLocalization }}
+                </mat-label>
+                <input
+                  matInput
+                  [required]="!current.id"
+                  type="password"
+                  id="password"
+                  autocomplete="new-password"
+                  formControlName="password"
+                />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::EmailAddress" | abpLocalization }}
+                </mat-label>
+                <input
+                  matInput
+                  required
+                  type="text"
+                  id="email"
+                  
+                  formControlName="email"
+                />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>
+                  {{ "AbpIdentity::PhoneNumber" | abpLocalization }}
+                </mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="phone-number"
+                  
+                  formControlName="phoneNumber"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="m-4">
+              <mat-checkbox formControlName="lockoutEnabled">
+                {{
+                  "AbpIdentity::DisplayName:LockoutEnabled" | abpLocalization
+                }}
+              </mat-checkbox>
+            </div>
+
+            <div class="m-4">
+              <mat-checkbox formControlName="twoFactorEnabled">
+                {{
+                  "AbpIdentity::DisplayName:TwoFactorEnabled" | abpLocalization
+                }}
+              </mat-checkbox>
+            </div>
+          </mat-tab>
+          <mat-tab [label]="'AbpIdentity::Roles' | abpLocalization">
+            <div
+              *ngFor="
+                let roleGroup of roleGroups;
+                let i = index;
+                trackBy: trackByFn
+              "
+              class="mx-4 my-2"
+            >
+              <mat-checkbox [formControl]="roleGroup.controls[roles[i].name]">
+                {{ roles[i].name }}
+              </mat-checkbox>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
+      <div
+        class="p-2 mat-actions"
+        fxLayout="row"
+        fxLayoutAlign="end "
+        fxLayoutGap="5px"
+      >
+        <button mat-raised-button color="warn" type="button" (click)="cancel()">
+          {{ "AbpUi::Cancel" | abpLocalization }}
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="saveUser()"
+          type="submit"
+          [disabled]="!canSave()"
+        >
+          <mat-icon>save</mat-icon>
+          {{ "AbpUi::Save" | abpLocalization }}
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
