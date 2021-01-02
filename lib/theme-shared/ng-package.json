@@ -3,5 +3,13 @@
   "dest": "../../dist/theme-shared",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@abpdz/ng.core",
+    "ngrx/effects",
+    "ngrx/store",
+    "lodash-es",
+    "@ngx-validate/core",
+    "fuse.js"
+  ]
 }
