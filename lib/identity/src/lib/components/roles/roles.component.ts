@@ -1,10 +1,17 @@
 import { PermissionManagementService } from '@abpdz/ng.permission-management';
 import {
-  RestMaterialTableComponent,
+  BaseCrudComponent,
   AbpIOHttpService,
+  RestDataSource,
 } from '@abpdz/ng.theme.shared';
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { abpAnimations } from '@abpdz/ng.theme.shared';
 import { Observable, of } from 'rxjs';
@@ -22,7 +29,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RolesComponent
-  extends RestMaterialTableComponent<any>
+  extends BaseCrudComponent<any>
   implements OnInit, AfterViewInit {
   lookups: { permissions: any[]; permissionsNames: string[] } = {
     permissions: [],
@@ -31,12 +38,12 @@ export class RolesComponent
 
   constructor(
     injector: Injector,
-    httpClient: HttpClient,
+    private httpClient: HttpClient,
     private identityService: IdentityUserService,
     private permissionManagementService: PermissionManagementService,
     private fb: FormBuilder
   ) {
-    super(new AbpIOHttpService(httpClient, '/api/identity/roles'), injector);
+    super(injector);
     this.displayedColumns = ['Actions', 'name'];
 
     this.editForm = this.fb.group({
@@ -66,7 +73,10 @@ export class RolesComponent
     //   this.lookups.permissions = v.items;
     //   this.lookups.permissionsNames = v.items.map(z => z.name);
     // });
-    this.prepareComponent();
+
+    this.dataSource = new RestDataSource(
+      new AbpIOHttpService(this.httpClient, '/api/identity/roles')
+    );
   }
   ngAfterViewInit() {}
 }

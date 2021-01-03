@@ -3,7 +3,8 @@ import { PermissionManagementService } from '@abpdz/ng.permission-management';
 import {
   AbpIOHttpService,
   getPasswordValidators,
-  RestMaterialTableComponent,
+  BaseCrudComponent,
+  RestDataSource,
 } from '@abpdz/ng.theme.shared';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -41,36 +42,35 @@ import { UserData } from '../../proxy/users';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersComponent
-  extends RestMaterialTableComponent<UserData>
+  extends BaseCrudComponent<UserData>
   implements OnInit, AfterViewInit {
   roles: any;
   selectedUserRoles: any;
   roles$: Observable<ListResultDto<IdentityRoleDto>>;
   constructor(
     injector: Injector,
-    httpClient: HttpClient,
+    protected httpClient: HttpClient,
     private facade: AbpFacade,
     private fb: FormBuilder,
     private identityService: IdentityUserService,
     private permissionManagementService: PermissionManagementService
   ) {
-    super(new AbpIOHttpService(httpClient, '/api/identity/users'), injector);
+    super(injector);
     this.displayedColumns = ['Actions', 'userName', 'email', 'phoneNumber'];
     this.roles$ = this.identityService.getAssignableRoles().pipe(shareReplay());
   }
   newUser() {
     this.editForm = null;
-    this.newEdit();
+    this.createEdit();
     this.buildForm();
   }
   editUser(u) {
-    this.editForm = null;
+    this.editForm = null; 
     this.startEdit(u);
-    this.current = u;
     this.identityService
       .get(u.id)
       .pipe(
-        tap((k) => (this.current = k)),
+        // tap((k) => (this.current = k)),
         switchMap((k) => this.identityService.getRoles(u.id))
       )
       .subscribe((k) => {
@@ -83,13 +83,16 @@ export class UsersComponent
       return;
     }
     const val = this.editForm.value;
-    this.save({
-      ...this.current,
-      ...val,
-      roleNames: val.roleNames
-        .filter((k) => Object.values(k)[0])
-        .map((k) => Object.keys(k)[0]),
-    });
+    this.save(
+      {
+        ...this.current,
+        ...val,
+        roleNames: val.roleNames
+          .filter((k) => Object.values(k)[0])
+          .map((k) => Object.keys(k)[0]),
+      },
+      true
+    );
   }
   buildForm(cb?) {
     this.roles$.subscribe(({ items }) => {
@@ -150,19 +153,19 @@ export class UsersComponent
       }
     });
   }
-  newObject(): Observable<Partial<UserData>> {
-    return of({
-      //  id: '4eeb5898-5da2-4b74-94e4-6f6bfa55b752',
-      // codeType: 0,
-      extraProperties: {},
-    } as any);
-  }
+
   ngOnInit() {
     // this.api.getAllPermissions().subscribe(v => {
     //   this.lookups.permissions = v.items;
     //   this.lookups.permissionsNames = v.items.map(z => z.name);
     // });
-    this.prepareComponent();
+    this.dataSource = new RestDataSource(
+      new AbpIOHttpService(this.httpClient, '/api/identity/users')
+    );
+    this.dataSource.initCreate$ = (item?) =>
+      of({
+        extraProperties: {},
+      });
   }
   ngAfterViewInit() {}
   get roleGroups() {

@@ -1,4 +1,7 @@
 <div class="page-layout carded fullwidth inner-scroll">
+  <div class="ngdz-loading-shade" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
   <!-- HEADER -->
   <div class="toolbar">
     <div
@@ -28,7 +31,7 @@
       <div class="search-wrapper mx-4">
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <input
-            (ngModelChange)="filter = { filter: $event }"
+            (ngModelChange)="dataSource.filter.next({ filter: $event })"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
           <mat-icon>search</mat-icon>
@@ -38,7 +41,7 @@
         mat-raised-button
         @slideInRight
         *abpPermission="'AbpIdentity.Roles.Create'"
-        (click)="newEdit()"
+        (click)="createEdit()"
       >
         <mat-icon>add</mat-icon>
         <span>{{ "AbpIdentity::NewRole" | abpLocalization }}</span>
@@ -51,7 +54,7 @@
       class="mat-elevation-z3 w-full"
       [dataSource]="dataSource"
       matSort
-      (matSortChange)="sort$.next($event)"
+      (matSortChange)="dataSource.sort.next($event)"
     >
       <mat-text-column
         name="name"
@@ -90,7 +93,7 @@
               *ngIf="!element.isStatic"
               [abpPermission]="'AbpIdentity.Roles.Delete'"
               mat-menu-item
-              (click)="delete(element)"
+              (click)="dataSource.delete(element)"
             >
               <mat-icon>delete</mat-icon>
               {{ "AbpIdentity::Delete" | abpLocalization }}
@@ -102,12 +105,13 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator
-      showFirstLastButtons
-      [length]="dataSource?.count$ | async"
-      (page)="page$.next($event)"
-      [pageSize]="page.pageSize"
+      *ngIf="dataSource.page | async; let page"
+      (page)="dataSource.page.next($event)"
+      [length]="dataSource.count | async"
       [pageIndex]="page.pageIndex"
-      [pageSizeOptions]="[1, 5, 10, 25, 100]"
+      [showFirstLastButtons]="true"
+      [pageSize]="page.pageSize"
+      [pageSizeOptions]="[10, 25, 100, 250]"
     >
     </mat-paginator>
     <ng-template #editDialog let-data let-DialogRef="DialogRef">
@@ -123,13 +127,15 @@
           }}
         </span>
       </mat-toolbar>
-      <ng-template #loaderRef>
-        <mat-spinner style="display: inline-block"></mat-spinner>
-      </ng-template>
-
+      <div
+        class="ngdz-loading-shade"
+        *ngIf="editForm == null || (dataSource.loading$ | async)"
+      >
+        <mat-spinner></mat-spinner>
+      </div>
       <form
         style="min-width: 70vw"
-        *ngIf="editForm; else loaderRef"
+        *ngIf="editForm"
         [formGroup]="editForm"
         (ngSubmit)="save()"
       >

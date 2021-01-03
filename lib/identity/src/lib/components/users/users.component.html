@@ -1,4 +1,7 @@
 <div class="page-layout carded fullwidth inner-scroll">
+  <div class="ngdz-loading-shade" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
   <!-- HEADER -->
   <div class="toolbar">
     <div
@@ -21,7 +24,7 @@
       <div class="search-wrapper mx-1">
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <input
-            (ngModelChange)="filter = { filter: $event }"
+            (ngModelChange)="dataSource.filter.next({ filter: $event })"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
           <mat-icon>search</mat-icon>
@@ -44,7 +47,7 @@
       class="mat-elevation-z3 w-full"
       [dataSource]="dataSource"
       matSort
-      (matSortChange)="sort$.next($event)"
+      (matSortChange)="dataSource.sort.next($event)"
     >
       <mat-text-column
         name="userName"
@@ -93,7 +96,7 @@
               mat-menu-item
               color="warn"
               *abpPermission="'AbpIdentity.Users.Delete'"
-              (click)="delete(element)"
+              (click)="dataSource.delete(element)"
               color="warn"
             >
               <mat-icon>delete </mat-icon>
@@ -105,13 +108,15 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+
     <mat-paginator
-      showFirstLastButtons
-      [length]="dataSource?.count$ | async"
-      (page)="page$.next($event)"
-      [pageSize]="page.pageSize"
+      *ngIf="dataSource.page | async; let page"
+      (page)="dataSource.page.next($event)"
+      [length]="dataSource.count | async"
       [pageIndex]="page.pageIndex"
-      [pageSizeOptions]="[1, 5, 10, 25, 100]"
+      [showFirstLastButtons]="true"
+      [pageSize]="page.pageSize"
+      [pageSizeOptions]="[10, 25, 100, 250]"
     >
     </mat-paginator>
     <ng-template #editDialog let-data let-DialogRef="DialogRef">
@@ -127,17 +132,20 @@
           }}
         </span>
       </mat-toolbar>
-      <ng-template #loaderRef>
-        <mat-spinner style="display: inline-block"></mat-spinner>
-      </ng-template>
+      <div
+        class="ngdz-loading-shade"
+        *ngIf="editForm == null || (dataSource.loading$ | async)"
+      >
+        <mat-spinner></mat-spinner>
+      </div>
 
       <form
         style="min-width: 70vw"
-        *ngIf="editForm; else loaderRef"
+        *ngIf="editForm"
         [formGroup]="editForm"
         (ngSubmit)="saveUser()"
       >
-        <mat-tab-group dynamicHeight>
+        <mat-tab-group dynamicHeight *ngIf="current">
           <mat-tab [label]="'AbpIdentity::UserInformations' | abpLocalization">
             <div fxLayout="row wrap" class="px-4" fxLayoutGap="5px">
               <mat-form-field fxFlex="48">
@@ -196,7 +204,6 @@
                   required
                   type="text"
                   id="email"
-                  
                   formControlName="email"
                 />
               </mat-form-field>
@@ -209,7 +216,6 @@
                   matInput
                   type="text"
                   id="phone-number"
-                  
                   formControlName="phoneNumber"
                 />
               </mat-form-field>
