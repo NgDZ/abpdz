@@ -1,6 +1,9 @@
 {
   "name": "@abpdz/utils",
   "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngdz/abpdz.git"
@@ -12,8 +15,9 @@
     "url": "https://github.com/ngdz/abpdz/issues"
   },
   "homepage": "https://github.com/ngdz/abpdz#readme",
-  "peerDependencies": {},
-  "dependencies": {
-    "tslib": "^2.0.0"
-  }
+  "peerDependencies": {
+    "@angular/common": "11.0.5",
+    "@angular/core": "^11.0.5"
+  },
+  "dependencies": {}
 }

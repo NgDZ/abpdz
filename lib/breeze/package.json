@@ -1,11 +1,23 @@
 {
-  "name": "breeze",
+  "name": "@abpdz/ng.breeze",
   "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^11.1.0-next.3",
-    "@angular/core": "^11.1.0-next.3"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
-  "dependencies": {
-    "tslib": "^2.0.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngdz/abpdz.git"
+  },
+  "keywords": [],
+  "author": "badre429",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngdz/abpdz/issues"
+  },
+  "homepage": "https://github.com/ngdz/abpdz#readme",
+  "peerDependencies": {
+    "@angular/common": "11.0.5",
+    "@angular/core": "^11.0.5"
+  },
+  "dependencies": {}
 }
