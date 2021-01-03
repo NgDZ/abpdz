@@ -346,6 +346,46 @@
           }
         }
       }
+    },
+    "breeze": {
+      "projectType": "library",
+      "root": "lib/breeze",
+      "sourceRoot": "lib/breeze/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "lib/breeze/tsconfig.lib.json",
+            "project": "lib/breeze/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "lib/breeze/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/breeze/src/test.ts",
+            "tsConfig": "lib/breeze/tsconfig.spec.json",
+            "karmaConfig": "lib/breeze/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "lib/breeze/tsconfig.lib.json",
+              "lib/breeze/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "core"

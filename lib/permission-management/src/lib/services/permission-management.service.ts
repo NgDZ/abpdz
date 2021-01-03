@@ -3,7 +3,9 @@ import { Injectable, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PermissionManagementComponent } from '../components/permission-management.component';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PermissionManagementService {
   constructor(public dialog: MatDialog) {}
 

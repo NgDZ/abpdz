@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -36,7 +36,14 @@
         "dist/theme-material/theme-material",
         "dist/theme-material"
       ],
-      "@abpdz/utils": ["dist/utils/utils", "dist/utils"]
+      "@abpdz/utils": [
+        "dist/utils/utils",
+        "dist/utils"
+      ],
+      "breeze": [
+        "dist/breeze/breeze",
+        "dist/breeze"
+      ]
     }
   },
   "angularCompilerOptions": {
