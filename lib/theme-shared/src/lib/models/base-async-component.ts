@@ -1,18 +1,15 @@
+import { LocalizationService, SubSink } from '@abpdz/ng.core';
 import {
   ChangeDetectorRef,
+  Directive,
   Injector,
-  OnDestroy,
-  Component,
   isDevMode,
+  OnDestroy
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { LoggerService } from '../services';
-// import { TranslateService } from '@ngx-translate/core';
-import { LocalizationService } from '@abpdz/ng.core';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { LoggerService } from '../services/logger.service';
 
-@Component({
-  template: '',
-})
+@Directive({})
 export class BaseAsyncComponent implements OnDestroy {
   protected cd: ChangeDetectorRef = this.injector.get(ChangeDetectorRef);
   title: string;
@@ -21,6 +18,7 @@ export class BaseAsyncComponent implements OnDestroy {
     LocalizationService
   );
   destroyed$ = new Subject<any>();
+  subs=new SubSink();
 
   protected _loading = 0;
   public get loading(): number {
@@ -48,15 +46,16 @@ export class BaseAsyncComponent implements OnDestroy {
   }
   public loading$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor(protected injector: Injector) {}
+  constructor(protected injector: Injector) { }
   ngOnDestroy(): void {
     this.beforeDestroy();
     this.destroyed$.next(true);
+    this.subs.unsubscribe();
     setTimeout(() => {
       this.destroyed$.complete();
     }, 200);
   }
-  beforeDestroy() {}
+  beforeDestroy() { }
 
   protected asyncError(e: any) {
     if (this.loading > 0) {

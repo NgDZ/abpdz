@@ -15,19 +15,8 @@ import {
 // import * as Fuse from 'fuse.js';
 import Fuse from 'fuse.js';
 import { ɵKeyEventsPlugin } from '@angular/platform-browser';
+import { isNotNullOrUndefined } from './http-base';
 export type ObjectKeyMapping<T> = { [P in keyof T]?: any };
-
-export function isNotNullOrUndefined(v) {
-  if (v == null || v === undefined) {
-    return false;
-  }
-  if (typeof v === 'string') {
-    if (trim(v) === '') {
-      return false;
-    }
-  }
-  return true;
-}
 
 export function objectContainSubstring(obj, search: string): boolean {
   (document as any).iditem = obj;
@@ -137,9 +126,6 @@ export function HttpGetListParams(name: string, value: any): any {
     }
   });
   return ret;
-}
-export function CleanObjectProperties(filter) {
-  return _pickBy(filter, isNotNullOrUndefined);
 }
 
 export function resetForm(form: any) {
