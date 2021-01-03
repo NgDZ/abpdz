@@ -1,6 +1,17 @@
 {
   "name": "@abpdz/ng.account",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngdz/abpdz.git"
+  },
+  "keywords": [],
+  "author": "badre429",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngdz/abpdz/issues"
+  },
+  "homepage": "https://github.com/ngdz/abpdz#readme",
   "peerDependencies": {},
   "dependencies": {}
 }
