@@ -1,5 +1,5 @@
 $version = '0.0.2'
-$orgDir = '..\abpCode'
+$orgDir = '..\freetime'
 
 Set-Location ..
 Remove-Item -Recurse -Force .\lib\core\src\lib\
@@ -46,37 +46,59 @@ Remove-Item -Recurse -Force .\lib\breeze\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\breeze\ .\lib\breeze\src\lib
 ng build breeze   --prod
 
-Set-Location .\dist\account\
+Set-Location .\dist\
+
+Get-ChildItem -Recurse *.map |Remove-Item 
+
+Set-Location .\account\
+
+
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\core\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts
 
 Set-Location ..\breeze\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\theme-shared\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\theme-basic\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\theme-material\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
 
 Set-Location ..\permission-management\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\identity\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
 npm publish --access public --ignore-scripts 
 
  
