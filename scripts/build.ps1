@@ -1,4 +1,4 @@
-$version = '0.0.2'
+$version = '0.0.4'
 $orgDir = '..\freetime'
 
 Set-Location ..
@@ -102,4 +102,4 @@ Set-Location ..\identity\
 npm publish --access public --ignore-scripts 
 
  
-Set-Location .\..\scripts
+Set-Location ..\..\scripts
