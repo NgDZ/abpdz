@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AbpDz</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Core" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>

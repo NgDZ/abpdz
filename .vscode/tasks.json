@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "app-build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host/ABPDZ.HttpApi.Host.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-DbMigrator",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/aspnet-core/src/ABPDZ.DbMigrator/ABPDZ.DbMigrator.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-server",
+      "command": "dotnet",
+      "type": "process",
+      "options": {
+        "cwd": "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host"
+      },
+      "args": [
+        "watch",
+        "run",
+        "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host/ABPDZ.HttpApi.Host.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-client",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/angular"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "run-app",
+      "dependsOn": [
+        "run-client",
+        "run-server"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}

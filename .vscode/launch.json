@@ -1,0 +1,67 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DbMigrator",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-DbMigrator",
+      "program": "${workspaceFolder}/aspnet-core/src/ABPDZ.DbMigrator/bin/Debug/net5.0/ABPDZ.DbMigrator.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/aspnet-core/src/ABPDZ.DbMigrator",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+
+    {
+      "name": "App-Server",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "app-build",
+
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host/bin/Debug/net5.0/ABPDZ.HttpApi.Host.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host",
+      "stopAtEntry": false,
+      "internalConsoleOptions": "openOnSessionStart",
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
+      },
+      "launchBrowser": {
+        "enabled": false
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/aspnet-core/src/ABPDZ.HttpApi.Host/Views"
+      }
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "App-Client",
+      "url": "https://localhost:5001",
+      "webRoot": "${workspaceFolder}/angular"
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full stack",
+      "configurations": ["App-Server", "App-Client"]
+    },
+    {
+      "name": "Full stack Attach",
+      "configurations": [".NET Core Attach", "App-Client"]
+    }
+  ]
+  
+}
