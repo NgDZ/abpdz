@@ -1,6 +1,6 @@
 {
     "culture": "fr",
     "texts": {
-        "AbpDzConfig": "ABPDZ Settings"
+        "Config": "ABPDZ Settings"
     }
 }

@@ -30,7 +30,7 @@ namespace AbpDz.Core
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<AbpDzCoreModule>();
+                options.FileSets.AddEmbedded<AbpDzCoreModule>("AbpDz","/AbpDzUI");
             });
 
             Configure<AbpLocalizationOptions>(options =>
@@ -38,14 +38,14 @@ namespace AbpDz.Core
                 options.Resources
                     .Add<AbpDzResource>("en")
                     // .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/Localization/AbpDz");
+                    .AddVirtualJson("/AbpDzUI/AbpDz");
 
                 options.DefaultResourceType = typeof(AbpDzResource);
             });
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("AbpDz", typeof(AbpDzResource));
+                options.MapCodeNamespace("AbpDzUI", typeof(AbpDzResource));
             });
         }
 
