@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   ready$: Observable<boolean>;
-  error: null;
+  error= null;
   constructor(
     private _formBuilder: FormBuilder,
     private store: Store,
@@ -62,7 +62,8 @@ export class LoginComponent implements OnInit {
       },
       (e) => {
         this.loading = false;
-        this.error = e;
+        this.error = e?.error;
+        console.log(this.error)
         this.cd.markForCheck();
       }
     );

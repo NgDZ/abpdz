@@ -69,6 +69,11 @@
             </a>
           </div>
         </div>
+        <div *ngIf="error" class="mat-red-900">
+          {{
+            error?.error_description || error?.error || error | abpLocalization
+          }}
+        </div>
         <div class="mat-actions flex flex-col items-center p-4">
           <button
             mat-raised-button
