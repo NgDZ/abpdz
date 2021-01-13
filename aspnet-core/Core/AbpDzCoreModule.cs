@@ -14,7 +14,7 @@ using Volo.Abp.VirtualFileSystem;
 namespace AbpDz.Core
 {
     [DependsOn(
-     
+
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule)
@@ -38,16 +38,23 @@ namespace AbpDz.Core
                 options.Resources
                     .Add<AbpDzResource>("en")
                     // .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/AbpDzUI/AbpDz");
+                    .AddVirtualJson("/AbpDzUI");
 
                 options.DefaultResourceType = typeof(AbpDzResource);
             });
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("AbpDzUI", typeof(AbpDzResource));
+                options.MapCodeNamespace("AbpDz", typeof(AbpDzResource));
             });
         }
-
+        // public override void OnPostApplicationInitialization(Volo.Abp.ApplicationInitializationContext context)
+        // {
+        //     var ser = context.ServiceProvider.GetService(typeof(IVirtualFileProvider)) as IVirtualFileProvider;
+        //     var d = ser.GetDirectoryContents("/AbpDzUI");
+          
+        //     Console.WriteLine(d.ToString());
+        //     base.OnPostApplicationInitialization(context);
+        // }
     }
 }

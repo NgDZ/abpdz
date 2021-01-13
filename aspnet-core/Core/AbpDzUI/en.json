@@ -1,0 +1,7 @@
+{
+  "culture": "en",
+  "texts": {
+    "SendVerificationCode": "Send verification code",
+    "InvalidVerificationCode": "Invalid verification code"
+  }
+}

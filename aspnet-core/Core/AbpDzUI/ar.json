@@ -1,0 +1,7 @@
+{
+  "culture": "ar",
+  "texts": {
+    "SendVerificationCode": "أرسل رمز التحقق",
+    "InvalidVerificationCode": "رمز التحقق خاطئ"
+  }
+}
