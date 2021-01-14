@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using AbpDz.Models;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
@@ -11,6 +12,5 @@ namespace AbpDz.Notifications
 {
     public class AbpDzNotificationHub : AbpHub
     {
-
     }
 }
