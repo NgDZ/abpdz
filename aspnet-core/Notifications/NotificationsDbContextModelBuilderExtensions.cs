@@ -28,8 +28,9 @@ namespace Volo.Docs.EntityFrameworkCore
                 b.ToTable(nameof(AbpDzNotificationInfo), options.Schema);
                 b.HasIndex(k => k.SenderId);
                 b.HasIndex(k => k.RecipientId);
+                b.HasIndex(k => k.RecipientRoleId);
+                b.HasIndex(k => k.Code);
                 b.HasIndex(k => k.RecipientPermission);
-                b.HasIndex(k => k.Content);
                 b.HasIndex(k => k.DataTypeName);
                 b.HasIndex(k => k.EntityId);
                 b.HasIndex(k => k.Severity);

@@ -58,11 +58,19 @@ namespace AbpDz.Notifications
                 ContextAccessor.HttpContext.Request.Headers.TryGetValue("__signalr", out StringValues v);
                 var f = v.FirstOrDefault();
                 await Hub.Groups.AddToGroupAsync(f, "U:" + CurrentUser.Id.ToString());
+
+                foreach (var item in Config.NotifyPermissions)
+                {
+                    if (await this.authorizationService.IsGrantedAsync(item.Key))
+                    {
+                        await Hub.Groups.AddToGroupAsync(f, "P:" + item.Key);
+                    }
+                }
             }
 
         }
 
-        public async Task Notify(object data, string src, object type = null, object action = null, string id = null, List<string> groups = null)
+        public async Task Notify(object data, string src, object type = null,object action = null, string id = null, List<string> groups = null)
         {
             if (groups == null) groups = new List<string>();
 
@@ -76,7 +84,7 @@ namespace AbpDz.Notifications
             signalRId = v.FirstOrDefault();
 
 
-            await Hub.Clients.Groups(groups).SendAsync("Notify", src, type, action, id, data, DateTime.Now, signalRId, CurrentUser.Id);
+            await Hub.Clients.Groups(groups).SendAsync("Notify", src, type,action, id, data, DateTime.Now, signalRId, CurrentUser.Id);
         }
 
     }
