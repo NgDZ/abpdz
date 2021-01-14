@@ -57,11 +57,27 @@ namespace AbpDz.Notifications
             {
                 ContextAccessor.HttpContext.Request.Headers.TryGetValue("__signalr", out StringValues v);
                 var f = v.FirstOrDefault();
-                await Hub.Groups.AddToGroupAsync(f, "U:" + CurrentUser.Id.ToString()); 
+                await Hub.Groups.AddToGroupAsync(f, "U:" + CurrentUser.Id.ToString());
             }
 
         }
 
-     
+        public async Task Notify(object data, string src, object type = null, object action = null, string id = null, List<string> groups = null)
+        {
+            if (groups == null) groups = new List<string>();
+
+            if (CurrentUser.Id != null)
+            {
+                groups.Add("U:" + CurrentUser.Id.ToString());
+            }
+            string signalRId = null;
+
+            ContextAccessor.HttpContext.Request.Headers.TryGetValue("__signalr", out StringValues v);
+            signalRId = v.FirstOrDefault();
+
+
+            await Hub.Clients.Groups(groups).SendAsync("Notify", src, type, action, id, data, DateTime.Now, signalRId, CurrentUser.Id);
+        }
+
     }
 }
