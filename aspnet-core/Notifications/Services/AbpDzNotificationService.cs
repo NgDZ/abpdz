@@ -16,17 +16,6 @@ using Volo.Abp.Users;
 
 namespace AbpDz.Notifications
 {
-    public class AbpDzNotificationServiceConfig : Volo.Abp.DependencyInjection.ISingletonDependency
-    {
-        // register only permission that need to listned for signalr 
-        public System.Collections.Concurrent.ConcurrentDictionary<string, int> NotifyPermissions { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, int>();
-
-        // register permission for notification 
-        public void RegisterPermission(string key)
-        {
-            this.NotifyPermissions.TryAdd(key, 1);
-        }
-    }
     public class AbpDzNotificationService : Volo.Abp.DependencyInjection.ITransientDependency
     {
         private readonly IAuthorizationService authorizationService;
@@ -70,13 +59,21 @@ namespace AbpDz.Notifications
 
         }
 
-        public async Task Notify(object data, string src, object type = null,object action = null, string id = null, List<string> groups = null)
+        public async Task Notify(object data, string src, object type = null, object action = null, string id = null, List<string> groups = null, Guid? userId = null, string group = null, string permission = null)
         {
             if (groups == null) groups = new List<string>();
 
-            if (CurrentUser.Id != null)
+            if (userId != null)
             {
-                groups.Add("U:" + CurrentUser.Id.ToString());
+                groups.Add("U:" + userId.ToString());
+            }
+            if (!string.IsNullOrWhiteSpace(group))
+            {
+                groups.Add("G:" + group);
+            }
+            if (!string.IsNullOrWhiteSpace(permission))
+            {
+                groups.Add("P:" + permission);
             }
             string signalRId = null;
 
@@ -84,7 +81,7 @@ namespace AbpDz.Notifications
             signalRId = v.FirstOrDefault();
 
 
-            await Hub.Clients.Groups(groups).SendAsync("Notify", src, type,action, id, data, DateTime.Now, signalRId, CurrentUser.Id);
+            await Hub.Clients.Groups(groups).SendAsync("Notify", src, type, action, id, data, DateTime.Now, signalRId, CurrentUser.Id);
         }
 
     }

@@ -11,6 +11,6 @@ using Volo.Abp.EntityFrameworkCore.Modeling;
 namespace AbpDz.Notifications
 {
     public class AbpDzNotificationHub : AbpHub
-    {
+    { 
     }
 }

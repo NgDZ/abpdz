@@ -11,11 +11,11 @@ using Volo.Abp.AspNetCore.Mvc;
 namespace AbpDz.Notifications
 {
     [DependsOn(
-    typeof(AbpAccountApplicationModule),
-    typeof(AbpIdentityApplicationModule),
-    typeof(AbpPermissionManagementApplicationModule),
-    typeof(AbpTenantManagementApplicationModule),
-    typeof(AbpAspNetCoreSignalRModule)
+        typeof(AbpAccountApplicationModule),
+        typeof(AbpIdentityApplicationModule),
+        typeof(AbpPermissionManagementApplicationModule),
+        typeof(AbpTenantManagementApplicationModule),
+        typeof(AbpAspNetCoreSignalRModule)
     )]
     public class AbpDzNotificationsModule : AbpModule
     {
