@@ -1,5 +1,6 @@
 ﻿using System;
 using Volo.Abp.Account;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -24,6 +25,12 @@ namespace AbpDz.Extensions
             {
                 options.AddMaps<AbpDzExtensionsModule>();
             });
+
+            Configure<AbpAspNetCoreMvcOptions>(options =>
+            {
+                options.ConventionalControllers.Create(typeof(AbpDzExtensionsModule).Assembly);
+            });
+
         }
     }
 }
