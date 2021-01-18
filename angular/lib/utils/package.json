@@ -1,5 +1,5 @@
 {
-  "name": "@abpdz/utils",
+  "name": "@abpdz/ng.utils",
   "version": "0.0.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
