@@ -1,0 +1,24 @@
+{
+  "name": "@abpdz/ng.sass",
+  "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngdz/abpdz.git"
+  },
+  "keywords": [],
+  "author": "badre429",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngdz/abpdz/issues"
+  },
+  "homepage": "https://github.com/ngdz/abpdz#readme",
+  "peerDependencies": {
+    "@angular/common": "^11.0.5",
+    "@angular/core": "^11.0.5",
+    "@abpdz/ng.core": "0.0.1"
+  },
+  "dependencies": {}
+}
