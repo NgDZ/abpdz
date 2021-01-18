@@ -52,6 +52,10 @@
         "dist/chat/chat",
         "dist/chat"
       ],
+      "cms": [
+        "dist/cms/cms",
+        "dist/cms"
+      ],
       "demos": [
         "dist/demos/demos",
         "dist/demos"
@@ -59,6 +63,10 @@
       "filemanagement": [
         "dist/filemanagement/filemanagement",
         "dist/filemanagement"
+      ],
+      "pages": [
+        "dist/pages/pages",
+        "dist/pages"
       ],
       "saas": [
         "dist/saas/saas",
