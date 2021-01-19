@@ -27,10 +27,18 @@ export namespace Config {
     oAuthConfig: AuthConfig;
     production: boolean;
     remoteEnv?: RemoteEnv;
+
+    notifications?: {
+      useSignalr?: boolean;
+      signalrUrl?: string;
+      notificationUrl?: string;
+    };
   }
 
   export interface Application {
     name: string;
+    display?: string;
+    abrivation?: string;
     baseUrl?: string;
     logoUrl?: string;
   }
