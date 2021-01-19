@@ -60,11 +60,15 @@ export class EntityDto<TKey = string> {
   }
 }
 
-export class CreationAuditedEntityDto<TPrimaryKey = string> extends EntityDto<TPrimaryKey> {
+export class CreationAuditedEntityDto<
+  TPrimaryKey = string
+> extends EntityDto<TPrimaryKey> {
   creationTime?: string | Date;
   creatorId?: string;
 
-  constructor(initialValues: Partial<CreationAuditedEntityDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<CreationAuditedEntityDto<TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
@@ -76,13 +80,17 @@ export class CreationAuditedEntityWithUserDto<
   creator?: TUserDto;
 
   constructor(
-    initialValues: Partial<CreationAuditedEntityWithUserDto<TUserDto, TPrimaryKey>> = {},
+    initialValues: Partial<
+      CreationAuditedEntityWithUserDto<TUserDto, TPrimaryKey>
+    > = {}
   ) {
     super(initialValues);
   }
 }
 
-export class AuditedEntityDto<TPrimaryKey = string> extends CreationAuditedEntityDto<TPrimaryKey> {
+export class AuditedEntityDto<
+  TPrimaryKey = string
+> extends CreationAuditedEntityDto<TPrimaryKey> {
   lastModificationTime?: string | Date;
   lastModifierId?: string;
 
@@ -91,18 +99,23 @@ export class AuditedEntityDto<TPrimaryKey = string> extends CreationAuditedEntit
   }
 }
 
-export class AuditedEntityWithUserDto<TUserDto, TPrimaryKey = string> extends AuditedEntityDto<
-  TPrimaryKey
-> {
+export class AuditedEntityWithUserDto<
+  TUserDto,
+  TPrimaryKey = string
+> extends AuditedEntityDto<TPrimaryKey> {
   creator?: TUserDto;
   lastModifier?: TUserDto;
 
-  constructor(initialValues: Partial<AuditedEntityWithUserDto<TUserDto, TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<AuditedEntityWithUserDto<TUserDto, TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
 
-export class FullAuditedEntityDto<TPrimaryKey = string> extends AuditedEntityDto<TPrimaryKey> {
+export class FullAuditedEntityDto<
+  TPrimaryKey = string
+> extends AuditedEntityDto<TPrimaryKey> {
   isDeleted?: boolean;
   deleterId?: string;
   deletionTime?: Date | string;
@@ -120,7 +133,11 @@ export class FullAuditedEntityWithUserDto<
   lastModifier?: TUserDto;
   deleter?: TUserDto;
 
-  constructor(initialValues: Partial<FullAuditedEntityWithUserDto<TUserDto, TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<
+      FullAuditedEntityWithUserDto<TUserDto, TPrimaryKey>
+    > = {}
+  ) {
     super(initialValues);
   }
 }
@@ -145,13 +162,15 @@ export class ExtensibleEntityDto<TKey = string> extends ExtensibleObject {
   }
 }
 
-export class ExtensibleCreationAuditedEntityDto<TPrimaryKey = string> extends ExtensibleEntityDto<
-  TPrimaryKey
-> {
+export class ExtensibleCreationAuditedEntityDto<
+  TPrimaryKey = string
+> extends ExtensibleEntityDto<TPrimaryKey> {
   creationTime: Date | string;
   creatorId?: string;
 
-  constructor(initialValues: Partial<ExtensibleCreationAuditedEntityDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<ExtensibleCreationAuditedEntityDto<TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
@@ -162,7 +181,9 @@ export class ExtensibleAuditedEntityDto<
   lastModificationTime?: Date | string;
   lastModifierId?: string;
 
-  constructor(initialValues: Partial<ExtensibleAuditedEntityDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<ExtensibleAuditedEntityDto<TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
@@ -174,7 +195,9 @@ export class ExtensibleAuditedEntityWithUserDto<
   creator: TUserDto;
   lastModifier: TUserDto;
 
-  constructor(initialValues: Partial<ExtensibleAuditedEntityWithUserDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<ExtensibleAuditedEntityWithUserDto<TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
@@ -186,7 +209,9 @@ export class ExtensibleCreationAuditedEntityWithUserDto<
   creator: TUserDto;
 
   constructor(
-    initialValues: Partial<ExtensibleCreationAuditedEntityWithUserDto<TPrimaryKey>> = {},
+    initialValues: Partial<
+      ExtensibleCreationAuditedEntityWithUserDto<TPrimaryKey>
+    > = {}
   ) {
     super(initialValues);
   }
@@ -199,7 +224,9 @@ export class ExtensibleFullAuditedEntityDto<
   deleterId?: string;
   deletionTime: Date | string;
 
-  constructor(initialValues: Partial<ExtensibleFullAuditedEntityDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<ExtensibleFullAuditedEntityDto<TPrimaryKey>> = {}
+  ) {
     super(initialValues);
   }
 }
@@ -212,7 +239,180 @@ export class ExtensibleFullAuditedEntityWithUserDto<
   lastModifier: TUserDto;
   deleter: TUserDto;
 
-  constructor(initialValues: Partial<ExtensibleFullAuditedEntityWithUserDto<TPrimaryKey>> = {}) {
+  constructor(
+    initialValues: Partial<
+      ExtensibleFullAuditedEntityWithUserDto<TPrimaryKey>
+    > = {}
+  ) {
     super(initialValues);
   }
+}
+
+export enum AbpDzSeverity {
+  /// <summary>
+  /// Info.
+  /// </summary>
+  Info = 0,
+
+  /// <summary>
+  /// Success.
+  /// </summary>
+  Success = 1,
+
+  /// <summary>
+  /// Warn.
+  /// </summary>
+  Warn = 2,
+
+  /// <summary>
+  /// Error.
+  /// </summary>
+  Error = 3,
+
+  /// <summary>
+  /// Fatal.
+  /// </summary>
+  Fatal = 4,
+}
+
+export enum AbpDzMessageState {
+  /// <summary>
+  /// Info.
+  /// </summary>
+  Unread = 0,
+
+  /// <summary>
+  /// Info.
+  /// </summary>
+  Read = 64,
+}
+
+export interface AbpDzNotificationInfo {
+  readonly id?: string;
+  readonly extraProperties?: { [key: string]: any } | undefined;
+  concurrencyStamp?: string | undefined;
+  creationTime?: Date;
+  creatorId?: string | undefined;
+  readonly tenantId?: string | undefined;
+  code?: number;
+  senderId?: string | undefined;
+  recipientId?: string | undefined;
+  recipientRoleId?: string | undefined;
+  expireAt?: Date | undefined;
+  detailUrl?: string | undefined;
+  detailUrlType?: number | undefined;
+  recipientPermission?: string | undefined;
+  notificationName: string;
+  data?: string | undefined;
+  content?: string | undefined;
+  dataTypeName?: string | undefined;
+  entityTypeName?: string | undefined;
+  entityTypeAssemblyQualifiedName?: string | undefined;
+  entityId?: string | undefined;
+  externalId?: string | undefined;
+  severity?: AbpDzSeverity;
+  state?: AbpDzMessageState;
+}
+
+export enum EntityChangeType {
+  Created = 0,
+  Updated = 1,
+  Deleted = 2,
+}
+
+export interface EntityPropertyChange {
+  readonly id?: string;
+  readonly tenantId?: string | undefined;
+  readonly entityChangeId?: string;
+  readonly newValue?: string | undefined;
+  readonly originalValue?: string | undefined;
+  readonly propertyName?: string | undefined;
+  readonly propertyTypeFullName?: string | undefined;
+}
+
+export interface EntityChange {
+  readonly id?: string;
+  readonly auditLogId?: string;
+  readonly tenantId?: string | undefined;
+  readonly changeTime?: Date;
+  changeType?: EntityChangeType;
+  readonly entityTenantId?: string | undefined;
+  readonly entityId?: string | undefined;
+  readonly entityTypeFullName?: string | undefined;
+  readonly propertyChanges?: EntityPropertyChange[] | undefined;
+  readonly extraProperties?: { [key: string]: any } | undefined;
+}
+
+export interface AuditLogAction {
+  readonly id?: string;
+  readonly tenantId?: string | undefined;
+  readonly auditLogId?: string;
+  readonly serviceName?: string | undefined;
+  readonly methodName?: string | undefined;
+  readonly parameters?: string | undefined;
+  readonly executionTime?: Date;
+  readonly executionDuration?: number;
+  readonly extraProperties?: { [key: string]: any } | undefined;
+}
+
+export interface AuditLog {
+  readonly id?: string;
+  readonly extraProperties?: { [key: string]: any } | undefined;
+  concurrencyStamp?: string | undefined;
+  applicationName?: string | undefined;
+  readonly userId?: string | undefined;
+  readonly userName?: string | undefined;
+  readonly tenantId?: string | undefined;
+  readonly tenantName?: string | undefined;
+  readonly impersonatorUserId?: string | undefined;
+  readonly impersonatorTenantId?: string | undefined;
+  readonly executionTime?: Date;
+  readonly executionDuration?: number;
+  readonly clientIpAddress?: string | undefined;
+  readonly clientName?: string | undefined;
+  clientId?: string | undefined;
+  correlationId?: string | undefined;
+  readonly browserInfo?: string | undefined;
+  readonly httpMethod?: string | undefined;
+  readonly url?: string | undefined;
+  readonly exceptions?: string | undefined;
+  readonly comments?: string | undefined;
+  httpStatusCode?: number | undefined;
+  readonly entityChanges?: EntityChange[] | undefined;
+  readonly actions?: AuditLogAction[] | undefined;
+}
+
+export interface IdentitySecurityLog {
+  readonly id?: string;
+  readonly extraProperties?: { [key: string]: any } | undefined;
+  concurrencyStamp?: string | undefined;
+  readonly tenantId?: string | undefined;
+  readonly applicationName?: string | undefined;
+  readonly identity?: string | undefined;
+  readonly action?: string | undefined;
+  readonly userId?: string | undefined;
+  readonly userName?: string | undefined;
+  readonly tenantName?: string | undefined;
+  readonly clientId?: string | undefined;
+  readonly correlationId?: string | undefined;
+  readonly clientIpAddress?: string | undefined;
+  readonly browserInfo?: string | undefined;
+  readonly creationTime?: Date;
+}
+export interface EventFilterDto {
+  maxResultCount?: number;
+  filter?: string;
+  id?: string;
+  type?: number;
+  source?: string;
+  creator?: string;
+  userId?: string;
+  startDate?: string;
+  endDate?: string;
+  code?: string;
+  state?: string;
+  severity?: number;
+  checked?: boolean;
+  sorting?: number;
+  skipCount?: number;
 }
