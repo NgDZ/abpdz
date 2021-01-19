@@ -20,6 +20,7 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class SessionStateService implements OnDestroy {
   session: Session.State = {} as any;
+  signalr:string;
 
   subs: SubSink;
   selectedCulture$: Observable<ApplicationConfiguration.CurrentCulture>;

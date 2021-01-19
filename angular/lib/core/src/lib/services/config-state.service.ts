@@ -93,6 +93,15 @@ export class ConfigStateService implements OnDestroy {
     return this.abp$.pipe(map((state) => state.setting?.values?.[key]));
   }
 
+  getSettingValue(keyword?: string) {
+    const settings = this.abp.setting?.values || {};
+
+    if (!keyword || !this.abp.setting?.values[keyword]) {
+      return null;
+    }
+
+    return this.abp.setting?.values[keyword];
+  }
   getSettings(keyword?: string) {
     const settings = this.abp.setting?.values || {};
 
