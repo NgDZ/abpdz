@@ -40,9 +40,41 @@
         "dist/utils/utils",
         "dist/utils"
       ],
+      "audit": [
+        "dist/audit/audit",
+        "dist/audit"
+      ],
       "breeze": [
         "dist/breeze/breeze",
         "dist/breeze"
+      ],
+      "chat": [
+        "dist/chat/chat",
+        "dist/chat"
+      ],
+      "cms": [
+        "dist/cms/cms",
+        "dist/cms"
+      ],
+      "demos": [
+        "dist/demos/demos",
+        "dist/demos"
+      ],
+      "filemanagement": [
+        "dist/filemanagement/filemanagement",
+        "dist/filemanagement"
+      ],
+      "pages": [
+        "dist/pages/pages",
+        "dist/pages"
+      ],
+      "saas": [
+        "dist/saas/saas",
+        "dist/saas"
+      ],
+      "texttemplates": [
+        "dist/texttemplates/texttemplates",
+        "dist/texttemplates"
       ]
     }
   },

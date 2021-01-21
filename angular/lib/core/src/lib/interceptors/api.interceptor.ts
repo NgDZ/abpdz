@@ -50,7 +50,9 @@ export class ApiInterceptor implements HttpInterceptor {
     if (!existingHeaders?.has('__tenant') && tenant && tenant.id) {
       headers['__tenant'] = tenant.id;
     }
-
+    if (!existingHeaders?.has('__signalr') && this.abp.signalr) {
+      headers['__signalr'] = this.abp.signalr;
+    }
     return headers;
   }
 }

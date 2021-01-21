@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/dist/saas/config",
+  "lib": {
+    "entryFile": "../src/lib/config/public-api.ts"
+  }
+}

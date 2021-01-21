@@ -187,7 +187,7 @@ export class AuthService implements OnDestroy {
         .pipe(
           tap((k) => this.setActive(true)),
           // switchMapTo(timer(this.idleTime)),
-          // 
+          //
           debounceTime(this.env.idleTime || 10 * 60 * 1000),
           map(() => {})
         )
@@ -217,6 +217,11 @@ export class AuthService implements OnDestroy {
         (key) => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key])
       )
       .join('&');
+  }
+
+  public sendCode(data: any): Observable<AuthTokenModel> {
+    const AuthData: any = Object.assign({}, data, {});
+    return this.http.post<AuthTokenModel>('/connect/token_code', AuthData);
   }
   public getNewToken(
     data: Authenticate | RefreshGrantModel,
