@@ -2,6 +2,17 @@
   "culture": "fr",
   "texts": {
     "SendVerificationCode": "Envoyer le code de vérification",
-    "InvalidVerificationCode": "Code de vérification invalide"
+    "InvalidVerificationCode": "Code de vérification invalide",
+    "VerificationCode": "Code de vérification",
+    "Notification": "Notification",
+    "Time": "Temp",
+    "Browser": "Navigateur",
+    "Client": "Client",
+    "SecurityLogs": "Journaux de sécurité",
+    "Start": "Debut",
+    "End": "Fin",
+    "To": "Au",
+    "From": "Du",
+    "AuditLogs": "Journaux"
   }
 }

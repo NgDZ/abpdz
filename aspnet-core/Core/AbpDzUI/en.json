@@ -2,6 +2,17 @@
   "culture": "en",
   "texts": {
     "SendVerificationCode": "Send verification code",
-    "InvalidVerificationCode": "Invalid verification code"
+    "InvalidVerificationCode": "Invalid verification code",
+    "VerificationCode": "Verification code",
+    "Notification": "Notification",
+    "Time": "Time",
+    "Browser": "Browser",
+    "Client": "Client",
+    "SecurityLogs": "Security logs",
+    "Start": "Start",
+    "End": "End",
+    "From": "From",
+    "To": "To",
+    "AuditLogs": "Audit logs"
   }
 }

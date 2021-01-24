@@ -2,6 +2,17 @@
   "culture": "ar",
   "texts": {
     "SendVerificationCode": "أرسل رمز التحقق",
-    "InvalidVerificationCode": "رمز التحقق خاطئ"
+    "InvalidVerificationCode": "رمز التحقق خاطئ",
+    "VerificationCode": "رمز التحقق",
+    "Notification": "اشعارات",
+    "Time": "وقت",
+    "Browser": "متصفح",
+    "Client": "زبون",
+    "SecurityLogs": "سجلات الامان",
+    "Start": "بداية",
+    "From": "من",
+    "To": "الى",
+    "End": "نهاية",
+    "AuditLogs": "سجلات"
   }
 }
