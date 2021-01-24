@@ -45,12 +45,19 @@ namespace AbpDz.Notifications
         [HttpGet]
         public async Task<PagedResultDto<AbpDzNotificationInfo>> GetAll(EventFilterDto filter)
         {
-            var repo = this.ServiceProvider.GetService(typeof(IRepository<AbpDzNotificationInfo, Guid>)) as IRepository<AbpDzNotificationInfo, Guid>;
+            if (!CurrentUser.IsAuthenticated)
+            {
+                return new PagedResultDto<AbpDzNotificationInfo>(0, Array.Empty<AbpDzNotificationInfo>());
+            }
+            var repo = GetRepository();
 
             var Config = this.ServiceProvider.GetService(typeof(AbpDzNotificationServiceConfig)) as AbpDzNotificationServiceConfig;
             var query = repo.AsQueryable();
             var permissions = new List<string>();
-
+            if (filter.Checked == true)
+            {
+                await this.Register();
+            }
 
 
             if (CurrentUser.Id != filter.UserId && !await AuthorizationService.IsGrantedAsync("AbpIdentity.Users.Create"))
@@ -81,17 +88,58 @@ namespace AbpDz.Notifications
             {
                 query = query.Where(k => k.CreationTime <= filter.EndDate);
             }
-            return new PagedResultDto<AbpDzNotificationInfo>(
+            return new SummaryPagedResultDto<AbpDzNotificationInfo>(
                 await query.CountAsync(),
-                await query.ToListAsync()
+                await query.OrderByDescending(k=>k.CreationTime).Skip(filter.SkipCount).Take(filter.MaxResultCount).ToListAsync()
+            // await query.Where(k => k.State == AbpDzMessageState.Unread).CountAsync()
+
             );
         }
+
+        private IRepository<AbpDzNotificationInfo, Guid> GetRepository()
+        {
+            return this.ServiceProvider.GetService(typeof(IRepository<AbpDzNotificationInfo, Guid>)) as IRepository<AbpDzNotificationInfo, Guid>;
+        }
+
         [HttpGet()]
-        public async Task Ping()
+        public async Task Ping(bool persiste = false)
         {
 
-            await this.NotificationService.Notify("Ping data", "Ping");
+            await this.NotificationService.CreateNotification(new AbpDzNotificationInfo()
+            {
+                // Id = Guid.NewGuid(),
+                CreationTime = DateTime.Now,
+                NotificationName = "Bonjour:" + DateTime.Now.ToFileTime().ToString(),
+                RecipientId = CurrentUser.Id,
 
+            }, persiste);
+
+        }
+
+        [HttpPost()]
+        public async Task Dismiss(HashSet<Guid> ids)
+        {
+            var repo = GetRepository();
+            var items = await repo.Where(k => ids.Contains(k.Id)).ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.State = AbpDzMessageState.Read;
+            }
+            foreach (var id in ids)
+            {
+                await this.NotificationService.Notify(
+                      new
+                      {
+                          State = AbpDzMessageState.Read
+                      },
+                      nameof(AbpDzNotificationService),
+                      nameof(AbpDzNotificationInfo),
+                      CrudOperation.Update,
+                      id.ToString(),
+                      null,
+                      this.CurrentUser.Id);
+            }
         }
 
     }

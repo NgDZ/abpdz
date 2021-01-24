@@ -10,7 +10,7 @@ namespace Volo.Docs.EntityFrameworkCore
 {
     public static class NotificationsDbContextModelBuilderExtensions
     {
-        public static void ConfigureDocs(
+        public static void ConfigureNotifications(
           this ModelBuilder builder,
             Action<AbpModelBuilderConfigurationOptions> optionsAction = null)
         {
