@@ -46,6 +46,12 @@ Remove-Item -Recurse -Force .\lib\breeze\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\breeze\ .\lib\breeze\src\lib
 ng build breeze   --prod
 
+
+Remove-Item -Recurse -Force .\lib\demos\src\lib\
+Copy-Item -Force -Recurse $orgDir\angular\src\abp\demos\ .\lib\demos\src\lib
+ng build demos   --prod
+
+
 Set-Location .\dist\
 
 Get-ChildItem -Recurse *.map |Remove-Item 
@@ -59,6 +65,10 @@ Set-Location .\account\
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\core\
+((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
+Set-Location ..\demos\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
@@ -102,4 +112,4 @@ Set-Location ..\identity\
 npm publish --access public --ignore-scripts 
 
  
-Set-Location ..\..\..\scripts
+Set-Location ..\..\scripts
