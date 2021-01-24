@@ -13,21 +13,21 @@ using Volo.Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Identity;
-
+using System.Linq.Dynamic.Core;
 namespace AbpDz.Notifications
 {
 
     [RemoteService]
     [Authorize]
     [ApiExplorerSettings(GroupName = "Notification")]
-    [Route("/api/[controller]/[action]")]
-    public class IdentityLogSecurityController : AbpController, Volo.Abp.DependencyInjection.ITransientDependency
+    [Route("/api/identity/security-logs/[action]")]
+    public class IdentitySecurityLogController : AbpController, Volo.Abp.DependencyInjection.ITransientDependency
     {
-        public IRepository<IdentitySecurityLog, Guid> Repository { get; }
+        public IIdentitySecurityLogRepository Repository { get; }
 
 
-        public IdentityLogSecurityController(
-            IRepository<IdentitySecurityLog, Guid> repository
+        public IdentitySecurityLogController(
+            IIdentitySecurityLogRepository repository
             )
         {
             Repository = repository;
@@ -35,8 +35,11 @@ namespace AbpDz.Notifications
         [HttpGet]
         public async Task<PagedResultDto<IdentitySecurityLog>> GetAll(EventFilterDto filter)
         {
-            var query = Repository.AsQueryable();
-
+            var query = Repository.GetDbSet().AsQueryable();
+            if (string.IsNullOrWhiteSpace(filter.Sorting))
+            {
+                filter.Sorting = nameof(IdentitySecurityLog.CreationTime) + " desc";
+            }
             if (CurrentUser.Id != filter.UserId && !await AuthorizationService.IsGrantedAsync("AbpIdentity.Users.Create"))
             {
                 filter.UserId = CurrentUser.Id;
@@ -56,7 +59,7 @@ namespace AbpDz.Notifications
             }
             return new PagedResultDto<IdentitySecurityLog>(
                 await query.CountAsync(),
-                await query.ToListAsync()
+                await query.OrderBy(filter.Sorting).Skip(filter.SkipCount).Take(filter.MaxResultCount).ToListAsync()
             );
         }
     }
