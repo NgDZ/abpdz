@@ -14,14 +14,14 @@ using Volo.Abp.Auditing;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Linq.Dynamic.Core;
 namespace AbpDz.Notifications
 {
 
     [RemoteService]
     [Authorize]
     [ApiExplorerSettings(GroupName = "Notification")]
-    [Route("/api/[controller]/[action]")]
+    [Route("/api/audit-logging/")]
     public class AuditLogController : AbpController, Volo.Abp.DependencyInjection.ITransientDependency
     {
         public IRepository<AuditLog, Guid> Repository { get; }
@@ -33,11 +33,14 @@ namespace AbpDz.Notifications
         {
             Repository = repository;
         }
-        [HttpGet]
+        [HttpGet("audit-logs")]
         public async Task<PagedResultDto<AuditLog>> GetAll(EventFilterDto filter)
         {
             var query = Repository.AsQueryable();
-
+            if (string.IsNullOrWhiteSpace(filter.Sorting))
+            {
+                filter.Sorting = nameof(AuditLog.ExecutionTime) + " desc";
+            }
             if (CurrentUser.Id != filter.UserId && !await AuthorizationService.IsGrantedAsync("AbpIdentity.Users.Create"))
             {
                 filter.UserId = CurrentUser.Id;
@@ -57,7 +60,9 @@ namespace AbpDz.Notifications
             }
             return new PagedResultDto<AuditLog>(
                 await query.CountAsync(),
-                await query.ToListAsync()
+                await query.OrderBy(d => d.ExecutionTime)
+                .Skip(filter.SkipCount)
+                .Take(filter.MaxResultCount).ToListAsync()
             );
         }
     }

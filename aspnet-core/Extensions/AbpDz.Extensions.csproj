@@ -22,6 +22,9 @@
     <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.1.0" />
     <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.1.0" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.EntityFrameworkCore" Version="4.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="5.2.7" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.7" />
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,7 @@ namespace AbpDz.Models
             get;
             set;
         }
+        public DateTime? ExpireAt { get; set; }
 
         [StringLength(AbpDzConsts.MaxNotificationNameLength)]
         public virtual string DetailUrl

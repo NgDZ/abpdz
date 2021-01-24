@@ -24,5 +24,4 @@ namespace AbpDz.Core
         public int? Severity { get; set; }
         public bool? Checked { get; set; }
     }
-
 }

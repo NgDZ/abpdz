@@ -7,7 +7,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.TenantManagement;
-
+using Volo.Abp.Identity.EntityFrameworkCore;
 namespace AbpDz.Extensions
 {
     [DependsOn(
@@ -15,7 +15,8 @@ namespace AbpDz.Extensions
     typeof(AbpIdentityApplicationModule),
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
-    typeof(AbpFeatureManagementApplicationModule)
+    typeof(AbpFeatureManagementApplicationModule),
+    typeof(AbpIdentityEntityFrameworkCoreModule)
     )]
     public class AbpDzExtensionsModule : AbpModule
     {
