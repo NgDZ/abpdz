@@ -67,6 +67,7 @@ npm publish --access public --ignore-scripts
 Set-Location ..\core\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+npm publish --access public --ignore-scripts
 
 Set-Location ..\demos\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
