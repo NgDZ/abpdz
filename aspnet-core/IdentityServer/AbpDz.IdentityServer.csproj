@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AbpDz</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\AbpDz.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Volo.Abp.Core" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.IdentityServer.Domain" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>
