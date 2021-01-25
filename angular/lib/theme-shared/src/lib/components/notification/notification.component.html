@@ -1,0 +1,103 @@
+<!-- This button triggers the overlay and is it's origin -->
+<button
+  (click)="isOpen = !isOpen"
+  type="button"
+  mat-button
+  cdkOverlayOrigin
+  class="h-full"
+  #trigger="cdkOverlayOrigin"
+>
+  <mat-icon
+    *ngIf="acitveNotifications$ | async; let acitveNotifications"
+    [matBadgeHidden]="acitveNotifications.length == 0"
+    [matBadge]="acitveNotifications.length"
+    matBadgeColor="warn"
+    fxLayoutAlign="center center"
+    >notifications_active</mat-icon
+  >
+</button>
+
+<!-- This template displays the overlay content and is connected to the button -->
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  (backdropClick)="isOpen = false"
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayPositions]="[
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' }
+  ]"
+>
+  <ng-container 
+    *ngIf="service.abpdzNotification$ | async; let notifications"
+  >
+    <mat-card
+      class="mat-elevation-z1 "
+      style="overflow: hidden; padding: 0; min-width: 400px"
+      @expandCollapse
+    >
+      <div
+        class="mat-actions p-2"
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+      >
+        <div class="mat-text">
+          <div class="mat-h3">Notifications</div>
+          <div class="secondary">{{ notifications.length }} notifications.</div>
+        </div>
+        <button type="button" mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+      </div>
+      <div class="p-1 container">
+        <div
+          *ngFor="let notification of notifications; let last = last"
+          fxLayout="column"
+        >
+          <div
+            class="mat-hover p-1 notification"
+            [class.bold]="notification?.state === 0"
+            matRipple
+          >
+            <mat-icon class="icon" [ngClass]="getClass(notification)">{{
+              getIcon(notification)
+            }}</mat-icon>
+            <div
+              (click)="isOpen = false"
+              style="display: flex; flex-direction: column; flex-grow: 1"
+              (click)="markAsRead(notification)"
+              [routerLink]="notification.entityTypeAssemblyQualifiedName"
+            >
+              <div class="name">
+                {{ notification.notificationName }}
+                <!-- {{ notification.dataTypeName }} -->
+              </div>
+              <span class="time mat-text secondary">
+                {{ notification.creationTime | abpTimeAgo }}
+              </span>
+            </div>
+            <button
+              *ngIf="false"
+              (click)="dismiss(notification, $event)"
+              mat-icon-button
+            >
+              <mat-icon class="close">close</mat-icon>
+            </button>
+          </div>
+          <span class="mat-divider-v"></span>
+        </div>
+        <div class="no-notifications" *ngIf="notifications.length === 0">
+          <!-- All fine! No notifications right now. -->
+          Tout va bien! Aucune notification pour le moment.
+        </div>
+      </div>
+      <div class="mat-actions p-1" fxLayout="row" fxLayoutAlign="center center">
+        <div class="action">
+          <!-- Mark all as read -->
+          tout marquer comme lu
+        </div>
+      </div>
+    </mat-card>
+  </ng-container>
+</ng-template>
