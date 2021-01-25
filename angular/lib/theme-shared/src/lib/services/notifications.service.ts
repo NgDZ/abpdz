@@ -1,11 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject, fromEvent, from, of } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import {
+  Observable,
+  Subject,
+  fromEvent,
+  from,
+  of,
+  BehaviorSubject,
+} from 'rxjs';
 import {
   shareReplay,
   switchMap,
   tap,
   debounceTime,
   retry,
+  map,
+  distinctUntilChanged,
 } from 'rxjs/operators';
 
 // import { getJwtToken } from '@app-core/auth/models';
@@ -17,11 +26,24 @@ import {
   HubConnectionState,
 } from '@microsoft/signalr';
 
-import { ApplicationConfiguration } from '@abpdz/ng.core';
+import {
+  ABP,
+  AbpDzNotificationInfo,
+  ApplicationConfiguration,
+  AuthService,
+  CORE_OPTIONS,
+  CrudOperation,
+  EventFilterDto,
+  SessionStateService,
+} from '@abpdz/ng.core';
+import { CleanObjectProperties } from '../models';
 // todo implement notification api based on the new template
 export interface ClientNotificationType {
   src: string;
   type: string;
+  id: string;
+  action: any;
+
   date?: Date;
   data: any;
   connectionId?: string;
@@ -31,14 +53,23 @@ export interface ClientNotificationType {
   providedIn: 'root',
 })
 export class NotificationsService {
-  public notification$ = new Observable<ClientNotificationType>();
-  public _notification$ = new Subject<ClientNotificationType>();
+  public notification$: Observable<ClientNotificationType>;
+  public abpdzNotification$ = new BehaviorSubject<AbpDzNotificationInfo[]>([]);
+  private _notification$: Subject<ClientNotificationType>;
 
-  currentUser$: Observable<ApplicationConfiguration.CurrentUser>;
+  private connection: HubConnection;
+  private pendingGoups: string[] = [];
+  constructor(
+    @Inject(CORE_OPTIONS) private options: ABP.Root,
 
-  connection: HubConnection;
-  pendingGoups: string[] = [];
-  constructor(public appConfig, public http: HttpClient) {
+    private abp: SessionStateService,
+    public http: HttpClient,
+    private auth: AuthService
+  ) {
+    this._notification$ = new Subject<ClientNotificationType>();
+    // {
+    //   params: CleanObjectProperties(param1),
+    // }
     try {
       this.signalRCore();
     } catch (error) {}
@@ -46,28 +77,57 @@ export class NotificationsService {
   signalRId() {
     return this.connection?.connectionId;
   }
+  dismiss(ids: string[]) {
+    return this.http.post('/api/abpdz-notification/Dismiss', ids);
+  }
   private signalRCore() {
-    this.notification$ = this.currentUser$.pipe(
+    this.auth.currentUser$.subscribe((k) => {
+      console.log(k);
+    });
+    this.notification$ = this.auth.currentUser$.pipe(
       // debounceTime(150),
+      map((k) => k.id),
+      distinctUntilChanged(),
       tap((k) => {
-        if (this.appConfig.useSignalRCore) {
+        if (this.options?.environment?.notifications?.useSignalr) {
+          this.abp.signalr = null;
+
           if (this.connection) {
             this.connection.stop();
           }
           this.connection = new HubConnectionBuilder()
-            .withUrl(this.appConfig.signalrUrl, {
-              // accessTokenFactory: getJwtToken
-            })
+            .withUrl(
+              this.options.environment.notifications.signalrUrl ||
+                '/abpdz-notification-hub',
+              {
+                // accessTokenFactory: getJwtToken
+              }
+            )
             .build();
           const self = this;
           this.connection
             .start()
             .then((e) => {
               if (k) {
+                this.abp.signalr = this.signalRId();
+                var query: EventFilterDto = {
+                  checked: true,
+                  userId: k,
+                  skipCount: 0,
+                  maxResultCount: 20,
+                };
                 this.http
-                  .get(this.appConfig.signalRegisterForUser)
+                  .get(
+                    this.options.environment.notifications.notificationUrl ||
+                      '/api/abpdz-notification/getAll',
+                    {
+                      params: CleanObjectProperties(query),
+                    }
+                  )
                   .pipe(retry(20))
-                  .subscribe();
+                  .subscribe((notResult: any) => {
+                    this.abpdzNotification$.next(notResult.items);
+                  });
                 if (this.pendingGoups.length > 0) {
                   this.AddToGroup(this.pendingGoups)
                     .pipe(retry(20))
@@ -81,14 +141,18 @@ export class NotificationsService {
             (
               src: string,
               type: string,
+              action: string,
+              id: string,
               data: any,
               date: Date,
               connectionId,
               userId
             ) => {
-              self._notification$.next({
+              self.dispatchNotification({
                 src,
                 type,
+                action,
+                id,
                 data,
                 date,
                 connectionId,
@@ -134,5 +198,31 @@ export class NotificationsService {
       return from(this.connection.send('RemoveFromGroup', groups));
     }
     return of(null);
+  }
+  dispatchNotification(item: ClientNotificationType) {
+    console.log(item);
+    if (item.type == 'AbpDzNotificationInfo') {
+      if (item.action == CrudOperation.Create) {
+        this.abpdzNotification$.next([
+          item.data,
+          ...this.abpdzNotification$.value,
+        ]);
+      } else if (item.action == CrudOperation.Update) {
+        const not = this.abpdzNotification$.value.find((k) => k.id == item.id);
+        if (not != null) {
+          Object.assign(not, item.data);
+        }
+        this.abpdzNotification$.next(this.abpdzNotification$.value);
+      } else if (item.action == CrudOperation.Delete) {
+        const not = this.abpdzNotification$.value.findIndex(
+          (k) => k.id == item.id
+        );
+        if (not >= 0) {
+          this.abpdzNotification$.value.splice(not, 1);
+        }
+        this.abpdzNotification$.next(this.abpdzNotification$.value);
+      }
+    }
+    this._notification$.next(item);
   }
 }

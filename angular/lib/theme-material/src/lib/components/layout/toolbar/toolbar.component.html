@@ -38,11 +38,17 @@
         <!-- <a mat-menu-item routerLink="//setting-management">
           {{ 'AbpAccount::Setting' | abpLocalization }}
         </a> -->
+        <button mat-menu-item routerLink="/audit/identity">
+          {{ "AbpDz::SecurityLogs" | abpLocalization }}
+        </button>
+        <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">
           {{ "AbpUi::Logout" | abpLocalization }}
         </button>
       </mat-menu>
 
+      <div class="toolbar-separator"></div>
+      <abp-notification class="h-full"></abp-notification>
       <div class="toolbar-separator"></div>
       <button
         mat-button

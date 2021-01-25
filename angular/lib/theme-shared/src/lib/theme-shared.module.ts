@@ -1,5 +1,5 @@
 import { CoreModule } from '@abpdz/ng.core';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {
   APP_INITIALIZER,
   Injector,
@@ -35,10 +35,16 @@ import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
 } from '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NotificationComponent } from './components';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatBadgeModule } from '@angular/material/badge';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { RouterModule } from '@angular/router';
 
 const appearance: MatFormFieldDefaultOptions = {
   appearance: 'outline',
 };
+const components = [NotificationComponent, TimeAgoPipe];
 const declarationsWithExports = [
   MatDialogModule,
   MatListModule,
@@ -57,16 +63,23 @@ const declarationsWithExports = [
   MatCheckboxModule,
   MatRadioModule,
   LayoutModule,
+  MatBadgeModule,
   MatTabsModule,
+
+  MatProgressSpinnerModule,
+  // flex
   FlexLayoutModule,
+
+  // cdk
+  OverlayModule,
   // fuse
   // Fuse modules
 ];
 
 @NgModule({
-  declarations: [],
-  exports: [...declarationsWithExports],
-  imports: [...declarationsWithExports],
+  declarations: [...components],
+  exports: [...declarationsWithExports, ...components],
+  imports: [...declarationsWithExports, CommonModule, CoreModule, RouterModule],
 
   providers: [DatePipe],
 })
