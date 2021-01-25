@@ -75,6 +75,9 @@ export class AuthService implements OnDestroy {
   tick$ = new Subject<any>();
   token$: BehaviorSubject<AuthTokenModel>;
   currentUser$: Observable<Partial<ApplicationConfiguration.CurrentUser>>;
+
+  
+  currentUser: Partial<ApplicationConfiguration.CurrentUser>;
   setActive(active) {
     if (this.active === active) {
       return;
@@ -144,6 +147,7 @@ export class AuthService implements OnDestroy {
         if (!this.hasValidAccessToken()) {
           return { isAuthenticated: false };
         }
+        this.currentUser = k;
         return k;
       })
     );
