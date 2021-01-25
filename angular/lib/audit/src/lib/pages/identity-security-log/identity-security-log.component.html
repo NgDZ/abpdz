@@ -1,0 +1,169 @@
+<div class="page-layout carded fullwidth inner-scroll">
+  <div class="ngdz-loading-shade" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+  <!-- HEADER -->
+  <div class="toolbar">
+    <div
+      class="m-4 px-4"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayout.gt-sm="row"
+      fxLayoutGap.lt-md="8px"
+      fxLayoutAlign.gt-sm="space-between center"
+    >
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon
+          [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+        >
+          security
+        </mat-icon>
+        <h1
+          class="h1"
+          [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
+        >
+          {{ "AbpDz::SecurityLogs" | abpLocalization }}
+        </h1>
+      </div>
+      <!-- / APP TITLE -->
+      <div class="search-wrapper mx-32 mx-md-0" [formGroup]="searchForm">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+          <input
+            formControlName="filter"
+            #filterRef
+            placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
+          />
+
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              matStartDate
+              [placeholder]="'AbpDz::From' | abpLocalization"
+              formControlName="startDate"
+            />
+            <input
+              matEndDate
+              [placeholder]="'AbpDz::To' | abpLocalization"
+              formControlName="endDate"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <!-- <button mat-icon-button [matMenuTriggerFor]="menuPlus">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+
+          <mat-menu #menuPlus="matMenu">
+            <button mat-menu-item (click)="exportExcel()">
+              <mat-icon>file_download</mat-icon>
+              Exporter excel
+            </button>
+          </mat-menu> -->
+          <button mat-icon-button (click)="applyFilter()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+      <span></span>
+    </div>
+  </div>
+  <div class="content-card">
+    <table
+      mat-table
+      class="mat-elevation-z3 w-full"
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="dataSource.sort.next($event)"
+    >
+      <ng-container matColumnDef="Time">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "AbpDz::Time" | abpLocalization }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.creationTime | date: "yyyy-MM-dd HH:mm" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "AbpAccount::Actions" | abpLocalization }}
+        </th>
+        <td mat-cell *matCellDef="let row" [class]="actionClass(row.action)">
+          <mat-icon>{{ actionIcon(row.action) }}</mat-icon> {{ row.action }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="clientIpAddress">
+        <th mat-header-cell *matHeaderCellDef>IP</th>
+        <td mat-cell *matCellDef="let row">{{ row.clientIpAddress }}</td>
+      </ng-container>
+      <ng-container matColumnDef="Browser">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "AbpDz::Browser" | abpLocalization }}
+        </th>
+        <td [matTooltip]="row.browserInfo" mat-cell *matCellDef="let row">
+          {{ row.browserInfo | slice: 0:40 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Client">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "AbpDz::Client" | abpLocalization }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.userName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef style="width: 48px"></th>
+        <td mat-cell style="width: 48px" *matCellDef="let element">
+          <button mat-mini-fab color="default" [matMenuTriggerFor]="editEmnu">
+            <mat-icon class="mat-18">more_vert </mat-icon>
+          </button>
+          <mat-menu
+            #editEmnu="matMenu"
+            x-position="after"
+            y-position="below"
+            [overlapTrigger]="false"
+          >
+            <button
+              *abpPermission="'AbpIdentity.Roles.Update'"
+              mat-menu-item
+              (click)="startEdit(element)"
+            >
+              <mat-icon>edit</mat-icon>
+              {{ "AbpIdentity::Edit" | abpLocalization }}
+            </button>
+            <button
+              *abpPermission="'AbpIdentity.Roles.ManagePermissions'"
+              mat-menu-item
+              (click)="openPermissionsModal(element.name)"
+            >
+              <mat-icon>verified_user</mat-icon>
+              {{ "AbpIdentity::Permissions" | abpLocalization }}
+            </button>
+            <button
+              *ngIf="!element.isStatic"
+              [abpPermission]="'AbpIdentity.Roles.Delete'"
+              mat-menu-item
+              (click)="dataSource.delete(element)"
+            >
+              <mat-icon>delete</mat-icon>
+              {{ "AbpIdentity::Delete" | abpLocalization }}
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+      *ngIf="dataSource.page | async; let page"
+      (page)="dataSource.page.next($event)"
+      [length]="dataSource.count | async"
+      [pageIndex]="page.pageIndex"
+      [showFirstLastButtons]="true"
+      [pageSize]="page.pageSize"
+      [pageSizeOptions]="[10, 25, 100, 250]"
+    >
+    </mat-paginator>
+  </div>
+</div>

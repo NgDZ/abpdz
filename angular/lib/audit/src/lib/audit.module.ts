@@ -1,12 +1,39 @@
-import { NgModule } from '@angular/core';
-import { AuditComponent } from './audit.component';
+import { ModuleWithProviders, NgModule, NgModuleFactory } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-
+import { AbpDzAuditRoutingModule } from './audit-routing.module';
+import { CoreModule, LazyModuleFactory } from '@abpdz/ng.core';
+import { ThemeSharedModule } from '@abpdz/ng.theme.shared';
+import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { IdentitySecurityLogComponent } from './pages/identity-security-log/identity-security-log.component';
+import { AuditLogComponent } from './pages/audit-log/audit-log.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
-  declarations: [AuditComponent],
+  declarations: [IdentitySecurityLogComponent, AuditLogComponent],
   imports: [
+    AbpDzAuditRoutingModule,
+    CommonModule,
+    ThemeSharedModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    CoreModule.forLazy(),
+    NgxValidateCoreModule,
   ],
-  exports: [AuditComponent]
 })
-export class AuditModule { }
+export class AbpDzAuditModule {
+  static forChild(): ModuleWithProviders<AbpDzAuditModule> {
+    return {
+      ngModule: AbpDzAuditModule,
+      providers: [],
+    };
+  }
+  static forLazy(): NgModuleFactory<AbpDzAuditModule> {
+    return new LazyModuleFactory(AbpDzAuditModule.forChild());
+  }
+}

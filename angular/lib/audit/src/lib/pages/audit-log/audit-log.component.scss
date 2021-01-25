@@ -1,0 +1,17 @@
+::ng-deep {
+  .search-wrapper {
+    .mat-date-range-input-container {
+      min-width: 160px;
+    }
+    .mat-date-range-input-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .mat-date-range-input-inner {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      min-width: 90px !important;
+    }
+  }
+}
