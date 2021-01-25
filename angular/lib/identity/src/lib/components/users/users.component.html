@@ -24,10 +24,12 @@
       <div class="search-wrapper mx-1">
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <input
-            (ngModelChange)="dataSource.filter.next({ filter: $event })"
+            [(ngModel)]="filter"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
-          <mat-icon>search</mat-icon>
+          <button mat-icon-button (click)="search()">
+            <mat-icon>search</mat-icon>
+          </button>
         </div>
       </div>
       <button

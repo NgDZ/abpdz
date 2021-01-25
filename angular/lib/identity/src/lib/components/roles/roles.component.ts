@@ -35,7 +35,7 @@ export class RolesComponent
     permissions: [],
     permissionsNames: [],
   };
-
+  filter;
   constructor(
     injector: Injector,
     private httpClient: HttpClient,
@@ -54,6 +54,10 @@ export class RolesComponent
       isPublic: [false],
     });
   }
+
+  search() {
+    this.dataSource.filter.next({ filter: this.filter });
+  }
   openPermissionsModal(id) {
     this.permissionManagementService.managePermissions({
       providerName: 'R',
@@ -61,13 +65,7 @@ export class RolesComponent
       hideBadges: true,
     });
   }
-  newObject(): Observable<Partial<IdentityRoleCreateOrUpdateDtoBase>> {
-    return of({
-      isDefault: false,
-      isPublic: true,
-      extraProperties: {},
-    });
-  }
+
   ngOnInit() {
     // this.api.getAllPermissions().subscribe(v => {
     //   this.lookups.permissions = v.items;
@@ -77,6 +75,16 @@ export class RolesComponent
     this.dataSource = new RestDataSource(
       new AbpIOHttpService(this.httpClient, '/api/identity/roles')
     );
+    this.dataSource.setServices(this.logger, this.translate);
+
+    this.dataSource.initCreate$ = (h) => {
+      return of({
+        isDefault: false,
+        isPublic: true,
+        name: 'fqsdqfds',
+        extraProperties: {},
+      });
+    };
   }
   ngAfterViewInit() {}
 }

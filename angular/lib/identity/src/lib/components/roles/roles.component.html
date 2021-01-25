@@ -31,10 +31,12 @@
       <div class="search-wrapper mx-4">
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <input
-            (ngModelChange)="dataSource.filter.next({ filter: $event })"
+            [(ngModel)]="filter"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
-          <mat-icon>search</mat-icon>
+          <button mat-icon-button (click)="search()">
+            <mat-icon>search</mat-icon>
+          </button>
         </div>
       </div>
       <button
@@ -139,7 +141,7 @@
         [formGroup]="editForm"
         (ngSubmit)="save()"
       >
-        <div class="form-group p-8">
+        <div class="p-8">
           <mat-form-field class="w-full">
             <mat-label>
               {{ "AbpIdentity::RoleName" | abpLocalization }}
@@ -155,17 +157,17 @@
           </mat-form-field>
         </div>
 
-        <!-- <div class="custom-checkbox custom-control mb-2">
-            <mat-checkbox formControlName="isDefault">
-              {{ 'AbpIdentity::DisplayName:IsDefault' | abpLocalization }}
-            </mat-checkbox>
-          </div>
-    
-          <div class="custom-checkbox custom-control mb-2">
-            <mat-checkbox formControlName="isPublic">
-              {{ 'AbpIdentity::DisplayName:IsPublic' | abpLocalization }}
-            </mat-checkbox>
-          </div> -->
+        <!-- <div class="px-8 mb-2">
+          <mat-checkbox formControlName="isDefault">
+            {{ "AbpIdentity::DisplayName:IsDefault" | abpLocalization }}
+          </mat-checkbox>
+        </div>
+
+        <div class="px-8 mb-2">
+          <mat-checkbox formControlName="isPublic">
+            {{ "AbpIdentity::DisplayName:IsPublic" | abpLocalization }}
+          </mat-checkbox>
+        </div> -->
       </form>
       <div
         class="p-2 mat-actions"

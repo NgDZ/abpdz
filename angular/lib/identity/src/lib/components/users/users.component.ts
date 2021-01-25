@@ -44,6 +44,7 @@ import { UserData } from '../../proxy/users';
 export class UsersComponent
   extends BaseCrudComponent<UserData>
   implements OnInit, AfterViewInit {
+  filter;
   roles: any;
   selectedUserRoles: any;
   roles$: Observable<ListResultDto<IdentityRoleDto>>;
@@ -64,8 +65,11 @@ export class UsersComponent
     this.createEdit();
     this.buildForm();
   }
+  search() {
+    this.dataSource.filter.next({ filter: this.filter });
+  }
   editUser(u) {
-    this.editForm = null; 
+    this.editForm = null;
     this.startEdit(u);
     this.identityService
       .get(u.id)
@@ -162,6 +166,7 @@ export class UsersComponent
     this.dataSource = new RestDataSource(
       new AbpIOHttpService(this.httpClient, '/api/identity/users')
     );
+    this.dataSource.setServices(this.logger, this.translate);
     this.dataSource.initCreate$ = (item?) =>
       of({
         extraProperties: {},
