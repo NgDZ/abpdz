@@ -20,7 +20,7 @@ const PASSWORD_FIELDS = ['newPassword', 'repeatNewPassword'];
 @Component({
   selector: 'abp-change-password-form',
   templateUrl: './change-password.component.html',
-  exportAs: 'abpChangePasswordForm', 
+  exportAs: 'abpChangePasswordForm',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordComponent
@@ -53,8 +53,6 @@ export class ChangePasswordComponent
   ) {}
 
   ngOnInit(): void {
-    // this.hideCurrentPassword = ! this.facade.abp.conf.currentUser.hasPassword;
-
     const passwordValidations = getPasswordValidators(
       this.facade.abp?.conf?.setting?.values
     );

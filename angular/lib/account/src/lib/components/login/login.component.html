@@ -16,7 +16,12 @@
         </div>
       </div>
 
-      <form name="loginForm" [formGroup]="loginForm" novalidate>
+      <form
+        name="loginForm"
+        *ngIf="!twoFactor || twoFactorCodeSended"
+        [formGroup]="loginForm"
+        novalidate
+      >
         <div class="login-form-inputs">
           <mat-form-field appearance="outline">
             <mat-label>
@@ -36,7 +41,6 @@
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
           </mat-form-field>
-
           <mat-form-field appearance="outline">
             <mat-label>
               {{ "AbpAccount::DisplayName:Password" | abpLocalization }}
@@ -44,6 +48,25 @@
             <input matInput type="password" formControlName="password" />
             <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
             <mat-error>
+              {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngIf="twoFactor">
+            <mat-label>
+              {{ "AbpDz::VerificationCode" | abpLocalization }}
+            </mat-label>
+            <input matInput formControlName="2F_CODE" />
+            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+            <mat-error *ngIf="loginForm.get('2F_CODE').hasError('required')">
+              {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
+            </mat-error>
+            <mat-error
+              *ngIf="
+                !loginForm.get('2F_CODE').hasError('required') &&
+                loginForm.get('2F_CODE').hasError('2F_CODE')
+              "
+            >
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
           </mat-form-field>
@@ -69,7 +92,68 @@
             </a>
           </div>
         </div>
-        <div *ngIf="error" class="mat-red-900">
+        <div *ngIf="error" class="alert alert-error">
+          {{
+            error?.error_description || error?.error || error | abpLocalization
+          }}
+        </div>
+        <div
+          class="mat-actions p-4"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="4px"
+        >
+          <button
+            mat-raised-button
+            color="primary"
+            class="m-2"
+            type="submit"
+            [disabled]="loading || loginForm.invalid"
+            (click)="login()"
+          >
+            {{ "AbpAccount::Login" | abpLocalization }}
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            class="m-2"
+            *ngIf="twoFactor"
+            type="button"
+            [disabled]="loading || loginForm.controls.username.invalid"
+            (click)="resendCode()"
+          >
+            {{ "AbpDz::SendVerificationCode" | abpLocalization }}
+          </button>
+        </div>
+      </form>
+
+      <form
+        name="codeForm"
+        *ngIf="twoFactor && !twoFactorCodeSended"
+        [formGroup]="codeForm"
+        novalidate
+      >
+        <div class="login-form-inputs">
+          <mat-form-field appearance="outline">
+            <mat-label>
+              {{ "AbpAccount::DisplayName:UserName" | abpLocalization }}
+            </mat-label>
+            <input matInput formControlName="username" />
+            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+            <mat-error *ngIf="loginForm.get('username').hasError('required')">
+              {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
+            </mat-error>
+            <mat-error
+              *ngIf="
+                !loginForm.get('username').hasError('required') &&
+                loginForm.get('username').hasError('username')
+              "
+            >
+              {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="error" class="alert alert-error">
           {{
             error?.error_description || error?.error || error | abpLocalization
           }}
@@ -79,12 +163,12 @@
             mat-raised-button
             color="accent"
             class="submit-button"
+            type="submit"
             aria-label="LOG IN"
-            [disabled]="loading"
-            (click)="login()"
-            [disabled]="loginForm.invalid"
+            [disabled]="loading || codeForm.invalid"
+            (click)="sendCode()"
           >
-            {{ "AbpAccount::Login" | abpLocalization }}
+            {{ "AbpDz::SendVerificationCode" | abpLocalization }}
           </button>
         </div>
       </form>

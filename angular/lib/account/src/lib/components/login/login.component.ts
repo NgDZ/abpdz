@@ -1,4 +1,8 @@
-import { AuthService, selectAppReady } from '@abpdz/ng.core';
+import {
+  AuthService,
+  ConfigStateService,
+  selectAppReady,
+} from '@abpdz/ng.core';
 import { abpAnimations } from '@abpdz/ng.theme.shared';
 import {
   ChangeDetectionStrategy,
@@ -20,18 +24,30 @@ import { Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  codeForm: FormGroup;
   loading = false;
+  get twoFactor() {
+    return (
+      this.configService.getSettingValue('Abp.Identity.TwoFactor.Behaviour') ==
+      'Forced'
+    );
+  }
+  twoFactorCodeSended = false;
   ready$: Observable<boolean>;
-  error= null;
+  error = null;
   constructor(
     private _formBuilder: FormBuilder,
     private store: Store,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private configService: ConfigStateService,
     private router: Router
   ) {
     this.ready$ = this.store.select(selectAppReady);
+    console.log(
+      this.configService.getSettingValue('Abp.Identity.TwoFactor.Behaviour')
+    );
 
     const rUr = this.route.snapshot.queryParams.redirectUrl;
     if (rUr == null) {
@@ -46,9 +62,41 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
       username: ['', [Validators.required]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required]],
+      '2F_CODE': ['', this.twoFactor ? [Validators.required] : []],
       rememberMe: [],
     });
+
+    this.codeForm = this._formBuilder.group({
+      username: ['', [Validators.required]],
+    });
+  }
+  sendCode() {
+    this.sendCodeValue(this.codeForm.value.username);
+  }
+  resendCode() {
+    this.sendCodeValue(this.loginForm.value.username);
+  }
+  sendCodeValue(v) {
+    this.loading = true;
+    this.auth
+      .sendCode({
+        username: v,
+      })
+      .subscribe(
+        (k) => {
+          this.loading = false;
+          this.twoFactorCodeSended = true;
+          this.error = null;
+          this.loginForm.patchValue({ username: v });
+          this.cd.markForCheck();
+        },
+        (e) => {
+          this.loading = false;
+          this.error = 'AbpAccount::DefaultErrorMessage';
+          this.cd.markForCheck();
+        }
+      );
   }
   login() {
     this.error = null;
@@ -62,8 +110,9 @@ export class LoginComponent implements OnInit {
       },
       (e) => {
         this.loading = false;
+        this.loginForm.enable();
         this.error = e?.error;
-        console.log(this.error)
+        console.log(this.error);
         this.cd.markForCheck();
       }
     );
