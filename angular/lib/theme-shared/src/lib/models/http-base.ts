@@ -13,6 +13,7 @@ export interface IPage<TResult> {
   items?: TResult[];
 }
 export function isNotNullOrUndefined(v) {
+   
   if (v == null || v === undefined) {
     return false;
   }
@@ -69,7 +70,7 @@ export class AbpHttpService<TResult> implements IHttpService<TResult> {
     param5?
   ): Observable<IPage<TResult>> {
     return this.http.get<IPage<TResult>>(this.baseUrl + '/GetAll', {
-      params: param1,
+      params: CleanObjectProperties(param1),
     });
   }
   _getAll(param1?): Observable<IPage<TResult>> {
@@ -110,7 +111,7 @@ export class AbpIOHttpService<TResult> implements IHttpService<TResult> {
     param5?
   ): Observable<IPage<TResult>> {
     return this.http.get<IPage<TResult>>(this.baseUrl, {
-      params: param1,
+      params: CleanObjectProperties(param1),
     });
   }
   _getAll(param1?): Observable<IPage<TResult>> {

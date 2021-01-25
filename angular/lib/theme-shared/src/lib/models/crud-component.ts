@@ -25,6 +25,12 @@ export class BaseCrudComponent<datatype> extends BaseAsyncComponent {
   public set current(v: datatype) {
     this.dataSource?.current?.next(v);
   }
+  public get currentAny(): any {
+    return this.dataSource?.current?.value;
+  }
+  public set currentAny(v: any) {
+    this.dataSource?.current?.next(v);
+  }
 
   protected dialog: MatDialog = this.injector.get(MatDialog);
   // protected cd: ChangeDetectorRef = this.injector.get(ChangeDetectorRef);
@@ -38,6 +44,7 @@ export class BaseCrudComponent<datatype> extends BaseAsyncComponent {
   dialogEdit(entity: Partial<datatype>) {
     this.dataSource.current.next(entity as any);
     if (this.editForm != null) {
+      console.log(entity);
       this.editForm.reset(entity);
     }
     this.dialogRef = this.dialog.open(this.template, {
@@ -49,7 +56,7 @@ export class BaseCrudComponent<datatype> extends BaseAsyncComponent {
   }
 
   startEdit(entity: Partial<datatype>) {
-    this.dataSource.initEdit$(entity).subscribe((k) => {
+    this.dataSource.initUpdate$(entity).subscribe((k) => {
       this.dataSource.operation = CrudOperation.Update;
       this.dialogEdit(k);
     });

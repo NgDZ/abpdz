@@ -10,6 +10,8 @@ import {
   of,
   Subject,
 } from 'rxjs';
+import { LoggerService } from '../services';
+import { LocalizationService } from '@abpdz/ng.core';
 export enum CrudOperation {
   Read = 1,
   Create = 2,
@@ -23,6 +25,13 @@ export enum CrudOperation {
  * (including sorting, pagination, and filtering).
  */
 export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
+  logger: LoggerService;
+  translate: LocalizationService;
+  setServices(logger: LoggerService, translate: LocalizationService) {
+    this.logger = logger;
+
+    this.translate = translate;
+  }
   protected _loading = 0;
   public get loading(): number {
     return this._loading;
@@ -102,7 +111,10 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
         }),
         tap(
           () => this.loading--,
-          () => this.loading--
+          (e) => {
+            this.logger?.asyncError(e);
+            this.loading--;
+          }
         ),
         shareReplay()
       ) as any;
@@ -134,7 +146,8 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
           this.loading--;
           this.deleteLocal(item);
         },
-        () => {
+        (e) => {
+          this.logger?.asyncError(e);
           this.loading--;
           return null;
         }
@@ -163,7 +176,7 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
 
   initCreate$ = (item?) => of(item);
 
-  initEdit$ = (item?) => of(item);
+  initUpdate$ = (item?) => of(item);
 
   createServer(item: any): Observable<any> {
     return of(item);
@@ -176,7 +189,8 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
           this.loading--;
           this.createLocal(item);
         },
-        () => {
+        (e) => {
+          this.logger?.asyncError(e);
           this.loading--;
           return null;
         }
@@ -208,7 +222,8 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
           this.loading--;
           this.updateLocal(orginalItem, newItem);
         },
-        () => {
+        (e) => {
+          this.logger?.asyncError(e);
           this.loading--;
           return null;
         }
