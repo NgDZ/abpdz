@@ -52,6 +52,11 @@ Copy-Item -Force -Recurse $orgDir\angular\src\abp\demos\ .\lib\demos\src\lib
 ng build demos   --prod
 
 
+
+Remove-Item -Recurse -Force .\lib\audit\src\lib\
+Copy-Item -Force -Recurse $orgDir\angular\src\abp\audit\ .\lib\audit\src\lib
+ng build audit   --prod
+
 Set-Location .\dist\
 
 Get-ChildItem -Recurse *.map |Remove-Item 
@@ -107,6 +112,11 @@ Set-Location ..\permission-management\
 npm publish --access public --ignore-scripts 
 
 Set-Location ..\identity\
+((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+npm publish --access public --ignore-scripts 
+
+Set-Location ..\audit\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
