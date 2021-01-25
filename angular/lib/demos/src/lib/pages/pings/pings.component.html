@@ -1,0 +1,48 @@
+<div style="position: relative">
+  <div class="ngdz-loading-shade" *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-toolbar> Pings </mat-toolbar>
+  <table>
+    <tr>
+      <td>
+        <button (click)="pingNotification(false)" mat-raised-button>
+          Ping Notfications
+        </button>
+      </td>
+      <td>
+        <button (click)="pingNotification(true)" mat-raised-button>
+          Ping Notfications saved
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+</div>
