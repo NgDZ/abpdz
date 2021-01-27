@@ -6,3 +6,4 @@ export * from './pipes';
 export * from './services';
 export * from './theme-shared.module';
 export * from './utils';
+export * from './ngrx';

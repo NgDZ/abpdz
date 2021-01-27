@@ -2,7 +2,7 @@ import { Injectable, Optional } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 // import { ObjectPropertiesComponent } from '../components/scrollbar/object-properties/object-properties.component';
-// import { TranslateService } from '@ngx-translate/core';
+
 import { LocalizationService } from '@abpdz/ng.core';
 
 export interface ILoggerInfo {
