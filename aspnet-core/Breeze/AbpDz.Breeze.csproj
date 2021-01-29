@@ -12,12 +12,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Core" Version="4.1.0" />
-    <PackageReference Include="Volo.Abp.Account.Application" Version="4.1.0" />
-    <PackageReference Include="Volo.Abp.Identity.Application" Version="4.1.0" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.1.0" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.1.0" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.1.0" />
+    <PackageReference Include="Volo.Abp.Core" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.2.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.2.0" />
   </ItemGroup>
+  <ItemGroup>
 
+    <PackageReference Include="Breeze.AspNetCore.NetCore" Version="5.0.0" />
+    <PackageReference Include="Breeze.Core" Version="5.0.0" />
+    <PackageReference Include="Breeze.Persistence.EFCore" Version="5.0.0" />
+    <PackageReference Include="Breeze.Persistence" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.*" />
+
+  </ItemGroup>
 </Project>
