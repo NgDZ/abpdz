@@ -14,29 +14,29 @@ export const ACCOUNT_ROUTE_PROVIDERS = [
 export function configureRoutes(routes: RoutesService) {
   return () => {
     routes.add([
-      {
-        path: '/account',
-        name: eAccountRouteNames.Account,
-        invisible: true,
-        layout: eLayoutType.account,
-        order: 1,
-      },
-      {
-        path: '/account/login',
-        name: eAccountRouteNames.Login,
-        parentName: eAccountRouteNames.Account,
-        order: 1,
-      },
-      {
-        path: '/account/register',
-        name: eAccountRouteNames.Register,
-        parentName: eAccountRouteNames.Account,
-        order: 2,
-      },
+      // {
+      //   path: '/account',
+      //   name: eAccountRouteNames.Account,
+      //   invisible: true,
+      //   layout: eLayoutType.account,
+      //   order: 1,
+      // },
+      // {
+      //   path: '/account/login',
+      //   name: eAccountRouteNames.Login,
+      //   parentName: eAccountRouteNames.Account,
+      //   order: 1,
+      // },
+      // {
+      //   path: '/account/register',
+      //   name: eAccountRouteNames.Register,
+      //   parentName: eAccountRouteNames.Account,
+      //   order: 2,
+      // },
       {
         path: '/account/manage-profile',
         name: eAccountRouteNames.ManageProfile,
-        parentName: eAccountRouteNames.Account,
+        layout: eLayoutType.account,
         order: 3,
       },
     ]);

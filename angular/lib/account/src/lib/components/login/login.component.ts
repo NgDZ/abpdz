@@ -45,9 +45,6 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.ready$ = this.store.select(selectAppReady);
-    console.log(
-      this.configService.getSettingValue('Abp.Identity.TwoFactor.Behaviour')
-    );
 
     const rUr = this.route.snapshot.queryParams.redirectUrl;
     if (rUr == null) {
@@ -56,6 +53,12 @@ export class LoginComponent implements OnInit {
         queryParams: { redirectUrl: '/' },
         queryParamsHandling: 'merge', // remove to replace all query params by provided
       });
+    } else {
+      if (this.auth.currentUser?.isAuthenticated == true) {
+        setTimeout(() => {
+          this.router.navigateByUrl(rUr);
+        }, 250);
+      }
     }
   }
 
@@ -112,7 +115,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.loginForm.enable();
         this.error = e?.error;
-        console.log(this.error);
+        console.error(this.error);
         this.cd.markForCheck();
       }
     );
