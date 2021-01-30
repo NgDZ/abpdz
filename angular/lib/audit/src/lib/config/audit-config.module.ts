@@ -1,10 +1,18 @@
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { eLayoutType, RoutesService } from '@abpdz/ng.core';
+import { DataConfigService, eLayoutType, RoutesService } from '@abpdz/ng.core';
 import { eThemeSharedRouteNames } from '@abpdz/ng.theme.shared';
+import { AuditLogUrlsKey } from './enums';
 
-export function configureRoutes(routes: RoutesService) {
+export function configureRoutes(
+  routes: RoutesService,
+  data: DataConfigService
+) {
   return () => {
+    // data.addToList(AuditLogUrlsKey, {
+    //   key: 'BackGroundJob',
+    //   value: 'Administration',
+    // });
     routes.add([
       {
         path: '/audit/log',
@@ -13,6 +21,12 @@ export function configureRoutes(routes: RoutesService) {
         requiredPolicy: 'AbpIdentity.Users',
         iconClass: 'open_in_browser',
         layout: eLayoutType.application,
+        order: 10,
+      },
+      {
+        path: '/audit/identity',
+        name: 'AbpDz::SecurityLogs',
+        layout: eLayoutType.account,
         order: 10,
       },
     ]);
@@ -31,7 +45,7 @@ export class AbpDzAuditConfigModule {
         {
           provide: APP_INITIALIZER,
           useFactory: configureRoutes,
-          deps: [RoutesService],
+          deps: [RoutesService, DataConfigService],
           multi: true,
         },
       ],
