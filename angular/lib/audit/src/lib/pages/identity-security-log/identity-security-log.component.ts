@@ -51,6 +51,8 @@ export class IdentitySecurityLogComponent
     this.searchForm = this.fb.group({
       filter: [],
       id: [],
+      ip: [],
+      url: [],
       type: [],
       source: [],
       creator: [],
@@ -99,7 +101,7 @@ export class IdentitySecurityLogComponent
       case 'LoginFailed':
       case 'LoginInvalidUserNameOrPassword':
       case 'LoginInvalidUserName':
-        return 'color-error';
+        return 'alert alert-error';
 
       case 'LoginSucceeded':
         return 'color-success';

@@ -1,4 +1,4 @@
-import { PermissionGuard } from '@abpdz/ng.core';
+import { PermissionGuard, AuthGuard } from '@abpdz/ng.core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuditLogComponent, IdentitySecurityLogComponent } from './pages';
@@ -13,6 +13,7 @@ const routes: Routes = [
     },
   },
   {
+    canActivate: [AuthGuard],
     path: 'identity',
     component: IdentitySecurityLogComponent,
   },
