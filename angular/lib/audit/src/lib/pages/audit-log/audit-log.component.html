@@ -13,7 +13,7 @@
       fxLayoutAlign.gt-sm="space-between center"
     >
       <!-- APP TITLE -->
-      <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex.gt-sm="30" fxLayout="row" fxLayoutAlign="start center">
         <mat-icon
           [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
         >
@@ -23,18 +23,34 @@
           class="h1"
           [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
         >
-          {{ "AbpDz::SecurityLogs" | abpLocalization }}
+          {{ "AbpDz::AuditLogs" | abpLocalization }}
         </h1>
       </div>
       <!-- / APP TITLE -->
-      <div class="search-wrapper mx-32 mx-md-0" [formGroup]="searchForm">
+      <div
+        class="search-wrapper mx-md-0"
+        style="max-width: unset"
+        [formGroup]="searchForm"
+      >
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <input
             formControlName="filter"
             #filterRef
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
-
+          <input formControlName="ip" placeholder="Ip" />
+          <mat-select
+            *ngIf="codes?.length"
+            placeholder="Code"
+            formControlName="url"
+            fxHide.xs
+            fxHide.sm
+            fxHide.md
+          >
+            <mat-option *ngFor="let item of codes" [value]="item.key">
+              {{ item.value | abpLocalization }}
+            </mat-option>
+          </mat-select>
           <mat-date-range-input [rangePicker]="picker">
             <input
               matStartDate
@@ -85,15 +101,20 @@
         <td mat-cell *matCellDef="let row">
           {{ row.executionTime | date: "yyyy-MM-dd HH:mm" }}({{
             row.executionDuration
-          }})
+          }}
+          ms)
         </td>
       </ng-container>
       <ng-container matColumnDef="Action">
         <th mat-header-cell *matHeaderCellDef>
           {{ "AbpAccount::Actions" | abpLocalization }}
         </th>
-        <td mat-cell *matCellDef="let row" [class]="actionClass(row.action)">
-          {{ row.httpMethod }} {{ row.httpStatusCode }}
+        <td mat-cell *matCellDef="let row">
+          <span
+            class="mat-elevation-z1 m-0 p-1 rounded-md"
+            [class]="statusClass(row.httpStatusCode)"
+            >{{ row.httpMethod }} {{ row.httpStatusCode }}</span
+          >
         </td>
       </ng-container>
       <ng-container matColumnDef="clientIpAddress">
@@ -102,11 +123,9 @@
       </ng-container>
 
       <ng-container matColumnDef="Router">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ "AbpDz::Router" | abpLocalization }}
-        </th>
+        <th mat-header-cell *matHeaderCellDef>"Url"</th>
         <td [matTooltip]="row.browserInfo" mat-cell *matCellDef="let row">
-          {{ row.actions }}
+          {{ row.url | slice: 0:40 }}
         </td>
       </ng-container>
       <ng-container matColumnDef="Browser">

@@ -1,6 +1,8 @@
+import { AuditLogUrlsKey } from '@abpdz/ng.audit/config';
 import {
   AuditLog,
   AuthService,
+  DataConfigService,
   dateToIso,
   EventFilterDto,
 } from '@abpdz/ng.core';
@@ -29,12 +31,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class AuditLogComponent
   extends BaseCrudComponent<AuditLog>
   implements OnInit, AfterViewInit {
+  codes: any[] = [];
   searchForm: FormGroup;
   userId: string = null;
   constructor(
     injector: Injector,
     private httpClient: HttpClient,
     private auth: AuthService,
+    private dataConfig: DataConfigService,
     private fb: FormBuilder
   ) {
     super(injector);
@@ -49,6 +53,8 @@ export class AuditLogComponent
     this.searchForm = this.fb.group({
       filter: [],
       id: [],
+      ip: [],
+      url: [],
       type: [],
       source: [],
       creator: [],
@@ -60,6 +66,7 @@ export class AuditLogComponent
       severity: [],
       checked: [],
     });
+    this.codes = this.dataConfig.getList(AuditLogUrlsKey);
   }
   openPermissionsModal(id) {}
 
@@ -87,19 +94,10 @@ export class AuditLogComponent
     val.endDate = dateToIso(a.endDate);
     this.dataSource.filter.next(val);
   }
-  actionClass(action) {
-    switch (action) {
-      case 'LoginNotAllowed':
-      case 'LoginLockedout':
-      case 'LoginFailed':
-      case 'LoginInvalidUserNameOrPassword':
-      case 'LoginInvalidUserName':
-        return 'color-error';
+  statusClass(action) {
+    if (action >= 200 && action < 300) return 'alert alert-success';
 
-      case 'LoginSucceeded':
-        return 'color-success';
-    }
-    return ' ';
+    return 'alert alert-error';
   }
   actionIcon(action) {
     let base = '';
@@ -119,4 +117,3 @@ export class AuditLogComponent
   }
   ngAfterViewInit() {}
 }
-
