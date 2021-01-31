@@ -13,6 +13,9 @@
     "From": "من",
     "To": "الى",
     "End": "نهاية",
-    "AuditLogs": "سجلات"
+    "AuditLogs": "سجلات",
+    "Notifications": "اشعارات",
+    "MarkAllAsRead": "تجاهل الكل",
+    "NoNotification": "لا يوجد إخطار في هذا الوقت."
   }
 }

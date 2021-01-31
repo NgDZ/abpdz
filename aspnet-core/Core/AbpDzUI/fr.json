@@ -13,6 +13,9 @@
     "End": "Fin",
     "To": "Au",
     "From": "Du",
-    "AuditLogs": "Journaux"
+    "AuditLogs": "Journaux",
+    "Notifications": "Notifications",
+    "MarkAllAsRead": "Tout marquer comme lu",
+    "NoNotification": "Aucune notification pour le moment."
   }
 }

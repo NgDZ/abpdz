@@ -13,6 +13,9 @@
     "End": "End",
     "From": "From",
     "To": "To",
-    "AuditLogs": "Audit logs"
+    "AuditLogs": "Audit logs",
+    "Notifications": "Notifications",
+    "MarkAllAsRead": "Mark all as read",
+    "NoNotification": "No notification at this time"
   }
 }
