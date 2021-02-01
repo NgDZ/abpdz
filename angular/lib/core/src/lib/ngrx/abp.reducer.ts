@@ -19,7 +19,7 @@ import {
 import { ABP } from '../models/common';
 import { CheckPolicy } from '../utils';
 import { eLayoutType } from '../enums';
-
+import { sortBy } from 'lodash-es';
 export const abpFeatureKey = 'abp';
 export interface AbpState {
   ready: boolean;
@@ -49,8 +49,14 @@ const _abpReducer = createReducer(
   })),
 
   on(updateCurrentUser, (state, action) => {
-    const ret = { ...state };
-    ret.conf.currentUser = { ...ret.conf.currentUser, ...action.data };
+    const ret = {
+      ...state,
+      conf: {
+        ...state.conf,
+        currentUser: action.data,
+      },
+    };
+    // ret.conf.currentUser = { ...ret.conf.currentUser, ...action.data };
     return ret;
   }),
   on(setFuseAction, (state, action) => ({
@@ -157,7 +163,10 @@ export const selectVisibleMenu = createSelector(
         menu: [],
       };
     }
-    menus = menus.map((m) => Object.assign({}, m));
+    menus = sortBy(
+      menus.map((m) => Object.assign({}, m)),
+      (k) => k.order
+    );
     // if (!grantedPolicies) {
     //   return menus;
     // }
@@ -221,14 +230,16 @@ export const selectVisibleMenu = createSelector(
       }
       for (const menu of lmenus) {
         if (menu.children?.length > 0) {
-          menu.children = showOnlyAuthroizedChilds(
-            menu.children,
-            level + 1,
-            maxLevel
+          menu.children = sortBy(
+            showOnlyAuthroizedChilds(menu.children, level + 1, maxLevel),
+            (m) => m?.order || 99999
           );
         }
         if (menu.children.length > 0 && menu.invisible) {
           menu.invisible = false;
+        }
+        if (menu.children.length == 0 && menu.path == null) {
+          menu.invisible = true;
         }
         if (!menu.invisible) {
           retLst.push(menu);
