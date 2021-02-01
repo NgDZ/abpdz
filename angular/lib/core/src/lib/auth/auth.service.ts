@@ -10,7 +10,7 @@ import {
   timer,
 } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { RestOccurError } from '../ngrx/abp.actions';
+import { RestOccurError, updateCurrentUser } from '../ngrx/abp.actions';
 import { ABP, ApplicationConfiguration, Config } from '../models';
 import { selectCurrentUser } from '../ngrx/abp.reducer';
 import {
@@ -76,7 +76,6 @@ export class AuthService implements OnDestroy {
   token$: BehaviorSubject<AuthTokenModel>;
   currentUser$: Observable<Partial<ApplicationConfiguration.CurrentUser>>;
 
-  
   currentUser: Partial<ApplicationConfiguration.CurrentUser>;
   setActive(active) {
     if (this.active === active) {
@@ -135,7 +134,6 @@ export class AuthService implements OnDestroy {
       }
       if (event.key === 'lastActiveTabClosedTime') {
         if (!this.active) {
-          console.log('active tab is closed and i am inactive');
           this.tick$.next(null);
         }
       }
@@ -151,7 +149,7 @@ export class AuthService implements OnDestroy {
         return k;
       })
     );
-    this.token$ = new BehaviorSubject<AuthTokenModel>(null);
+    this.token$ = new BehaviorSubject<AuthTokenModel>(this.getToken());
   }
   registerForTokens() {
     // register for refreshing token
@@ -159,21 +157,26 @@ export class AuthService implements OnDestroy {
       this.token$
         .pipe(
           switchMap((token) => {
+            if (token == null) {
+              token = this.getToken();
+            }
             if (token == null || token.expiration_date == null) {
               return of(null);
             }
-            const expireIn = Math.max(
-              token.expiration_date -
-                (new Date().getTime() -
-                  Math.round((Math.random() * 100000) % 10000)),
-              1000
-            );
-            console.log('token expire in :' + expireIn + ' ms');
+            var time = token.expiration_date - new Date().getTime();
+            var delta = Math.floor((Math.random() * time) / 4);
+            var expireIn = time - delta;
             return timer(expireIn % 864000000);
           }),
           switchMap((e) =>
-            this.getToken().refresh_token ? this.refreshToken() : of(true)
-          )
+            this.getToken().refresh_token && e != null
+              ? this.refreshToken()
+              : of(true)
+          ),
+          catchError((e) => {
+            console.error(e);
+            return null;
+          })
         )
         .subscribe((token) => {
           // this.setupAutomaticSilentRefresh(token);
@@ -238,6 +241,9 @@ export class AuthService implements OnDestroy {
       // offline_access is required for a refresh token
       scope: this.env.oAuthConfig.scope,
     });
+    if (AuthData.grant_type == 'refresh_token') {
+      delete AuthData.scope;
+    }
     return this.http
       .post<AuthTokenModel>(
         this.env.oAuthConfig.tokenUrl,
@@ -375,7 +381,23 @@ export class AuthService implements OnDestroy {
   logout(url?) {
     // this.logOut();
     // todo : call the server to revoke current access token
-
+    this.store.dispatch(
+      updateCurrentUser({
+        data: {
+          isAuthenticated: false,
+          id: undefined,
+          tenantId: null,
+          userName: null,
+          name: null,
+          surName: null,
+          email: null,
+          emailVerified: false,
+          phoneNumber: null,
+          phoneNumberVerified: false,
+          roles: [],
+        },
+      })
+    );
     clearlocalStorage(localStorage);
 
     this.login(url);
