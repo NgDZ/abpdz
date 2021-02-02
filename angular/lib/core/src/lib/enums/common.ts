@@ -11,3 +11,6 @@ export enum CrudOperation {
   Delete = 8,
   None = 0,
 }
+
+export const UserAdminMenuKey = 'user-admin-menu-key';
+export const RoleAdminMenuKey = 'role-admin-menu-key';
