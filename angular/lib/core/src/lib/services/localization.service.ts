@@ -38,7 +38,7 @@ function getLocalization(
   const keys = key.split('::') as string[];
   const warn = (message: string) => {
     if (isDevMode) {
-      console.warn(message);
+      // console.warn(message);
     }
   };
 

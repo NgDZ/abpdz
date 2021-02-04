@@ -403,6 +403,8 @@ export interface EventFilterDto {
   maxResultCount?: number;
   filter?: string;
   id?: string;
+  ip?: string;
+  url?: string;
   type?: number;
   source?: string;
   creator?: string;

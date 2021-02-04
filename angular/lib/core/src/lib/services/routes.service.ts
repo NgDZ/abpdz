@@ -24,6 +24,10 @@ export class RoutesService implements OnDestroy {
   public get visible$(): Observable<ABP.Nav[]> {
     return this.select$.pipe(map((k) => k.menu[eLayoutType.application]));
   }
+
+  public get account$(): Observable<ABP.Nav[]> {
+    return this.select$.pipe(map((k) => k.menu[eLayoutType.account]));
+  }
   constructor(private store: Store) {
     this.select$ = this.store
       .select(selectVisibleMenu)

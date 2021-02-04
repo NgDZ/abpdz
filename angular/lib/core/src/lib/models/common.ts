@@ -48,6 +48,7 @@ export namespace ABP {
     path?: string;
     layout?: any;
     iconClass?: string;
+    action?: () => void;
     children?: Nav[];
   }
 
