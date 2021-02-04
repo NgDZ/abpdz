@@ -1,4 +1,4 @@
-$version = '0.0.5'
+$version = '0.0.8005'
 $orgDir = '..\..\freetime'
 
 Set-Location ..\angular

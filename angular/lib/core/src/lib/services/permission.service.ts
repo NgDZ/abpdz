@@ -9,7 +9,9 @@ export class PermissionService {
 
   getGrantedPolicy$(key: string) {
     return this.getStream().pipe(
-      map((policies) => this.isPolicyGranted(key, policies))
+      map((policies) =>
+        key == null ? true : this.isPolicyGranted(key, policies)
+      )
     );
   }
 
