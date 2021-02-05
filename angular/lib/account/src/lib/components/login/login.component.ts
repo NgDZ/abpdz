@@ -32,6 +32,12 @@ export class LoginComponent implements OnInit {
       'Forced'
     );
   }
+  get enableReset() {
+    return (
+      this.configService.getSettingValue('Abp.Identity.Password.EnableReset') ==
+      'true'
+    );
+  }
   twoFactorCodeSended = false;
   ready$: Observable<boolean>;
   error = null;

@@ -29,11 +29,14 @@
             </mat-label>
             <input matInput formControlName="username" />
             <mat-icon matSuffix class="secondary-text">mail</mat-icon>
-            <mat-error *ngIf="loginForm.get('username').hasError('required')">
+            <mat-error
+              *ngIf="false && loginForm.get('username').hasError('required')"
+            >
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
             <mat-error
               *ngIf="
+                false &&
                 !loginForm.get('username').hasError('required') &&
                 loginForm.get('username').hasError('username')
               "
@@ -47,7 +50,7 @@
             </mat-label>
             <input matInput type="password" formControlName="password" />
             <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
-            <mat-error>
+            <mat-error *ngIf="false">
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
           </mat-form-field>
@@ -58,11 +61,14 @@
             </mat-label>
             <input matInput formControlName="2F_CODE" />
             <mat-icon matSuffix class="secondary-text">mail</mat-icon>
-            <mat-error *ngIf="loginForm.get('2F_CODE').hasError('required')">
+            <mat-error
+              *ngIf="false && loginForm.get('2F_CODE').hasError('required')"
+            >
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
             <mat-error
               *ngIf="
+                false &&
                 !loginForm.get('2F_CODE').hasError('required') &&
                 loginForm.get('2F_CODE').hasError('2F_CODE')
               "
@@ -77,6 +83,7 @@
             fxLayoutAlign="space-between center"
           >
             <mat-checkbox
+              *ngIf="false"
               formControlName="rememberMe"
               class="remember-me"
               aria-label="Remember Me"
@@ -84,10 +91,7 @@
               {{ "AbpAccount::RememberMe" | abpLocalization }}
             </mat-checkbox>
 
-            <a
-              class="forgot-password"
-              [routerLink]="'/pages/auth/forgot-password'"
-            >
+            <a *ngIf="enableReset" class="forgot-password" [routerLink]="'/auth/forgot-password'">
               {{ "AbpAccount::ForgotPassword" | abpLocalization }}
             </a>
           </div>
@@ -140,7 +144,9 @@
             </mat-label>
             <input matInput formControlName="username" />
             <mat-icon matSuffix class="secondary-text">mail</mat-icon>
-            <mat-error *ngIf="loginForm.get('username').hasError('required')">
+            <mat-error
+              *ngIf="false && loginForm.get('username').hasError('required')"
+            >
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
             <mat-error
