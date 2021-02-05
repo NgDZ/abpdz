@@ -2,6 +2,7 @@ import { AuthGuard } from '@abpdz/ng.core';
 import { ThemeSharedModule } from '@abpdz/ng.theme.shared';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoginComponent } from './components/login/login.component';
 import { ManageProfileComponent } from './components/manage-profile/manage-profile.component';
 
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
   },
 ];
 

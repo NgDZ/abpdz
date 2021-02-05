@@ -1,5 +1,9 @@
 import { AbpFacade, ProfileService } from '@abpdz/ng.core';
-import { getPasswordValidators, ToasterService } from '@abpdz/ng.theme.shared';
+import {
+  abpAnimations,
+  getPasswordValidators,
+  ToasterService,
+} from '@abpdz/ng.theme.shared';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -22,6 +26,7 @@ const PASSWORD_FIELDS = ['newPassword', 'repeatNewPassword'];
   templateUrl: './change-password.component.html',
   exportAs: 'abpChangePasswordForm',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: abpAnimations,
 })
 export class ChangePasswordComponent
   implements
@@ -59,6 +64,8 @@ export class ChangePasswordComponent
 
     this.form = this.fb.group(
       {
+        user: ['', required],
+        code: ['', required],
         password: ['', required],
         newPassword: [
           '',

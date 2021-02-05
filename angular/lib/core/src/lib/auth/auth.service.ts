@@ -166,6 +166,7 @@ export class AuthService implements OnDestroy {
             var time = token.expiration_date - new Date().getTime();
             var delta = Math.floor((Math.random() * time) / 4);
             var expireIn = time - delta;
+            // console.log('expire in:' + expireIn + ' ms');
             return timer(expireIn % 864000000);
           }),
           switchMap((e) =>
@@ -229,6 +230,10 @@ export class AuthService implements OnDestroy {
   public sendCode(data: any): Observable<AuthTokenModel> {
     const AuthData: any = Object.assign({}, data, {});
     return this.http.post<AuthTokenModel>('/connect/token_code', AuthData);
+  }
+  public resetPassword(data: any): Observable<AuthTokenModel> {
+    const AuthData: any = Object.assign({}, data, {});
+    return this.http.post<AuthTokenModel>('/connect/reset_password', AuthData);
   }
   public getNewToken(
     data: Authenticate | RefreshGrantModel,
