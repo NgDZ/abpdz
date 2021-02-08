@@ -33,9 +33,14 @@
             formControlName="filter"
             #filterRef
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
+            (keydown.enter)="applyFilter()"
           />
 
-          <input formControlName="ip" placeholder="Ip" />
+          <input
+            formControlName="ip"
+            placeholder="Ip"
+            (keydown.enter)="applyFilter()"
+          />
           <mat-date-range-input [rangePicker]="picker">
             <input
               matStartDate
@@ -46,6 +51,7 @@
               matEndDate
               [placeholder]="'AbpDz::To' | abpLocalization"
               formControlName="endDate"
+              (keydown.enter)="applyFilter()"
             />
           </mat-date-range-input>
           <mat-datepicker-toggle

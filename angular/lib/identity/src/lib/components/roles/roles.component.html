@@ -33,6 +33,7 @@
           <input
             [(ngModel)]="filter"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
+            (keydown.enter)="search()"
           />
           <button mat-icon-button (click)="search()">
             <mat-icon>search</mat-icon>
@@ -41,7 +42,6 @@
       </div>
       <button
         mat-raised-button
-        @slideInRight
         *abpPermission="'AbpIdentity.Roles.Create'"
         (click)="createEdit()"
       >
@@ -64,10 +64,20 @@
       ></mat-text-column>
 
       <ng-container matColumnDef="Actions">
-        <th mat-header-cell *matHeaderCellDef style="width: 48px"></th>
-        <td mat-cell style="width: 48px" *matCellDef="let element">
-          <button mat-mini-fab color="default" [matMenuTriggerFor]="editEmnu">
-            <mat-icon class="mat-18">more_vert </mat-icon>
+        <th mat-header-cell *matHeaderCellDef style="width: 180px"></th>
+        <td mat-cell style="width: 180px" *matCellDef="let element">
+          <button
+            mat-raised-button
+            [matMenuTriggerFor]="editEmnu"
+            color="primary"
+          >
+            <mat-icon style="width: 17px; height: 19px; font-size: 17px"
+              >settings</mat-icon
+            >
+            {{ "AbpIdentity::Actions" | abpLocalization }}
+            <mat-icon style="width: 17px; height: 19px; font-size: 17px"
+              >arrow_drop_down</mat-icon
+            >
           </button>
           <mat-menu
             #editEmnu="matMenu"
@@ -100,6 +110,21 @@
               <mat-icon>delete</mat-icon>
               {{ "AbpIdentity::Delete" | abpLocalization }}
             </button>
+
+            <mat-divider *ngIf="userRoleMenu.length"> </mat-divider>
+            <ng-container *ngFor="let item of userRoleMenu">
+              <button
+                mat-menu-item
+                color="warn"
+                *abpPermission="item.requiredPolicy"
+                (click)="item.action(element)"
+              >
+                <mat-icon class="nav-link-icon" *ngIf="item.icon">
+                  {{ item.icon }}
+                </mat-icon>
+                {{ item.name | abpLocalization }}
+              </button>
+            </ng-container>
           </mat-menu>
         </td>
       </ng-container>

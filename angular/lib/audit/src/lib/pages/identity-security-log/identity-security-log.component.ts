@@ -101,7 +101,7 @@ export class IdentitySecurityLogComponent
       case 'LoginFailed':
       case 'LoginInvalidUserNameOrPassword':
       case 'LoginInvalidUserName':
-        return 'alert alert-error';
+        return 'alert color-error';
 
       case 'LoginSucceeded':
         return 'color-success';
