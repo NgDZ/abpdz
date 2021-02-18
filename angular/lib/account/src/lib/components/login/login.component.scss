@@ -18,9 +18,10 @@
       padding: 0 !important;
       display: flex;
       flex-direction: column;
-      border-radius: 10px;
+      border-radius: 5px;
       .login-form-inputs {
         padding: 16px 24px;
+        background-color: white;
       }
       width: 384px;
       max-width: 384px;
@@ -44,6 +45,7 @@
       .title {
         font-size: 20px;
         margin: 8px 0 8px 0;
+        color: white;
       }
       .submit-button {
         width: 220px;
