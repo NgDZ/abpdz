@@ -3,10 +3,10 @@
     <div
       id="login-form"
       *ngIf="ready$ | async"
-      class="mat-card mat-elevation-z12"
+      class="mat-elevation-z12"
       [@animate]="{ value: '*', params: { duration: '300ms', y: '100px' } }"
     >
-      <div class="logo-container mat-bg-primary mat-elevation-z1">
+      <div class="logo-container bg-blue-900 mat-elevation-z1">
         <div class="logo">
           <img src="assets/logo.png" />
         </div>
@@ -91,7 +91,11 @@
               {{ "AbpAccount::RememberMe" | abpLocalization }}
             </mat-checkbox>
 
-            <a *ngIf="enableReset" class="forgot-password" [routerLink]="'/auth/forgot-password'">
+            <a
+              *ngIf="enableReset"
+              class="forgot-password"
+              [routerLink]="'/auth/forgot-password'"
+            >
               {{ "AbpAccount::ForgotPassword" | abpLocalization }}
             </a>
           </div>
@@ -158,6 +162,20 @@
               {{ "AbpAccount::ThisFieldIsRequired." | abpLocalization }}
             </mat-error>
           </mat-form-field>
+        </div>
+
+        <div
+          class="remember-forgot-password"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <a
+            *ngIf="enableReset"
+            class="forgot-password"
+            [routerLink]="'/auth/forgot-password'"
+          >
+            {{ "AbpAccount::ForgotPassword" | abpLocalization }}
+          </a>
         </div>
         <div *ngIf="error" class="alert alert-error">
           {{
