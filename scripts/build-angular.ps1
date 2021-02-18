@@ -1,4 +1,4 @@
-$version = '0.0.8006'
+$version = '0.0.8009'
 $orgDir = '..\..\freetime'
 
 Set-Location ..\angular
@@ -57,6 +57,10 @@ Remove-Item -Recurse -Force .\lib\audit\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\audit\ .\lib\audit\src\lib
 ng build audit   --prod
 
+Remove-Item -Recurse -Force .\lib\enums\src\lib\
+Copy-Item -Force -Recurse $orgDir\angular\src\abp\enums\ .\lib\enums\src\lib
+ng build enums   --prod
+
 Set-Location .\dist\
 
 Get-ChildItem -Recurse *.map |Remove-Item 
@@ -80,6 +84,11 @@ Set-Location ..\demos\
 
 npm publish --access public --ignore-scripts
 
+Set-Location ..\enums\
+((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
+((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
+
+npm publish --access public --ignore-scripts
 Set-Location ..\breeze\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
