@@ -1,0 +1,11 @@
+.active {
+  font-weight: bold;
+  background: silver;
+}
+.selectable {
+  cursor: pointer;
+}
+:host {
+  min-height: 100%;
+  height: 100%;
+}

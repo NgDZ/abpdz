@@ -1,1 +1,1 @@
-export interface abpenumsmodule {}
+export * from './enums.module';
