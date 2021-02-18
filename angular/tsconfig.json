@@ -60,6 +60,10 @@
         "dist/demos/demos",
         "dist/demos"
       ],
+      "enums": [
+        "dist/enums/enums",
+        "dist/enums"
+      ],
       "filemanagement": [
         "dist/filemanagement/filemanagement",
         "dist/filemanagement"

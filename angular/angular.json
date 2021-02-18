@@ -706,6 +706,46 @@
           }
         }
       }
+    },
+    "enums": {
+      "projectType": "library",
+      "root": "lib/enums",
+      "sourceRoot": "lib/enums/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "lib/enums/tsconfig.lib.json",
+            "project": "lib/enums/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "lib/enums/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/enums/src/test.ts",
+            "tsConfig": "lib/enums/tsconfig.spec.json",
+            "karmaConfig": "lib/enums/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "lib/enums/tsconfig.lib.json",
+              "lib/enums/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "core"
