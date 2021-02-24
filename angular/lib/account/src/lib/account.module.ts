@@ -16,6 +16,7 @@ import { CoreModule, LazyModuleFactory } from '@abpdz/ng.core';
 import { ThemeSharedModule } from '@abpdz/ng.theme.shared';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { UnauthorizedAccessComponent } from './components/unauthorized-access/unauthorized-access.component';
 export const ACCOUNT_OPTIONS = new InjectionToken<Options>('ACCOUNT_OPTIONS');
 
 export function accountOptionsFactory(options: Options) {
@@ -35,6 +36,7 @@ export function accountOptionsFactory(options: Options) {
     TenantBoxComponent,
     ManageProfileComponent,
     ForgotPasswordComponent,
+    UnauthorizedAccessComponent,
   ],
   imports: [
     CommonModule,

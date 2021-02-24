@@ -1,0 +1,30 @@
+<div class="page-layout carded fullwidth inner-scroll">
+  <!-- HEADER -->
+  <div class="toolbar">
+    <div
+      class="m-4 px-4"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayout.gt-sm="row"
+      fxLayoutGap.lt-md="8px"
+      fxLayoutAlign.gt-sm="space-between center"
+    >
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon> security </mat-icon>
+        <h1 [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+          {{ "AbpAccount::403Message" | abpLocalization }}
+        </h1>
+      </div>
+      <!-- / APP TITLE -->
+
+      <div class="search-wrapper mx-1"></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <h1 class="alert alert-danger">
+      {{ "AbpAccount::403MessageDetail" | abpLocalization }}
+    </h1>
+    <p class="text-9xl center bold">403</p>
+  </div>
+</div>

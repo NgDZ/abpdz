@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoginComponent } from './components/login/login.component';
 import { ManageProfileComponent } from './components/manage-profile/manage-profile.component';
+import { UnauthorizedAccessComponent } from './components/unauthorized-access/unauthorized-access.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
+  },
+  {
+    path: 'unauthorized-access',
+    component: UnauthorizedAccessComponent,
   },
 ];
 
