@@ -48,7 +48,7 @@
         color: white;
       }
       .submit-button {
-        width: 220px;
+        width: 240px;
 
         display: block;
 
@@ -68,19 +68,20 @@
           margin: 0;
         }
 
-        .remember-forgot-password {
+      }
+      .remember-forgot-password {
+        font-size: 13px;
+        padding: 0 24px;
+        background-color: white;
+
+        .remember-me {
+          margin-bottom: 16px;
+        }
+
+        .forgot-password {
           font-size: 13px;
-          margin-top: 8px;
-
-          .remember-me {
-            margin-bottom: 16px;
-          }
-
-          .forgot-password {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-          }
+          font-weight: 600;
+          margin-bottom: 16px;
         }
       }
     }
