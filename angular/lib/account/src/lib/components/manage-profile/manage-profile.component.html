@@ -75,10 +75,10 @@
               [@animate]="{ value: '*', params: { y: '100%' } }"
             >
               <div class="tab-pane active" role="tabpanel">
-                <h4 class="text-2xl">
+                <div class="text-2xl">
                   {{ "AbpIdentity::ChangePassword" | abpLocalization }}
-                  <hr />
-                </h4>
+                  <hr class="mb-2" />
+                </div>
                 <abp-change-password-form></abp-change-password-form>
               </div>
             </div>
@@ -87,10 +87,10 @@
               [@animate]="{ value: '*', params: { y: '100%' } }"
             >
               <div class="tab-pane active" role="tabpanel">
-                <h4 class="text-2xl">
+                <div class="text-2xl">
                   {{ "AbpIdentity::PersonalSettings" | abpLocalization }}
-                  <hr />
-                </h4>
+                  <hr class="mb-2" />
+                </div>
                 <abp-personal-settings-form></abp-personal-settings-form>
               </div>
             </div>

@@ -8,7 +8,6 @@
         matInput
         type="text"
         id="username"
-        
         formControlName="userName"
         autofocus
         (keydown.space)="$event.preventDefault()"
@@ -23,29 +22,17 @@
           <mat-label>
             {{ "AbpIdentity::DisplayName:Name" | abpLocalization }}
           </mat-label>
-          <input
-            matInput
-            type="text"
-            id="name"
-            
-            formControlName="name"
-          />
+          <input matInput type="text" id="name" formControlName="name" />
         </mat-form-field>
       </div>
     </div>
-    <div class="col md:w6/12">
+    <div class="col md:w6/12 md:px-2">
       <div>
         <mat-form-field>
           <mat-label>
             {{ "AbpIdentity::DisplayName:Surname" | abpLocalization }}
           </mat-label>
-          <input
-            matInput
-            type="text"
-            id="surname"
-            
-            formControlName="surname"
-          />
+          <input matInput type="text" id="surname" formControlName="surname" />
         </mat-form-field>
       </div>
     </div>
@@ -60,7 +47,6 @@
         required
         type="text"
         id="email-address"
-        
         formControlName="email"
       />
     </mat-form-field>
@@ -74,7 +60,6 @@
         matInput
         type="text"
         id="phone-number"
-        
         formControlName="phoneNumber"
       />
     </mat-form-field>
@@ -89,7 +74,12 @@
       {{ "AbpIdentity::Save" | abpLocalization }}</abp-button
     > -->
 
-  <button [disabled]="form?.invalid" type="submit" mat-raised-button>
+  <button
+    [disabled]="form?.invalid"
+    color="primary"
+    type="submit"
+    mat-raised-button
+  >
     <mat-icon>checked</mat-icon>
     <!-- [loading]="inProgress" -->
     {{ "AbpIdentity::Save" | abpLocalization }}
