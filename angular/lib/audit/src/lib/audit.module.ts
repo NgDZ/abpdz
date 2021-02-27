@@ -11,16 +11,22 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NotificationsHistoryComponent } from './pages/notifications-history/notifications-history.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
-  declarations: [IdentitySecurityLogComponent, AuditLogComponent],
+  declarations: [
+    IdentitySecurityLogComponent,
+    AuditLogComponent,
+    NotificationsHistoryComponent,
+  ],
   imports: [
     AbpDzAuditRoutingModule,
     CommonModule,
     ThemeSharedModule,
+    MatSortModule,
     MatTableModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatPaginatorModule,
     CoreModule.forLazy(),
     NgxValidateCoreModule,
