@@ -5,6 +5,7 @@ import {
   DataConfigService,
   dateToIso,
   EventFilterDto,
+  EventFilterDtoForm,
 } from '@abpdz/ng.core';
 import {
   BaseCrudComponent,
@@ -48,24 +49,9 @@ export class AuditLogComponent
       'clientIpAddress',
       'Browser',
       'Client',
-      'Router',
+      'url',
     ];
-    this.searchForm = this.fb.group({
-      filter: [],
-      id: [],
-      ip: [],
-      url: [],
-      type: [],
-      source: [],
-      creator: [],
-      userId: [],
-      startDate: [],
-      endDate: [],
-      code: [],
-      state: [],
-      severity: [],
-      checked: [],
-    });
+    this.searchForm = this.fb.group(EventFilterDtoForm);
     this.codes = this.dataConfig.getList(AuditLogUrlsKey);
   }
   openPermissionsModal(id) {}
@@ -79,9 +65,9 @@ export class AuditLogComponent
       new AbpIOHttpService(this.httpClient, '/api/audit-logging/audit-logs')
     );
     this.dataSource.setServices(this.logger, this.translate);
-    if (this.userId == null) {
-      this.userId = this.auth?.currentUser?.id;
-    }
+    // if (this.userId == null) {
+    //   this.userId = this.auth?.currentUser?.id;
+    // }
     this.dataSource.filter.next({ userId: this.userId });
   }
   applyFilter() {
@@ -116,4 +102,7 @@ export class AuditLogComponent
     return base;
   }
   ngAfterViewInit() {}
+  openDetail(item) {
+    this.logger.showObjectProperties(item, '');
+  }
 }

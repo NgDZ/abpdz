@@ -36,6 +36,7 @@
           <input
             formControlName="filter"
             #filterRef
+            (keydown.enter)="applyFilter()"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
           />
           <input formControlName="ip" placeholder="Ip" />
@@ -95,41 +96,46 @@
       (matSortChange)="dataSource.sort.next($event)"
     >
       <ng-container matColumnDef="Time">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="executionTime">
           {{ "AbpDz::Time" | abpLocalization }}
         </th>
         <td mat-cell *matCellDef="let row">
-          {{ row.executionTime | date: "yyyy-MM-dd HH:mm" }}({{
+          {{ row.executionTime | abpDate: "yyyy-MM-dd HH:mm" }}({{
             row.executionDuration
           }}
           ms)
         </td>
       </ng-container>
       <ng-container matColumnDef="Action">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell mat-sort-header="httpMethod" *matHeaderCellDef>
           {{ "AbpAccount::Actions" | abpLocalization }}
         </th>
         <td mat-cell *matCellDef="let row">
           <span
-            class="mat-elevation-z1 m-0 p-1 rounded-md"
+            class="mat-elevation-z1 m-0 p-1 rounded-md cursor-pointer"
+            (click)="openDetail(row)"
             [class]="statusClass(row.httpStatusCode)"
             >{{ row.httpMethod }} {{ row.httpStatusCode }}</span
           >
         </td>
       </ng-container>
       <ng-container matColumnDef="clientIpAddress">
-        <th mat-header-cell *matHeaderCellDef>IP</th>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>IP</th>
         <td mat-cell *matCellDef="let row">{{ row.clientIpAddress }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="Router">
-        <th mat-header-cell *matHeaderCellDef>"Url"</th>
+      <ng-container matColumnDef="url">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Url</th>
         <td [matTooltip]="row.browserInfo" mat-cell *matCellDef="let row">
           {{ row.url | slice: 0:40 }}
         </td>
       </ng-container>
       <ng-container matColumnDef="Browser">
-        <th mat-header-cell *matHeaderCellDef>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="executionDuration"
+        >
           {{ "AbpDz::Browser" | abpLocalization }}
         </th>
         <td [matTooltip]="row.browserInfo" mat-cell *matCellDef="let row">
@@ -137,7 +143,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="Client">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="userName">
           {{ "AbpDz::Client" | abpLocalization }}
         </th>
         <td mat-cell *matCellDef="let row">{{ row.userName }}</td>
