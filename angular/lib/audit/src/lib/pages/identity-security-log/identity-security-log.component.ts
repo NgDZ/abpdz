@@ -3,6 +3,7 @@ import {
   AuthService,
   dateToIso,
   EventFilterDto,
+  EventFilterDtoForm,
   IdentitySecurityLog,
   SessionStateService,
 } from '@abpdz/ng.core';
@@ -43,27 +44,12 @@ export class IdentitySecurityLogComponent
     super(injector);
     this.displayedColumns = [
       'Action',
-      'Time',
+      'creationTime',
       'clientIpAddress',
       'Browser',
       'Client',
     ];
-    this.searchForm = this.fb.group({
-      filter: [],
-      id: [],
-      ip: [],
-      url: [],
-      type: [],
-      source: [],
-      creator: [],
-      userId: [],
-      startDate: [],
-      endDate: [],
-      code: [],
-      state: [],
-      severity: [],
-      checked: [],
-    });
+    this.searchForm = this.fb.group(EventFilterDtoForm);
   }
   openPermissionsModal(id) {}
 
