@@ -1,6 +1,7 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import {
   BehaviorSubject,
+  EMPTY,
   from,
   fromEvent,
   merge,
@@ -119,7 +120,7 @@ export class AuthService implements OnDestroy {
           if (token.refresh_count == null || token.refresh_count === 0) {
             this.store.dispatch(newUserToken({ token }));
           }
-          this.setupAutomaticSilentRefresh(token);
+          this.registerNewRefreshToken(token);
         }
         // Do something with event.newValue
       }
@@ -164,19 +165,23 @@ export class AuthService implements OnDestroy {
               return of(null);
             }
             var time = token.expiration_date - new Date().getTime();
-            var delta = Math.floor((Math.random() * time) / 4);
+            var delta = Math.ceil((Math.random() * time) / 4);
             var expireIn = time - delta;
-            // console.log('expire in:' + expireIn + ' ms');
             return timer(expireIn % 864000000);
           }),
           switchMap((e) =>
             this.getToken().refresh_token && e != null
-              ? this.refreshToken()
+              ? this.refreshToken().pipe(
+                  catchError((e) => {
+                    console.error(e);
+                    return of(true);
+                  })
+                )
               : of(true)
           ),
           catchError((e) => {
             console.error(e);
-            return null;
+            return of(true);
           })
         )
         .subscribe((token) => {
@@ -273,7 +278,7 @@ export class AuthService implements OnDestroy {
           if (AuthData.username) {
             this.store.dispatch(newUserToken({ token: tokens }));
           }
-          this.setupAutomaticSilentRefresh(tokens);
+          this.registerNewRefreshToken(tokens);
           return tokens;
         })
       );
@@ -291,7 +296,7 @@ export class AuthService implements OnDestroy {
   refreshToken(): Observable<AuthTokenModel> {
     const token = this.getToken();
     token.refresh_count = (token.refresh_count || 0) + 1;
-
+    console.log('refreshing token');
     return this.getNewToken(
       {
         refresh_token: token.refresh_token,
@@ -341,7 +346,12 @@ export class AuthService implements OnDestroy {
         if (this.hasValidAccessToken() || !this.getRefreshToken()) {
           return of(null);
         }
-        return this.refreshToken();
+        return this.refreshToken().pipe(
+          catchError((e) => {
+            clearlocalStorage(localStorage);
+            return of(null);
+          })
+        );
       }),
       tap((k) => {
         this.registerForTokens();
@@ -349,14 +359,22 @@ export class AuthService implements OnDestroy {
       // catchError(this.catchError)
     );
   }
-  setupAutomaticSilentRefresh(token?: AuthTokenModel, arg1?: string): void {
+  registerNewRefreshToken(token?: AuthTokenModel, arg1?: string): void {
     this.token$.next(token);
   }
 
   initLogin(url?) {
     return this.login(url);
   }
+  unauthorizedAccess(url) {
+    const router = this.injector.get(Router);
 
+    const redirectUrl = url || this.redirectUrl || router.url || '/';
+    router.navigate([this.env.oAuthConfig.unauthorizedAccessUrl || '/account/unauthorized-access'], {
+      queryParams: { redirectUrl },
+    });
+    return of(true);
+  }
   login(url?) {
     // this.initCodeFlow(null, {
     //   returnUrl: '/homebcl_url',
