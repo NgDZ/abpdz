@@ -8,7 +8,13 @@ import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [PermissionManagementComponent],
-  imports: [CommonModule, CoreModule, ThemeSharedModule, MatBadgeModule],
+  imports: [
+    CommonModule,
+    CoreModule,
+    ThemeSharedModule,
+    MatBadgeModule,
+    MatBadgeModule,
+  ],
   entryComponents: [PermissionManagementComponent],
   providers: [PermissionManagementService],
 })

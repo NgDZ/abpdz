@@ -1,15 +1,15 @@
-import {
-  of,
-} from 'rxjs';
+import { of } from 'rxjs';
 import { AsyncDataSource } from './async-datasource';
 
 export class LocalDataSource<NgEntity> extends AsyncDataSource<NgEntity> {
   all: NgEntity[] = [];
   allFiltred: NgEntity[] = [];
+  filterFncVar = null;
   constructor() {
     super();
   }
   setData(data: NgEntity[]) {
+    this.all = data;
     this.config.next({ data });
   }
 
@@ -43,6 +43,9 @@ export class LocalDataSource<NgEntity> extends AsyncDataSource<NgEntity> {
     return of(item);
   }
   filterFnc(a: NgEntity[]): NgEntity[] {
+    if (this.filterFncVar) {
+      a = this.filterFncVar(a);
+    }
     return a;
   }
   protected nextPage() {
@@ -51,11 +54,16 @@ export class LocalDataSource<NgEntity> extends AsyncDataSource<NgEntity> {
       maxResultCount: this.page.value.pageSize,
       requestCount: this.requestCount,
     };
-
+    console.log('nex page ', param);
     this.allFiltred = param.requestCount
       ? this.filterFnc(this.all)
       : this.allFiltred;
     this.count.next(this.allFiltred.length);
-    return of(this.allFiltred.slice(param.skipCount, param.maxResultCount));
+    return of(
+      this.allFiltred.slice(
+        param.skipCount,
+        param.skipCount + param.maxResultCount
+      )
+    );
   }
 }

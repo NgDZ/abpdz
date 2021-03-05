@@ -1,1 +1,10 @@
-<p>quick-panel works!</p>
+<div class="w-80">
+  <h1>{{ today() | abpDate: "yyyy-MM-dd HH:mm EEEE" }}</h1>
+  <mat-card class="m-2" *ngIf="isDev()">
+    <button (click)="toggleMiniProfiler()" mat-raised-button>
+      {{
+        isMiniprofilerActive() ? "disable miniprofiler" : "enable miniprofiler"
+      }}
+    </button>
+  </mat-card>
+</div>

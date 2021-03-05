@@ -1,3 +1,4 @@
+import { CrudOperation } from '@abpdz/ng.core';
 import {
   Directive,
   Injector,
@@ -8,7 +9,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { AsyncDataSource, CrudOperation } from './async-datasource';
+import { AsyncDataSource } from './async-datasource';
 import { BaseAsyncComponent } from './base-async-component';
 @Directive({})
 export class BaseCrudComponent<datatype> extends BaseAsyncComponent {
@@ -44,7 +45,6 @@ export class BaseCrudComponent<datatype> extends BaseAsyncComponent {
   dialogEdit(entity: Partial<datatype>) {
     this.dataSource.current.next(entity as any);
     if (this.editForm != null) {
-      console.log(entity);
       this.editForm.reset(entity);
     }
     this.dialogRef = this.dialog.open(this.template, {

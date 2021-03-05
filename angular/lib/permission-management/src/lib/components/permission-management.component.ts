@@ -302,7 +302,6 @@ export class PermissionManagementComponent
   }
 
   shouldFetchAppConfig() {
-
     return false;
   }
   ngOnInit(): void {}

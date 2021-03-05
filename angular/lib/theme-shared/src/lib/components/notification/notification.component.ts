@@ -26,51 +26,19 @@ export class NotificationComponent implements OnInit, OnDestroy {
     );
     this.subs.add(this.service.notification$.subscribe());
   }
-  getIcon(not: AbpDzNotificationInfo) {
-    let base = '';
-    switch (not?.severity) {
-      case AbpDzSeverity.Fatal:
-        return 'dangerous';
-      case AbpDzSeverity.Error:
-        return 'error';
-
-      case AbpDzSeverity.Info:
-        return 'info';
-
-      case AbpDzSeverity.Success:
-        return 'check_circle';
-
-      case AbpDzSeverity.Warn:
-        return 'warning';
-      default:
-        break;
+  markAsRead(nots: AbpDzNotificationInfo[], navigate = false) {
+    this.service
+      .dismiss(nots?.filter((k) => k.state == 0).map((not) => not.id))
+      .subscribe((k) => {});
+    if (navigate && nots[0]?.detailUrl) {
+      this.router.navigateByUrl(nots[0]?.detailUrl);
     }
-    return '';
-  }
-  markAsRead(not: AbpDzNotificationInfo) {
-    this.service.dismiss([not.id]).subscribe((k) => {});
   }
   getClass(not: AbpDzNotificationInfo) {
-    let base = not?.state === 0 ? 'bold ' : ' ';
-
-    switch (not?.severity) {
-      case AbpDzSeverity.Fatal:
-        return base + 'color-fatal';
-      case AbpDzSeverity.Error:
-        return base + 'color-error';
-
-      case AbpDzSeverity.Info:
-        return base + 'color-info';
-
-      case AbpDzSeverity.Success:
-        return base + 'color-success';
-
-      case AbpDzSeverity.Warn:
-        return base + 'color-warn';
-      default:
-        break;
-    }
-    return base;
+    return this.service.getClass(not);
+  }
+  getIcon(not: AbpDzNotificationInfo) {
+    return this.service.getIcon(not);
   }
   dismiss(a?, b?) {}
 }

@@ -6,6 +6,9 @@
       </button>
 
       <div class="toolbar-separator" fxHide.gt-md></div>
+      <div class="logo h-full p-1">
+        <img class="logo-icon h-full" src="/assets/logo.png" />
+      </div>
     </div>
 
     <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
@@ -31,15 +34,15 @@
         </ng-template>
       </ng-container>
       <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-        <a mat-menu-item routerLink="/account/manage-profile">
-          {{ "AbpAccount::ManageYourProfile" | abpLocalization }}
-        </a>
-
-        <!-- <a mat-menu-item routerLink="//setting-management">
-          {{ 'AbpAccount::Setting' | abpLocalization }}
-        </a> -->
-        <button mat-menu-item routerLink="/audit/identity">
-          {{ "AbpDz::SecurityLogs" | abpLocalization }}
+        <button
+          *ngFor="let route of routes.account$ | async"
+          mat-menu-item
+          [routerLink]="[route.path]"
+        >
+          <mat-icon *ngIf="route.iconClass" matListIcon>
+            {{ route.iconClass }}
+          </mat-icon>
+          {{ route.name | abpLocalization }}
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">

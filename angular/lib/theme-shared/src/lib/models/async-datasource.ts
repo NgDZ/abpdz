@@ -10,15 +10,9 @@ import {
   of,
   Subject,
 } from 'rxjs';
-import { LoggerService } from '../services';
-import { LocalizationService } from '@abpdz/ng.core';
-export enum CrudOperation {
-  Read = 1,
-  Create = 2,
-  Update = 4,
-  Delete = 8,
-  None = 0,
-}
+import { CrudOperation, LocalizationService } from '@abpdz/ng.core';
+import { LoggerService } from '../services/logger.service';
+
 /**
  * Data source for the Orders view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
@@ -95,8 +89,18 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
       this.page,
       this.sort,
       this.group,
-      this.filter.pipe(tap(() => (this.requestCount = true))),
-      this.config.pipe(tap(() => (this.requestCount = true))),
+      this.filter.pipe(
+        tap(() => {
+          this.page.value.pageIndex = 0;
+          this.requestCount = true;
+        })
+      ),
+      this.config.pipe(
+        tap(() => {
+          this.page.value.pageIndex = 0;
+          this.requestCount = true;
+        })
+      ),
     ];
     if (this.connect$ == null) {
       this.connect$ = combineLatest(dataMutations).pipe(
@@ -155,10 +159,16 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
     );
   }
   delete(item) {
-    this.delete$(item).subscribe(
-      () => {},
-      () => {}
-    );
+    var confirmDelete = 'Are you sure you want to delete this item?';
+    if (this.translate) {
+      confirmDelete = this.translate.instant('AbpDz::ConfirmDelete');
+    }
+    if (confirm(confirmDelete)) {
+      this.delete$(item).subscribe(
+        () => {},
+        () => {}
+      );
+    }
   }
 
   protected deleteLocal(item) {

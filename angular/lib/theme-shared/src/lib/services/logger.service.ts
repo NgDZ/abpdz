@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 // import { ObjectPropertiesComponent } from '../components/scrollbar/object-properties/object-properties.component';
 
 import { LocalizationService } from '@abpdz/ng.core';
+import { ObjectPropertiesComponent } from '../components/object-properties/object-properties.component';
 
 export interface ILoggerInfo {
   title?: string;
@@ -46,7 +47,10 @@ export class LoggerService implements ILogger {
   Success(message) {
     this.toastr.success(this.extractStringError(message));
   }
-  warning(message) {
+  Info(message) {
+    this.toastr.info(this.extractStringError(message));
+  }
+  Warning(message) {
     this.toastr.warning(this.extractStringError(message));
   }
 
@@ -63,12 +67,12 @@ export class LoggerService implements ILogger {
     this.toastr.error(msg);
   }
 
-  showObjectProperties(data: any) {
+  showObjectProperties(value: any, title?, displayMap?) {
     // todo implement
-    // const dialogRef = this.dialog.open(ObjectPropertiesComponent, {
-    //   panelClass: 'overflow-hidden',
-    //   data: data
-    // });
+    const dialogRef = this.dialog.open(ObjectPropertiesComponent, {
+      panelClass: ['overflow-auto', 'p-0'],
+      data: { value: value, title, displayMap },
+    });
   }
 
   private extractStringError(error: any) {
@@ -87,7 +91,7 @@ export class LoggerService implements ILogger {
           const k = JSON.parse(e.response);
           e = k.error || k;
         } catch (er) {
-          return e.response;
+          e = e.response;
         }
       }
     }

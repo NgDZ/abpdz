@@ -1,0 +1,10 @@
+<input
+  type="file"
+  #fileLoader
+  style="max-width: 0; max-height: 0; visibility: hidden; position: fixed; top: 0;"
+  (change)="importFileData($event)"
+/>
+<button [disabled]="disabled" mat-raised-button (click)="loadImportData()">
+  <mat-icon>file_upload</mat-icon>
+  {{ text ? text : ('AbpUi::Import' | abpLocalization) }}
+</button>

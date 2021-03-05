@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ApplicationConfiguration } from '../models/application-configuration';
 import { ConfigStateService } from './config-state.service';
 
@@ -30,7 +30,6 @@ export class PermissionService {
 
     const orRegexp = /\|\|/g;
     const andRegexp = /&&/g;
-
     // TODO: Allow combination of ANDs & ORs
     if (orRegexp.test(key)) {
       const keys = key.split('||').filter(Boolean);
@@ -68,6 +67,10 @@ export class PermissionService {
   }
 
   private getPolicy(policy: string, policies: ApplicationConfiguration.Policy) {
-    return policies ? policies[policy] : null;
+    if (policies == null) {
+      return null;
+    }
+    var ret = policies[policy] ? true : false;
+    return ret;
   }
 }

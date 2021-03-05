@@ -2,7 +2,11 @@ import { registerLocaleData } from '@angular/common';
 import { isDevMode } from '@angular/core';
 
 export const differentLocales = {
-  'ar-001': 'ar',
+  'ar-001': 'ar-DZ',
+  'ar-dz': 'ar-DZ',
+  fr: 'fr',
+  en: 'en',
+  ar: 'ar-DZ',
 };
 
 export interface LocaleErrorHandlerData {
@@ -31,7 +35,7 @@ export function registerLocale(
     return new Promise((resolve, reject) => {
       return import(
         /* webpackChunkName: "_locale-[request]"*/
-        /* webpackInclude: /[/\\](ar|cs|en|fr|pt|tr|ru|hu|sl|zh-Hans|zh-Hant).js/ */
+        /* webpackInclude: /[/\\](ar-DZ|en|fr).js/ */
         /* webpackExclude: /[/\\]global|extra/ */
         `@angular/common/locales/${localeMap[locale] || locale}.js`
       )
@@ -69,4 +73,20 @@ export async function defaultLocalErrorHandlerFn({
   }
 
   resolve();
+}
+
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LocaleValue {
+  current = 'en-US';
+  getLocale() {
+    var ret = this.current || 'en-US';
+    return ret;
+  }
+  setLocale(v) {
+    this.current = v;
+  }
 }

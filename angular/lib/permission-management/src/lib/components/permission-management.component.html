@@ -89,7 +89,7 @@
             <ng-container *ngIf="!hideBadges">
               <span
                 *ngFor="let provider of permission.grantedProviders"
-                class="badge badge-light"
+                class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-gray-100 bg-gray-600 rounded-full"
                 >{{ provider.providerName }}: {{ provider.providerKey }}</span
               >
             </ng-container>

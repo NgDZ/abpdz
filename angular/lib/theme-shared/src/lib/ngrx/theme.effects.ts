@@ -1,13 +1,22 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Inject, Injectable, Injector, Optional } from '@angular/core';
+import { Inject, Injectable, Injector, NgZone, Optional } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, shareReplay, skip, tap } from 'rxjs/operators';
-import { merge } from 'rxjs';
+import { merge, noop } from 'rxjs';
 import { setLayoutSize } from './theme.actions';
 import { select, Store } from '@ngrx/store';
-import { selectAppReady, selectCurrentCulture } from '@abpdz/ng.core';
+import {
+  differentLocales,
+  registerLocale,
+  LocaleValue,
+  selectAppReady,
+  selectCurrentCulture,
+} from '@abpdz/ng.core';
 import { AppSplashScreenService } from '../services/splash-screen.service';
 import { Directionality, DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { DateAdapter } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +26,7 @@ export class ThemeEffects {
     private actions$: Actions,
     private store: Store,
     private injector: Injector,
+    private _adapter: DateAdapter<any>,
     private dir: Directionality,
     private breakpointObserver: BreakpointObserver
   ) {}
@@ -37,6 +47,9 @@ export class ThemeEffects {
               (dir as any).value = 'ltr';
               dir.change.emit('ltr');
             }
+            const l =
+              differentLocales[k.cultureName] || k.cultureName || 'en-US';
+            this._adapter.setLocale(l);
           }
         })
       ),

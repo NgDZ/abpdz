@@ -1,0 +1,46 @@
+<mat-toolbar
+  style="top: 0; position: sticky"
+  class="mat-elevation-z4 size-height-48"
+  color="primary"
+>
+  <span> {{ "AbpDz::Informations" | abpLocalization }}: {{ title }} </span>
+</mat-toolbar>
+
+<table class="properties is-full-width">
+  <colgroup>
+    <col style="width: 33%" />
+    <col />
+  </colgroup>
+  <thead>
+    <tr>
+      <th></th>
+      <th>{{ "AbpDz::Value" | abpLocalization }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of map">
+      <th>{{ item.key }}</th>
+      <td>
+        <ng-container *ngIf="isObj(item.value); else elseTemplate">
+          <pre>{{ item.value | json }}</pre>
+        </ng-container>
+        <ng-template #elseTemplate>{{ item.value }} </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div
+  class="p-2 mat-actions"
+  fxLayout="row"
+  fxLayoutAlign="end "
+  fxLayoutGap="5px"
+>
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="dialogRef.close()"
+  >
+    {{ "AbpUi::Cancel" | abpLocalization }}
+  </button>
+</div>

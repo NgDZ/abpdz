@@ -1,0 +1,28 @@
+.image-upload-container {
+  width: auto;
+  height: auto;
+  min-height: 48px;
+  min-width: 48px;
+  position: relative;
+  img {
+    object-fit: scale-down;
+  }
+
+  flex-direction: column;
+  display: flex;
+  place-content: center;
+  align-items: center;
+}
+.image-upload-toolbar {
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+.image-upload-container:hover {
+  .image-upload-toolbar {
+    visibility: visible;
+  }
+}

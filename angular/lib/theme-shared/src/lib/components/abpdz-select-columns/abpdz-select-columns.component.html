@@ -1,0 +1,21 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>view_column</mat-icon>
+</button>
+<mat-menu #menu="matMenu" class="example-list">
+  <div
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+    (click)="$event.stopPropagation()"
+  >
+    <button cdkDrag *ngFor="let item of columns" mat-menu-item>
+      <mat-checkbox
+        [ngModel]="open[item]"
+        (ngModelChange)="open[item] = $event; calculateOpenColumns()"
+      >
+        {{ displayMap[item] || item | abpLocalization }}
+      </mat-checkbox>
+      <mat-icon *ngIf="open[item] && !visible[item]">visibility_off</mat-icon>
+    </button>
+    <pre>{{ count }}</pre>
+  </div>
+</mat-menu>

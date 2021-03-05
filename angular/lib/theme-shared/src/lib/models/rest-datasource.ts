@@ -1,4 +1,5 @@
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AsyncDataSource } from './async-datasource';
 import { IHttpService } from './http-base';
 
@@ -27,7 +28,7 @@ export class RestDataSource<NgEntity> extends AsyncDataSource<NgEntity> {
       param = { ...this.filter.value, ...param };
     }
     if (this.sort.value && this.sort.value.direction) {
-      param.sort =
+      param.sorting =
         this.sort.value.active +
         (this.sort.value.direction == 'desc' ? ' desc' : '');
     }
@@ -38,6 +39,10 @@ export class RestDataSource<NgEntity> extends AsyncDataSource<NgEntity> {
           this.count.next(e.totalCount);
         }
         return e.items;
+      }),
+      catchError((e) => {
+        this.logger?.asyncError(e);
+        return of([]);
       })
     );
   }

@@ -19,6 +19,7 @@ import {
   IdentityRoleCreateOrUpdateDtoBase,
   IdentityUserService,
 } from '../../proxy/identity';
+import { DataConfigService, RoleAdminMenuKey } from '@abpdz/ng.core';
 
 @Component({
   selector: 'app-roles',
@@ -35,12 +36,14 @@ export class RolesComponent
     permissions: [],
     permissionsNames: [],
   };
+  userRoleMenu = [];
   filter;
   constructor(
     injector: Injector,
     private httpClient: HttpClient,
     private identityService: IdentityUserService,
     private permissionManagementService: PermissionManagementService,
+    private data: DataConfigService,
     private fb: FormBuilder
   ) {
     super(injector);
@@ -81,10 +84,11 @@ export class RolesComponent
       return of({
         isDefault: false,
         isPublic: true,
-        name: 'fqsdqfds',
+        name: '',
         extraProperties: {},
       });
     };
+    this.userRoleMenu = this.data.getList(RoleAdminMenuKey);
   }
   ngAfterViewInit() {}
 }

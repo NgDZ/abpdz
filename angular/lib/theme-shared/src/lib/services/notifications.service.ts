@@ -29,6 +29,7 @@ import {
 import {
   ABP,
   AbpDzNotificationInfo,
+  AbpDzSeverity,
   ApplicationConfiguration,
   AuthService,
   CORE_OPTIONS,
@@ -37,7 +38,7 @@ import {
   SessionStateService,
 } from '@abpdz/ng.core';
 import { CleanObjectProperties } from '../models';
-// todo implement notification api based on the new template
+import { LoggerService } from './logger.service';
 export interface ClientNotificationType {
   src: string;
   type: string;
@@ -64,6 +65,7 @@ export class NotificationsService {
 
     private abp: SessionStateService,
     public http: HttpClient,
+    public logger: LoggerService,
     private auth: AuthService
   ) {
     this._notification$ = new Subject<ClientNotificationType>();
@@ -81,14 +83,12 @@ export class NotificationsService {
     return this.http.post('/api/abpdz-notification/Dismiss', ids);
   }
   private signalRCore() {
-    this.auth.currentUser$.subscribe((k) => {
-      console.log(k);
-    });
     this.notification$ = this.auth.currentUser$.pipe(
       // debounceTime(150),
       map((k) => k.id),
       distinctUntilChanged(),
       tap((k) => {
+        this.abpdzNotification$.next([]);
         if (this.options?.environment?.notifications?.useSignalr) {
           this.abp.signalr = null;
 
@@ -200,13 +200,13 @@ export class NotificationsService {
     return of(null);
   }
   dispatchNotification(item: ClientNotificationType) {
-    console.log(item);
     if (item.type == 'AbpDzNotificationInfo') {
       if (item.action == CrudOperation.Create) {
         this.abpdzNotification$.next([
           item.data,
           ...this.abpdzNotification$.value,
         ]);
+        this.logger.Info(item.data?.notificationName);
       } else if (item.action == CrudOperation.Update) {
         const not = this.abpdzNotification$.value.find((k) => k.id == item.id);
         if (not != null) {
@@ -224,5 +224,49 @@ export class NotificationsService {
       }
     }
     this._notification$.next(item);
+  }
+
+  getIcon(not: AbpDzNotificationInfo) {
+    let base = '';
+    switch (not?.severity) {
+      case AbpDzSeverity.Fatal:
+        return 'dangerous';
+      case AbpDzSeverity.Error:
+        return 'error';
+
+      case AbpDzSeverity.Info:
+        return 'info';
+
+      case AbpDzSeverity.Success:
+        return 'check_circle';
+
+      case AbpDzSeverity.Warn:
+        return 'warning';
+      default:
+        break;
+    }
+    return '';
+  }
+  getClass(not: AbpDzNotificationInfo) {
+    let base = not?.state === 0 ? 'bold ' : ' ';
+
+    switch (not?.severity) {
+      case AbpDzSeverity.Fatal:
+        return base + 'color-fatal';
+      case AbpDzSeverity.Error:
+        return base + 'color-error';
+
+      case AbpDzSeverity.Info:
+        return base + 'color-info';
+
+      case AbpDzSeverity.Success:
+        return base + 'color-success';
+
+      case AbpDzSeverity.Warn:
+        return base + 'color-warn';
+      default:
+        break;
+    }
+    return base;
   }
 }

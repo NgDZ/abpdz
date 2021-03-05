@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, Injector, NgZone, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter, map, take } from 'rxjs/operators';
 import { ApplicationConfiguration } from '../models/application-configuration';
@@ -11,16 +11,23 @@ import {
   selectLanguages,
   startLoadingAbpApplicationData,
 } from '../ngrx';
-import { SubSink } from '../utils';
+import {
+  differentLocales,
+  LocaleValue,
+  registerLocale,
+  SubSink,
+} from '../utils';
 import { ConfigStateService } from './config-state.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, noop, Observable } from 'rxjs';
+import { registerLocaleData } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionStateService implements OnDestroy {
   session: Session.State = {} as any;
-  signalr:string;
+  signalr: string;
 
   subs: SubSink;
   selectedCulture$: Observable<ApplicationConfiguration.CurrentCulture>;
@@ -31,7 +38,11 @@ export class SessionStateService implements OnDestroy {
   private updateLocalStorage = () => {
     localStorage.setItem('abpSession', JSON.stringify(this.session));
   };
-  constructor(private ngxStore: Store) {
+  constructor(
+    private ngxStore: Store,
+    private injector: Injector,
+    private registredLocalService: LocaleValue
+  ) {
     this.subs = new SubSink();
     this.init();
     // this.setInitialLanguage();
@@ -68,6 +79,28 @@ export class SessionStateService implements OnDestroy {
 
     this.subs.push(
       this.getLanguage$().subscribe((k) => this.setLanguage(k, false))
+    );
+    this.subs.push(
+      this.selectedCulture$.subscribe((k) => {
+        registerLocale()(k.cultureName).then((module) => {
+          const l = differentLocales[k.cultureName] || k.cultureName || 'en-US';
+          // this._adapter.setLocale(l);
+
+          this.registredLocalService.setLocale(l);
+          if (module?.default) registerLocaleData(module.default);
+
+          // const router = this.injector.get(Router);
+          // const ngZone = this.injector.get(NgZone);
+          // const { shouldReuseRoute } = router.routeReuseStrategy;
+          // router.routeReuseStrategy.shouldReuseRoute = () => false;
+          // router.navigated = false;
+          // ngZone.run(async () => {
+          //   await router.navigateByUrl(router.url).catch(noop);
+          //   router.routeReuseStrategy.shouldReuseRoute = shouldReuseRoute;
+          // });
+          // todo refactore this code to core module
+        });
+      })
     );
     this.subs.push(this.getTenant$().subscribe((k) => this.setTenant(k)));
   }

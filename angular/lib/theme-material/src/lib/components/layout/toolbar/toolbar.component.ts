@@ -1,17 +1,22 @@
 import {
   ApplicationConfiguration,
   AuthService,
+  RoutesService,
   SessionStateService,
+  SubSink,
 } from '@abpdz/ng.core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'mtheme-toolbar',
@@ -19,7 +24,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
   @Output()
   toggleNav = new EventEmitter<boolean>();
 
@@ -27,10 +32,15 @@ export class ToolbarComponent implements OnInit {
   toggleQuickPannel = new EventEmitter<boolean>();
 
   dropdownLanguages$: Observable<ApplicationConfiguration.Language[]>;
+  subs = new SubSink();
 
   constructor(
     public session: SessionStateService,
-    public authService: AuthService
+    public authService: AuthService,
+    private breakpointObserver: BreakpointObserver,
+
+    public router: Router,
+    public readonly routes: RoutesService
   ) {
     this.dropdownLanguages$ = combineLatest([
       this.session.languages$,
@@ -42,6 +52,9 @@ export class ToolbarComponent implements OnInit {
         )
       )
     );
+  }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   ngOnInit(): void {}

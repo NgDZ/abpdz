@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { Config } from '../models/config';
 import { LocalizationService } from '../services/localization.service';
 

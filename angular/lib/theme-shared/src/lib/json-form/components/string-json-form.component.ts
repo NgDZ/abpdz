@@ -94,7 +94,6 @@ export class StringJsonFormComponent
       this._value = this.oldVal;
       if (this.changeFnc) {
         this.changeFnc(this._value);
-        console.log('new value:', this._value);
       }
       this.valueChange.emit(this.oldVal);
     });

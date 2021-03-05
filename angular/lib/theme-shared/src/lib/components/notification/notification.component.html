@@ -29,11 +29,9 @@
     { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' }
   ]"
 >
-  <ng-container 
-    *ngIf="service.abpdzNotification$ | async; let notifications"
-  >
+  <ng-container *ngIf="service.abpdzNotification$ | async; let notifications">
     <mat-card
-      class="mat-elevation-z1 "
+      class="mat-elevation-z1"
       style="overflow: hidden; padding: 0; min-width: 400px"
       @expandCollapse
     >
@@ -42,9 +40,14 @@
         fxLayout="row"
         fxLayoutAlign="space-between center"
       >
-        <div class="mat-text">
-          <div class="mat-h3">Notifications</div>
-          <div class="secondary">{{ notifications.length }} notifications.</div>
+        <div class="mat-text px-2">
+          <div class="text-xl bold">
+            {{ "AbpDz::Notification" | abpLocalization }}
+          </div>
+          <div class="secondary">
+            {{ notifications.length }}
+            {{ "AbpDz::Notifications" | abpLocalization }}.
+          </div>
         </div>
         <button type="button" mat-icon-button>
           <mat-icon>settings</mat-icon>
@@ -64,10 +67,9 @@
               getIcon(notification)
             }}</mat-icon>
             <div
-              (click)="isOpen = false"
+              
               style="display: flex; flex-direction: column; flex-grow: 1"
-              (click)="markAsRead(notification)"
-              [routerLink]="notification.entityTypeAssemblyQualifiedName"
+              (click)="markAsRead([notification], true)"
             >
               <div class="name">
                 {{ notification.notificationName }}
@@ -79,7 +81,7 @@
             </div>
             <button
               *ngIf="false"
-              (click)="dismiss(notification, $event)"
+              (click)="markAsRead([notification])"
               mat-icon-button
             >
               <mat-icon class="close">close</mat-icon>
@@ -89,13 +91,15 @@
         </div>
         <div class="no-notifications" *ngIf="notifications.length === 0">
           <!-- All fine! No notifications right now. -->
-          Tout va bien! Aucune notification pour le moment.
+          {{ "AbpDz::NoNotification" | abpLocalization }}
         </div>
       </div>
       <div class="mat-actions p-1" fxLayout="row" fxLayoutAlign="center center">
         <div class="action">
           <!-- Mark all as read -->
-          tout marquer comme lu
+          <button mat-button (click)="markAsRead(notifications)">
+            {{ "AbpDz::MarkAllAsRead" | abpLocalization }}
+          </button>
         </div>
       </div>
     </mat-card>

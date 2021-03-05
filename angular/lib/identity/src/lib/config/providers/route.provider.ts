@@ -24,7 +24,7 @@ export function configureRoutes(routes: RoutesService) {
         requiredPolicy: eIdentityPolicyNames.Roles,
         iconClass: 'perm_identity',
         layout: eLayoutType.application,
-        order: 10,
+        order: 40,
       },
       {
         path: '/identity/users',
@@ -33,7 +33,7 @@ export function configureRoutes(routes: RoutesService) {
         parentName: eThemeSharedRouteNames.Administration,
         layout: eLayoutType.application,
         requiredPolicy: eIdentityPolicyNames.Users,
-        order: 20,
+        order: 41,
       },
     ]);
   };

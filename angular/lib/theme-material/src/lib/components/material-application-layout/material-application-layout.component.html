@@ -2,17 +2,28 @@
   <mtheme-toolbar
     style="z-index: 2"
     (toggleNav)="drawer.toggle()"
+    (toggleQuickPannel)="drawerQuickPannel.toggle()"
   ></mtheme-toolbar>
 
   <mat-drawer-container class="flex-grow">
     <mat-drawer
       #drawer
+      [(opened)]="opendDrawer"
       class="sidenav"
       fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
     >
       <mtheme-navbar></mtheme-navbar>
+    </mat-drawer>
+    <mat-drawer
+      #drawerQuickPannel
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="'dialog'"
+      [mode]="'over'"
+      position="end"
+      ><mtheme-quick-panel></mtheme-quick-panel>
     </mat-drawer>
     <mat-drawer-content>
       <div class="app-router-outlet-container">

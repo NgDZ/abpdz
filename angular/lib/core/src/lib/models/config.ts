@@ -10,6 +10,7 @@ export declare class AuthConfig {
   scope?: string;
   tokenUrl?: string;
   loginUrl?: string;
+  unauthorizedAccessUrl?: string;
 }
 
 // tslint:disable-next-line: no-namespace

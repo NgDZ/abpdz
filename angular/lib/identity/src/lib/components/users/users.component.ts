@@ -1,4 +1,9 @@
-import { AbpFacade, ListResultDto } from '@abpdz/ng.core';
+import {
+  AbpFacade,
+  DataConfigService,
+  ListResultDto,
+  UserAdminMenuKey,
+} from '@abpdz/ng.core';
 import { PermissionManagementService } from '@abpdz/ng.permission-management';
 import {
   AbpIOHttpService,
@@ -47,6 +52,7 @@ export class UsersComponent
   filter;
   roles: any;
   selectedUserRoles: any;
+  userAdminMenu = [];
   roles$: Observable<ListResultDto<IdentityRoleDto>>;
   constructor(
     injector: Injector,
@@ -54,6 +60,7 @@ export class UsersComponent
     private facade: AbpFacade,
     private fb: FormBuilder,
     private identityService: IdentityUserService,
+    private data: DataConfigService,
     private permissionManagementService: PermissionManagementService
   ) {
     super(injector);
@@ -171,6 +178,7 @@ export class UsersComponent
       of({
         extraProperties: {},
       });
+    this.userAdminMenu = this.data.getList(UserAdminMenuKey);
   }
   ngAfterViewInit() {}
   get roleGroups() {

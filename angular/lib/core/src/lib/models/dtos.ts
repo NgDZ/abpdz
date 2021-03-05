@@ -418,3 +418,37 @@ export interface EventFilterDto {
   sorting?: number;
   skipCount?: number;
 }
+
+export const EventFilterDtoForm = {
+  filter: [],
+  id: [],
+  ip: [],
+  url: [],
+  type: [],
+  source: [],
+  creator: [],
+  userId: [],
+  startDate: [],
+  endDate: [],
+  code: [],
+  state: [],
+  severity: [],
+  checked: [],
+};
+
+export interface AbpEnum {
+  concurrencyStamp?: number | undefined;
+  id?: number | undefined;
+  code?: string | undefined;
+  parrentId?: number | undefined;
+  entityType?: string | undefined;
+  display?: string | undefined;
+  description?: string | undefined;
+  value?: any | undefined;
+  data?: any | undefined;
+  schema?: any | undefined;
+  isStatic?: boolean | undefined;
+  isSelectable?: boolean | undefined;
+  childs?: AbpEnum[];
+  extraProperties?: any;
+}

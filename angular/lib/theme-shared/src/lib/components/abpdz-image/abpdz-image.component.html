@@ -1,0 +1,41 @@
+<div
+  class="image-upload-container"
+  [ngStyle]="{
+    'max-height': maxHeight + 'px',
+    'max-width': maxWidth + 'px',
+    'min-height': minHeight + 'px',
+    'min-width': minWidth + 'px'
+  }"
+>
+  <img
+    [ngStyle]="{
+      'max-height': maxHeight + 'px',
+      'max-width': maxWidth + 'px',
+      'min-height': minHeight + 'px',
+      'min-width': minWidth + 'px'
+    }"
+    *ngIf="currentUrl"
+    [src]="currentUrl"
+  />
+  <div
+    class="image-upload-toolbar"
+    fxLayout="row"
+    fxLayoutAlign="space-around center"
+  >
+    <button type="button" (click)="pickFile()" mat-mini-fab>
+      <mat-icon class="mat-18">attach_file</mat-icon>
+    </button>
+    <button type="button" (click)="upload()" [disabled]="fileToUpload == null" mat-mini-fab>
+      <mat-icon class="mat-18">file_upload</mat-icon>
+    </button>
+  </div>
+  <input
+    type="file"
+    #fileLoader
+    style="max-width: 0;max-height: 0; visibility: hidden;"
+    (change)="onSelectFile($event)"
+  />
+  <div class="ngdz-loading-shade" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>

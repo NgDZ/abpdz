@@ -2,6 +2,7 @@ import {
   APP_INITIALIZER,
   Inject,
   Injectable,
+  LOCALE_ID,
   ModuleWithProviders,
   NgModule,
   NgModuleFactory,
@@ -29,15 +30,20 @@ import { noop } from './utils/common-utils';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { LocalizationPipe } from './pipes/abp-localization.pipe';
+import { AbpDatePipe, LocalizationPipe } from './pipes';
 import { DynamicLayoutComponent } from './components/dynamic-layout.component';
 import { ReplaceableRouteContainerComponent } from './components/replaceable-route-container.component';
 import { RouterOutletComponent } from './components/router-outlet.component';
 import { RouterEffects } from './ngrx/router.effects';
 import { PermissionDirective } from './directives/permission.directive';
+import { LocaleValue } from './utils';
+import { EnumsDisplayPipe, EnumsPipe } from './enums';
 @NgModule({
   declarations: [
     LocalizationPipe,
+    AbpDatePipe,
+    EnumsPipe,
+    EnumsDisplayPipe,
     PermissionDirective,
     DynamicLayoutComponent,
     ReplaceableRouteContainerComponent,
@@ -58,6 +64,9 @@ import { PermissionDirective } from './directives/permission.directive';
 
     // exported compoenents
     LocalizationPipe,
+    AbpDatePipe,
+    EnumsPipe,
+    EnumsDisplayPipe,
     PermissionDirective,
     DynamicLayoutComponent,
     ReplaceableRouteContainerComponent,
@@ -105,6 +114,11 @@ export class CoreModule {
           useExisting: MiniProfilerInterceptor,
           multi: true,
         },
+        {
+          provide: LOCALE_ID,
+          deps: [LocaleValue], //some service handling global settings
+          useFactory: (r) => r.getLocale(), //returns locale string
+        },
       ],
     };
   }
@@ -130,7 +144,11 @@ export class CoreModule {
           useExisting: MiniProfilerInterceptor,
           multi: true,
         },
-
+        {
+          provide: LOCALE_ID,
+          deps: [LocaleValue], //some service handling global settings
+          useFactory: (r) => r.getLocale(), //returns locale string
+        },
         {
           provide: 'CORE_OPTIONS',
           useValue: options,

@@ -14,7 +14,7 @@
     >
       <!-- APP TITLE -->
       <div fxLayout="row" fxLayoutAlign="start center">
-        <mat-icon> supervised_user_circle </mat-icon>
+        <mat-icon class="mx-2"> supervised_user_circle </mat-icon>
         <h1 [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
           {{ "AbpIdentity::Users" | abpLocalization }}
         </h1>
@@ -26,6 +26,7 @@
           <input
             [(ngModel)]="filter"
             placeholder="{{ 'AbpUi::PagerSearch' | abpLocalization }}"
+            (keydown.enter)="search()"
           />
           <button mat-icon-button (click)="search()">
             <mat-icon>search</mat-icon>
@@ -36,7 +37,6 @@
         mat-raised-button
         *abpPermission="'AbpIdentity.Users.Create'"
         (click)="newUser()"
-        @slideInRight
       >
         <mat-icon>add</mat-icon>
         <span>{{ "AbpIdentity::NewUser" | abpLocalization }}</span>
@@ -65,10 +65,20 @@
       ></mat-text-column>
 
       <ng-container matColumnDef="Actions">
-        <th mat-header-cell *matHeaderCellDef style="width: 48px"></th>
-        <td mat-cell style="width: 48px" *matCellDef="let element">
-          <button mat-mini-fab color="default" [matMenuTriggerFor]="editEmnu">
-            <mat-icon class="mat-18">more_vert </mat-icon>
+        <th mat-header-cell *matHeaderCellDef style="width: 180px"></th>
+        <td mat-cell style="width: 180px" *matCellDef="let element">
+          <button
+            mat-raised-button
+            [matMenuTriggerFor]="editEmnu"
+            color="primary"
+          >
+            <mat-icon style="width: 17px; height: 19px; font-size: 17px"
+              >settings</mat-icon
+            >
+            {{ "AbpIdentity::Actions" | abpLocalization }}
+            <mat-icon style="width: 17px; height: 19px; font-size: 17px"
+              >arrow_drop_down</mat-icon
+            >
           </button>
           <mat-menu
             #editEmnu="matMenu"
@@ -104,6 +114,21 @@
               <mat-icon>delete </mat-icon>
               {{ "AbpUi::Delete" | abpLocalization }}
             </button>
+
+            <mat-divider *ngIf="userAdminMenu.length"> </mat-divider>
+            <ng-container *ngFor="let item of userAdminMenu">
+              <button
+                mat-menu-item
+                color="warn"
+                *abpPermission="item.requiredPolicy"
+                (click)="item.action(element)"
+              >
+                <mat-icon class="nav-link-icon" *ngIf="item.icon">
+                  {{ item.icon }}
+                </mat-icon>
+                {{ item.name | abpLocalization }}
+              </button>
+            </ng-container>
           </mat-menu>
         </td>
       </ng-container>
@@ -140,16 +165,20 @@
       >
         <mat-spinner></mat-spinner>
       </div>
-
+      <div
+        *ngIf="editForm == null"
+        class="h-48"
+        style="min-width: 70vw; min-height: 30vh"
+      ></div>
       <form
-        style="min-width: 70vw"
+        style="min-width: 70vw; min-height: 30vh"
         *ngIf="editForm"
         [formGroup]="editForm"
         (ngSubmit)="saveUser()"
       >
         <mat-tab-group dynamicHeight *ngIf="current">
           <mat-tab [label]="'AbpIdentity::UserInformations' | abpLocalization">
-            <div fxLayout="row wrap" class="px-4" fxLayoutGap="5px">
+            <div fxLayout="row wrap" class="px-4 mt-2" fxLayoutGap="5px">
               <mat-form-field fxFlex="48">
                 <mat-label>
                   {{ "AbpIdentity::UserName" | abpLocalization }}
@@ -231,13 +260,13 @@
               </mat-checkbox>
             </div>
 
-            <div class="m-4">
+            <!-- <div class="m-4">
               <mat-checkbox formControlName="twoFactorEnabled">
                 {{
                   "AbpIdentity::DisplayName:TwoFactorEnabled" | abpLocalization
                 }}
               </mat-checkbox>
-            </div>
+            </div> -->
           </mat-tab>
           <mat-tab [label]="'AbpIdentity::Roles' | abpLocalization">
             <div
@@ -246,11 +275,14 @@
                 let i = index;
                 trackBy: trackByFn
               "
-              class="mx-4 my-2"
             >
-              <mat-checkbox [formControl]="roleGroup.controls[roles[i].name]">
+              <mat-checkbox
+                class="mx-4 my-2"
+                [formControl]="roleGroup.controls[roles[i].name]"
+              >
                 {{ roles[i].name }}
               </mat-checkbox>
+              <mat-divider></mat-divider>
             </div>
           </mat-tab>
         </mat-tab-group>
