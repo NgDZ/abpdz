@@ -7,8 +7,8 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { RestOccurError } from '../ngrx';
 import { PermissionService, RoutesService } from '../services';
@@ -46,12 +46,24 @@ export class PermissionGuard implements CanActivate {
       return of(true);
     }
 
-    return this.permissionService.getGrantedPolicy$(requiredPolicy).pipe(
-      tap((access) => {
+    return combineLatest([
+      this.permissionService.getGrantedPolicy$(requiredPolicy),
+      this.authService.currentUser$,
+    ]).pipe(
+      tap(([access, user]) => {
         if (!access) {
           this.store.dispatch(RestOccurError({ data: { status: 403 } }));
+          console.log(access);
+          if (access === false) {
+            if (!user?.isAuthenticated) {
+              this.authService.initLogin(state.url);
+            } else {
+              this.authService.unauthorizedAccess(state.url);
+            }
+          }
         }
-      })
+      }),
+      map(([access, user]) => access)
     );
   }
 }
