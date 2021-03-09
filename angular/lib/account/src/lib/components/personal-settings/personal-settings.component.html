@@ -1,4 +1,9 @@
-<form validateOnSubmit *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+<form
+  [validateOnSubmit]="true"
+  *ngIf="form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
   <div>
     <mat-form-field>
       <mat-label>
