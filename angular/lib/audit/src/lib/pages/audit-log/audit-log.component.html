@@ -112,7 +112,7 @@
         </th>
         <td mat-cell *matCellDef="let row">
           <span
-            class="mat-elevation-z1 m-0 p-1 rounded-md cursor-pointer"
+            class="mat-elevation-z1 whitespace-nowrap m-0 p-1 rounded-md cursor-pointer"
             (click)="openDetail(row)"
             [class]="statusClass(row.httpStatusCode)"
             >{{ row.httpMethod }} {{ row.httpStatusCode }}</span
