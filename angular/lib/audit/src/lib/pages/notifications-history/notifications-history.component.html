@@ -84,17 +84,44 @@
       (matSortChange)="dataSource.sort.next($event)"
     >
       <ng-container matColumnDef="Time">
-        <th mat-header-cell  mat-sort-header="creationTime" *matHeaderCellDef>
+        <th
+          style="width: 140px"
+          mat-header-cell
+          mat-sort-header="CreationTime"
+          *matHeaderCellDef
+        >
           {{ "AbpDz::Time" | abpLocalization }}
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td style="width: 140px" mat-cell *matCellDef="let row">
           {{ row.creationTime | abpDate: "yyyy-MM-dd HH:mm" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Icon">
+        <th class="w-16" mat-header-cell *matHeaderCellDef></th>
+        <td
+          class="w-16"
+          (click)="markAsRead([row], true)"
+          class="cursor-pointer"
+          mat-cell
+          *matCellDef="let row"
+        >
+          <mat-icon class="text-3xl" [ngClass]="getClass(row)">{{
+            getIcon(row)
+          }}</mat-icon>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Message">
         <th mat-header-cell *matHeaderCellDef>Message</th>
-        <td mat-cell *matCellDef="let row">{{ row.notificationName }}</td>
+        <td
+          class="cursor-pointer"
+          [class.font-bold]="row?.state === 0"
+          mat-cell
+          *matCellDef="let row"
+          (click)="markAsRead([row], true)"
+        >
+          {{ row.notificationName }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="Actions">

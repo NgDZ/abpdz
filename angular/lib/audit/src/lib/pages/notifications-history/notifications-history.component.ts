@@ -24,6 +24,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notifications-history',
@@ -43,10 +44,11 @@ export class NotificationsHistoryComponent
     private auth: AuthService,
     private dataConfig: DataConfigService,
     public service: NotificationsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     super(injector);
-    this.displayedColumns = ['Time', 'Message'];
+    this.displayedColumns = ['Icon', 'Time', 'Message'];
     this.searchForm = this.fb.group(EventFilterDtoForm);
   }
   openPermissionsModal(id) {}
@@ -75,7 +77,14 @@ export class NotificationsHistoryComponent
     val.endDate = dateToIso(a.endDate);
     this.dataSource.filter.next(val);
   }
-
+  markAsRead(nots: AbpDzNotificationInfo[], navigate = false) {
+    this.service
+      .dismiss(nots?.filter((k) => k.state == 0).map((not) => not.id))
+      .subscribe((k) => {});
+    if (navigate && nots[0]?.detailUrl) {
+      this.router.navigateByUrl(nots[0]?.detailUrl);
+    }
+  }
   ngAfterViewInit() {}
   getClass(not: AbpDzNotificationInfo) {
     return this.service.getClass(not);
