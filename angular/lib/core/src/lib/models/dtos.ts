@@ -412,6 +412,7 @@ export interface EventFilterDto {
   startDate?: string;
   endDate?: string;
   code?: string;
+  parent?: string;
   state?: string;
   severity?: number;
   checked?: boolean;
@@ -434,6 +435,8 @@ export const EventFilterDtoForm = {
   state: [],
   severity: [],
   checked: [],
+  sorting: [],
+  parent: [],
 };
 
 export interface AbpEnum {
