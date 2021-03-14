@@ -8,10 +8,10 @@ export function configureRoutes(routes: RoutesService) {
     routes.add([
       {
         path: 'enums/config',
-        name: 'Enums',
+        name: 'AbpDz::Enums',
         parentName: eThemeSharedRouteNames.Administration,
         requiredPolicy: 'ABPDZ.Enums',
-        iconClass: 'open_in_browser',
+        iconClass: 'table_chart',
         layout: eLayoutType.application,
         order: 10,
       },
