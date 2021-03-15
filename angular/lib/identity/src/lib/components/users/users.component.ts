@@ -194,4 +194,7 @@ export class UsersComponent
       providerKey: id,
     });
   }
+  getControls(roleGroup: any) {
+    return roleGroup?.controls;
+  }
 }

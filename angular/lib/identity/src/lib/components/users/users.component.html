@@ -278,7 +278,7 @@
             >
               <mat-checkbox
                 class="mx-4 my-2"
-                [formControl]="roleGroup.controls[roles[i].name]"
+                [formControl]="getControls(roleGroup)[roles[i].name]"
               >
                 {{ roles[i].name }}
               </mat-checkbox>
