@@ -27,7 +27,7 @@
       >
     </mat-select>
   </mat-form-field>
-  <mat-form-field fxFlex="32">
+  <mat-form-field *ngIf="data?.value.parrentId == null" fxFlex="32">
     <mat-label>Code</mat-label>
     <input matInput formControlName="code" />
   </mat-form-field>
@@ -81,7 +81,6 @@
     </div>
   </mat-tab>
 </mat-tab-group>
-<pre>{{ extraProperties | json }}</pre>
 <div
   class="p-2 mat-actions"
   fxLayout="row"
@@ -99,6 +98,6 @@
     [disabled]="editForm.invalid"
     (click)="save()"
   >
-    <mat-icon>save</mat-icon> {{ "AbpDz::Send" | abpLocalization }}
+    <mat-icon>save</mat-icon> {{ "AbpDz::Save" | abpLocalization }}
   </button>
 </div>
