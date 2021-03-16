@@ -15,7 +15,7 @@ this project is alternative default angular client ui for  abp.io implemtation t
 implements additionnel features and api used in angular client 
 
 ## HOW TO USE 
-see the template project in https://ngaspnetcore.herokuapp.com/
+see the template project in https://github.com/NgDZ/NgAspnetcore
 
 
 ## DEMO VIDEO
