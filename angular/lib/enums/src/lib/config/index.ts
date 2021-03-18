@@ -1,1 +1,1 @@
-export * from './enum-config.module'
+export * from './enum-config.module';
