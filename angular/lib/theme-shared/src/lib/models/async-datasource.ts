@@ -61,7 +61,7 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
     length: 15,
   });
   operation: CrudOperation = null;
-  sort: BehaviorSubject<Sort> = new BehaviorSubject<Sort>({
+  sort: BehaviorSubject<Sort | any> = new BehaviorSubject<Sort | any>({
     active: null,
     direction: null,
   });
@@ -87,18 +87,16 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
     // stream for the data-table to consume.
     const dataMutations = [
       this.page,
-      this.sort,
+      this.sort.pipe(tap((s) => this.tapSort(s))),
       this.group,
       this.filter.pipe(
         tap(() => {
-          this.page.value.pageIndex = 0;
-          this.requestCount = true;
+          this.tapFilter();
         })
       ),
       this.config.pipe(
         tap(() => {
-          this.page.value.pageIndex = 0;
-          this.requestCount = true;
+          this.tapConfig();
         })
       ),
     ];
@@ -124,6 +122,17 @@ export class AsyncDataSource<NgEntity> extends DataSource<NgEntity> {
       ) as any;
     }
     return this.connect$;
+  }
+  tapSort(sort?: any): void {}
+
+  private tapConfig(config?: any) {
+    this.page.value.pageIndex = 0;
+    this.requestCount = true;
+  }
+
+  private tapFilter(filter?: any) {
+    this.page.value.pageIndex = 0;
+    this.requestCount = true;
   }
 
   // implment this function to retive next page
