@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { orderBy } from 'lodash-es';
-import { Store } from '@ngrx/store';
 import { AbpEnum } from '../models/dtos';
 import { ConfigStateService } from '../services/config-state.service';
 // import * as countries from 'ngdz-countries/data/fr/countries.json';
@@ -38,6 +37,9 @@ export class EnumsService {
     k.forEach((z) => {
       if (z.parrentId) {
         v[z.parrentId].childs.push(z);
+        if (z.value || z.code == null) {
+          z.value = z.id;
+        }
       }
     });
     this.root = k.filter((e) => e.parrentId == null);
@@ -81,6 +83,8 @@ export class EnumsService {
   getDisplays(root: AbpEnum[], displays: { [key: string]: any }) {
     root.forEach((ki) => {
       if (ki.childs && ki.childs.length > 0) {
+        if (ki.value || ki.code == null) {
+        }
         displays[ki.value || ki.code] = {};
         this.getDisplays(ki.childs, displays[ki.value || ki.code]);
       } else {
