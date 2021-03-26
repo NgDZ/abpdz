@@ -14,8 +14,8 @@
     >
       <!-- APP TITLE -->
       <div fxLayout="row" fxLayoutAlign="start center">
-        <mat-icon> supervised_user_circle </mat-icon>
-        <h1 [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+        <mat-icon> table_chart </mat-icon>
+        <h1 class="mx-" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
           Types:
         </h1>
       </div>
@@ -83,63 +83,62 @@
   </div>
   <div class="content-card" fxLayout="row">
     <div fxFlex="420px" style="max-height: 80vh; overflow-y: auto">
-      <table class="simple">
-        <colgroup>
-          <col style="width: 250px" />
-          <col style="width: 40px" />
-        </colgroup>
-        <tbody>
-          <ng-container mat-list-item *ngFor="let item of types">
-            <tr [class.active]="currentType == item">
-              <td class="selectable" (click)="setCurrentType(item)">
+      <div class="nav material2">
+        <ng-container mat-list-item *ngFor="let item of types">
+          <div class="nav-item" (click)="setCurrentType(item)">
+            <a
+              class="nav-link p-1 m-1"
+              matRipple
+              fxLayout="row"
+              [ngClass]="{ 'active accent': currentType == item }"
+            >
+              <div class="title" fxFlex>
                 {{ item.display }}
                 <span *ngIf="item.code && item.code != item.display"
                   >({{ item.code }} )</span
                 >
-              </td>
-              <td>
-                <button
-                  mat-icon-button
-                  color="default"
-                  [matMenuTriggerFor]="editEmnu"
-                >
-                  <mat-icon class="mat-18">more_vert </mat-icon>
-                </button>
+              </div>
+              <button
+                mat-icon-button
+                color="default"
+                [matMenuTriggerFor]="editEmnu"
+              >
+                <mat-icon class="mat-18">more_vert </mat-icon>
+              </button>
 
-                <mat-menu
-                  #editEmnu="matMenu"
-                  x-position="after"
-                  y-position="below"
-                  [overlapTrigger]="false"
+              <mat-menu
+                #editEmnu="matMenu"
+                x-position="after"
+                y-position="below"
+                [overlapTrigger]="false"
+              >
+                <button
+                  mat-menu-item
+                  color="primary"
+                  *ngIf="!item.isStatic"
+                  (click)="update(item)"
                 >
-                  <button
-                    mat-menu-item
-                    color="primary"
-                    *ngIf="!item.isStatic"
-                    (click)="update(item)"
-                  >
-                    <mat-icon>edit </mat-icon>
-                    {{ "AbpDz::Edit" | abpLocalization }}
-                  </button>
-                  <button
-                    mat-menu-item
-                    color="warn"
-                    (click)="delete(item, types)"
-                    color="warn"
-                  >
-                    <mat-icon>delete </mat-icon>
-                    {{ "AbpDz::Delete" | abpLocalization }}
-                  </button>
-                  <button mat-menu-item color="primary" (click)="create(item)">
-                    <mat-icon>add </mat-icon>
-                    {{ "AbpDz::Create" | abpLocalization }}
-                  </button>
-                </mat-menu>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+                  <mat-icon>edit </mat-icon>
+                  {{ "AbpDz::Edit" | abpLocalization }}
+                </button>
+                <button
+                  mat-menu-item
+                  color="warn"
+                  (click)="delete(item, types)"
+                  color="warn"
+                >
+                  <mat-icon>delete </mat-icon>
+                  {{ "AbpDz::Delete" | abpLocalization }}
+                </button>
+                <button mat-menu-item color="primary" (click)="create(item)">
+                  <mat-icon>add </mat-icon>
+                  {{ "AbpDz::Create" | abpLocalization }}
+                </button>
+              </mat-menu>
+            </a>
+          </div>
+        </ng-container>
+      </div>
     </div>
     <div class="mat-divider-h mat-elevation-z1"></div>
     <div
@@ -191,11 +190,12 @@
         </ng-container>
 
         <ng-container matColumnDef="display">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
             {{ "AbpDz::DisplayName" | abpLocalization }}
           </th>
           <td mat-cell *matCellDef="let item">
-            {{ item.display }} ({{ item.code }},{{ item.value }})
+            {{ item.display }}
+            <span *ngIf="item.value">( {{ item.value }})</span>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
@@ -209,7 +209,7 @@
         [pageIndex]="page.pageIndex"
         [showFirstLastButtons]="true"
         [pageSize]="page.pageSize"
-        [pageSizeOptions]="[1, 10, 25, 100, 250]"
+        [pageSizeOptions]="[5, 10, 25, 100, 250]"
       >
       </mat-paginator>
     </div>
