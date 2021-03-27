@@ -24,7 +24,7 @@ import {
 export class ValidationErrorComponent extends ErrorComponent {
   @HostBinding('class')
   class = 'mat-error';
-  get abpErrors(): Validation.Error[] & { interpoliteParams?: string[] } {
+  get abpErrors(): any[] {
     if (!this.errors || !this.errors.length) {
       return [];
     }
