@@ -1,4 +1,4 @@
-$version = '0.0.8010'
+$version = '0.0.8013'
 $orgDir = '..\..\freetime'
 
 Set-Location ..\angular
@@ -71,65 +71,65 @@ Set-Location .\account\
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\core\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
-npm publish --access public --ignore-scripts
+yarn publish  --new-version   $version --access public --ignore-scripts
 
 Set-Location ..\demos\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts
+yarn publish  --new-version   $version --access public --ignore-scripts
 
 Set-Location ..\enums\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts
+yarn publish  --new-version   $version --access public --ignore-scripts
 Set-Location ..\breeze\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\theme-shared\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\theme-basic\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\theme-material\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 
 Set-Location ..\permission-management\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\identity\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
 Set-Location ..\audit\
 ((Get-Content -path package.json -Raw) -replace '0.0.1' , $version) | Set-Content -Path package.json
 ((Get-Content -path package.json -Raw) -replace 'prepublishOnly' , 'pry') | Set-Content -Path package.json
 
-npm publish --access public --ignore-scripts 
+yarn publish  --new-version   $version --access public --ignore-scripts 
 
  
 Set-Location ..\..\scripts

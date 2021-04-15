@@ -23,7 +23,7 @@ import {
 import { PermissionsService } from '../proxy/permissions.service';
 
 type PermissionWithStyle = PermissionGrantInfoDto & {
-  style: string;
+  style: any;
 };
 @Component({
   selector: 'abp-permission-management',
@@ -73,7 +73,7 @@ export class PermissionManagementComponent
 
   selectAllTab = false;
 
-  trackByFn: TrackByFunction<PermissionGroupDto> = (_, item) => item.name;
+  trackByFn: TrackByFunction<any> = (_, item) => item.name;
 
   get selectedGroupPermissions$(): Observable<PermissionWithStyle[]> {
     const margin = `margin-${

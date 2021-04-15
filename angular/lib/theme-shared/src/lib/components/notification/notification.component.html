@@ -49,8 +49,8 @@
             {{ "AbpDz::Notifications" | abpLocalization }}.
           </div>
         </div>
-        <button type="button" mat-icon-button>
-          <mat-icon>settings</mat-icon>
+        <button type="button" [routerLink]="['/audit/nothistory']" mat-icon-button>
+          <mat-icon> history</mat-icon>
         </button>
       </div>
       <div class="p-1 container">
@@ -67,7 +67,6 @@
               getIcon(notification)
             }}</mat-icon>
             <div
-              
               style="display: flex; flex-direction: column; flex-grow: 1"
               (click)="markAsRead([notification], true)"
             >
