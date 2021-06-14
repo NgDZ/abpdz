@@ -1,13 +1,7 @@
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  DataConfigService,
-  eLayoutType,
-  RoutesService,
-  UserAdminMenuKey,
-} from '@abpdz/ng.core';
+import { DataConfigService, eLayoutType, RoutesService } from '@abpdz/ng.core';
 import { eThemeSharedRouteNames } from '@abpdz/ng.theme.shared';
-import { AuditLogUrlsKey } from './enums';
 
 export function configureRoutes(
   routes: RoutesService,

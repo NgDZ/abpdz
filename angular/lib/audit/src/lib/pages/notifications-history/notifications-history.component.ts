@@ -1,19 +1,11 @@
-import { AuditLogUrlsKey } from '@abpdz/ng.audit/config';
 import {
-  AuditLog,
-  AuthService,
+  AbpDzNotificationInfo, AuthService,
   DataConfigService,
   dateToIso,
-  EventFilterDto,
-  AbpDzNotificationInfo,
-  EventFilterDtoForm,
+  EventFilterDto, EventFilterDtoForm
 } from '@abpdz/ng.core';
 import {
-  BaseCrudComponent,
-  RestDataSource,
-  AbpIOHttpService,
-  abpAnimations,
-  NotificationsService,
+  abpAnimations, AbpIOHttpService, BaseCrudComponent, NotificationsService, RestDataSource
 } from '@abpdz/ng.theme.shared';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -21,7 +13,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injector,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -35,7 +27,8 @@ import { Router } from '@angular/router';
 })
 export class NotificationsHistoryComponent
   extends BaseCrudComponent<AbpDzNotificationInfo>
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   searchForm: FormGroup;
   userId: string = null;
   constructor(

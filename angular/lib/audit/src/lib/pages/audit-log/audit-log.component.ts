@@ -1,4 +1,4 @@
-import { AuditLogUrlsKey } from '@abpdz/ng.audit/config';
+import { AuditLogUrlsKey } from '../../config';
 import {
   AuditLog,
   AuthService,

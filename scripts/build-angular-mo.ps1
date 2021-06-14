@@ -9,5 +9,6 @@ ng build permission-management  --configuration production
 ng build identity  --configuration production
  
 ng build breeze  --configuration production
+ng build enums  --configuration production
  
 ng build demos  --configuration production 

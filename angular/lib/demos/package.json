@@ -16,8 +16,8 @@
   },
   "homepage": "https://github.com/ngdz/abpdz#readme",
   "peerDependencies": {
-    "@angular/common": "^11.0.5",
-    "@angular/core": "^11.0.5"
+    "@angular/common": "^12.0.0",
+    "@angular/core": "^12.0.0"
   },
   "dependencies": {}
 }
