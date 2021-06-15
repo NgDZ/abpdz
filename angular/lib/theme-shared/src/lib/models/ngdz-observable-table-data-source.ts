@@ -51,15 +51,14 @@ export class NgdzObservableTableDataSource<T> extends DataSource<T> {
   connect(collectionViewer?: CollectionViewer): Observable<T[]> {
     // TODO: optmise in case of local filter
 
-    const ret$ = combineLatest(
+    const ret$ = combineLatest([
       this.data$.pipe(tap((data) => (this.data = data))),
       this.filter$,
       this.refresh$,
-      (data, filter) => {
-        return { data, filter };
-      }
-    ).pipe(
-      map((v) => {
+    ]).pipe(
+      map((k) => {
+        var v = { data: k[0], filter: k[1] };
+
         const ret = this.localFilter(v.data, v.filter);
         this.count$.next(ret.length);
         this.filtredData = ret;

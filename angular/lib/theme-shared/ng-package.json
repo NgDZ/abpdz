@@ -4,8 +4,15 @@
   "lib": {
     "entryFile": "src/public-api.ts"
   },
-  "whitelistedNonPeerDependencies": [
+  "allowedNonPeerDependencies": [
     "@abpdz/ng.core",
+    "@abpdz/ng.theme.shared",
+    "@ng-select/ng-select",
+    "@microsoft/signalr",
+    "fuse.js",
+    "@ngrx/store",
+    "@ngrx/effects",
+    "@ngx-validate/core",
     "ngrx/effects",
     "ngrx/store",
     "lodash-es",

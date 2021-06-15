@@ -4,62 +4,62 @@ $orgDir = '..\..\freetime'
 Set-Location ..\angular
 Remove-Item -Recurse -Force .\lib\core\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\core\ .\lib\core\src\lib
-ng build core   --prod
+ng build core  --configuration production
 
 
 Remove-Item -Recurse -Force .\lib\theme-shared\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\theme.shared\ .\lib\theme-shared\src\lib
-ng build theme-shared    --prod
+ng build theme-shared   --configuration production
 
 
 
 Remove-Item -Recurse -Force .\lib\theme-basic\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\theme.basic\ .\lib\theme-basic\src\lib
-ng build theme-basic   --prod
+ng build theme-basic  --configuration production
 
 
 
 
 Remove-Item -Recurse -Force .\lib\theme-material\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\theme.material\ .\lib\theme-material\src\lib
-ng build theme-material   --prod
+ng build theme-material  --configuration production
 
 
 
 Remove-Item -Recurse -Force .\lib\account\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\account\ .\lib\account\src\lib
-ng build account   --prod
+ng build account  --configuration production
 
 
 
 Remove-Item -Recurse -Force .\lib\permission-management\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\permission-management\ .\lib\permission-management\src\lib
-ng build permission-management   --prod
+ng build permission-management  --configuration production
 
 Remove-Item -Recurse -Force .\lib\identity\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\identity\ .\lib\identity\src\lib
-ng build identity   --prod
+ng build identity  --configuration production
 
 
 
 Remove-Item -Recurse -Force .\lib\breeze\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\breeze\ .\lib\breeze\src\lib
-ng build breeze   --prod
+ng build breeze  --configuration production
 
 
 Remove-Item -Recurse -Force .\lib\demos\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\demos\ .\lib\demos\src\lib
-ng build demos   --prod
+ng build demos  --configuration production
 
 
 
 Remove-Item -Recurse -Force .\lib\audit\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\audit\ .\lib\audit\src\lib
-ng build audit   --prod
+ng build audit  --configuration production
 
 Remove-Item -Recurse -Force .\lib\enums\src\lib\
 Copy-Item -Force -Recurse $orgDir\angular\src\abp\enums\ .\lib\enums\src\lib
-ng build enums   --prod
+ng build enums  --configuration production
 
 Set-Location .\dist\
 

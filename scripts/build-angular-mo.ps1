@@ -1,13 +1,13 @@
  
-ng build core   --prod
+ng build core  --configuration production
  
-ng build theme-shared    --prod 
-ng build theme-basic   --prod 
-ng build theme-material   --prod 
-ng build account   --prod 
-ng build permission-management   --prod 
-ng build identity   --prod
+ng build theme-shared   --configuration production 
+ng build theme-basic  --configuration production 
+ng build theme-material  --configuration production 
+ng build account  --configuration production 
+ng build permission-management  --configuration production 
+ng build identity  --configuration production
  
-ng build breeze   --prod
+ng build breeze  --configuration production
  
-ng build demos   --prod 
+ng build demos  --configuration production 
