@@ -1,4 +1,4 @@
-$version = '0.0.8017'
+$version = '0.0.8100'
 $orgDir = '..\..\freetime'
 
 Set-Location ..\angular
@@ -132,4 +132,4 @@ Set-Location ..\audit\
 yarn publish  --new-version   $version --access public --ignore-scripts 
 
  
-Set-Location ..\..\scripts
+Set-Location ..\..\..\scripts

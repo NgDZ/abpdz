@@ -400,7 +400,10 @@ export class AuthService implements OnDestroy {
 
     return true;
   }
-
+  public registerData(data: any): Observable<AuthTokenModel> {
+    const AuthData: any = Object.assign({}, data, {});
+    return this.http.post<AuthTokenModel>('/api/Account/Register', AuthData);
+  }
   logout(url?) {
     // this.logOut();
     // todo : call the server to revoke current access token

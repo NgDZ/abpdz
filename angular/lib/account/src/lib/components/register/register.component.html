@@ -1,1 +1,170 @@
-<p>register works!</p>
+<div id="login" fxLayout="column" class="mat-wpbg">
+  <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="center center" class="my-3">
+      <mat-card [style.max-width.px]="500">
+        <div
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          class="text-center"
+        >
+          <h1 class="uppercase">
+            Register {{ userType == 1 ? "Guide" : "Xplorer" }}
+          </h1>
+          <a mat-button routerLink="/auth/login" color="accent" class="w-100">
+            {{ "AbpAccount::AlreadyRegistered" | abpLocalization }}
+          </a>
+        </div>
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onRegisterFormSubmit(registerForm.value)"
+        >
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix class="mr-1 text-muted">email</mat-icon>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              placeholder="Email"
+              formControlName="email"
+              required
+            />
+            <mat-error *ngIf="registerForm.controls.email.errors?.required"
+              >Email is required</mat-error
+            >
+            <mat-error *ngIf="registerForm.controls.email.errors?.taken"
+              >Email is taken</mat-error
+            >
+            <mat-error
+              *ngIf="registerForm.controls.email.hasError('invalidEmail')"
+              >Invalid email address</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix class="mr-1 text-muted"> phone</mat-icon>
+            <mat-label>{{
+              "AbpAccount::DisplayName:PhoneNumber" | abpLocalization
+            }}</mat-label>
+            <input
+              matInput
+              [placeholder]="
+                'AbpAccount::DisplayName:PhoneNumber' | abpLocalization
+              "
+              formControlName="phone"
+              required
+            />
+            <mat-error *ngIf="registerForm.controls.email.errors?.required">{{
+              "AbpValidation::ThisFieldIsRequired." | abpLocalization
+            }}</mat-error>
+            <mat-error *ngIf="registerForm.controls.email.errors?.taken"
+              >Phone is taken</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix class="mr-1 text-muted">lock</mat-icon>
+            <mat-label>{{
+              "AbpAccount::Password" | abpLocalization
+            }}</mat-label>
+            <input
+              matInput
+              [placeholder]="'AbpAccount::Password' | abpLocalization"
+              formControlName="password"
+              type="password"
+              minlength="6"
+              required
+              [type]="hide ? 'password' : 'text'"
+            />
+            <mat-error
+              *ngIf="registerForm.controls.password.errors?.required"
+              >{{
+                "AbpValidation::ThisFieldIsRequired." | abpLocalization
+              }}</mat-error
+            >
+            <mat-error
+              *ngIf="registerForm.controls.password.hasError('minlength')"
+              >Password isn't long enough, minimum of 6 characters</mat-error
+            >
+            <mat-error
+              *ngIf="registerForm.controls.password.hasError('invalidPassword')"
+              >Your password must contain ,lowercase, uppercase, digit,Special
+              Characters
+            </mat-error>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              type="button"
+              class="text-muted"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mt-1">
+            <mat-icon matPrefix class="mr-1 text-muted">lock</mat-icon>
+            <mat-label>
+              {{ "AbpAccount::ConfirmPassword" | abpLocalization }}</mat-label
+            >
+            <input
+              matInput
+              placeholder="Confirm Password"
+              formControlName="confirmPassword"
+              type="password"
+              required
+              [type]="hide ? 'password' : 'text'"
+            />
+            <mat-error
+              *ngIf="registerForm.controls.confirmPassword.errors?.required"
+            >
+              {{
+                "AbpValidation::ThisFieldIsRequired." | abpLocalization
+              }}</mat-error
+            >
+            <mat-error
+              *ngIf="
+                registerForm.controls.confirmPassword.hasError(
+                  'mismatchedPasswords'
+                )
+              "
+            >
+              {{ "AbpAccount::NewPasswordDoesNotMatch" | abpLocalization }}
+            </mat-error>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              type="button"
+              class="text-muted"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-slide-toggle formControlName="receiveNewsletter" class="my-2"
+            >Receive Newsletter</mat-slide-toggle
+          >
+          <div class="text-center mt-2">
+            <button
+              mat-raised-button
+              color="accent"
+              class="uppercase"
+              type="submit"
+            >
+              {{ "AbpAccount::Register" | abpLocalization }}
+            </button>
+          </div>
+        </form>
+        <div class="divider mt-4"></div>
+        <mat-card-actions fxLayoutAlign="center center" class="text-center">
+          <small class="my-3"
+            >By clicking the "Create an Account" button you agree with our
+            <a
+              mat-button
+              routerLink="/terms-conditions"
+              color="primary"
+              class="mx-2"
+              >Terms and conditions</a
+            >
+          </small>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

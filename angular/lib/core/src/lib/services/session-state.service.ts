@@ -82,7 +82,7 @@ export class SessionStateService implements OnDestroy {
     );
     this.subs.push(
       this.selectedCulture$.subscribe((k) => {
-        registerLocale()(k.cultureName).then((module) => {
+        registerLocale()(k.cultureName as any).then((module) => {
           const l = differentLocales[k.cultureName] || k.cultureName || 'en-US';
           // this._adapter.setLocale(l);
 

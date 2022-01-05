@@ -1,4 +1,4 @@
-import { Component, Injector  } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 
 import { AbpEnumServiceProxy } from '../enums.sdk';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,7 +6,7 @@ import { EnumsDetailComponent } from '../enums-detail/enums-detail.component';
 import { HttpClient } from '@angular/common/http';
 import {
   abpAnimations,
-  BaseAsyncComponent, 
+  BaseAsyncComponent,
   LocalDataSource,
 } from '@abpdz/ng.theme.shared';
 import { AbpEnum, CrudOperation, downloadFileFromText } from '@abpdz/ng.core';

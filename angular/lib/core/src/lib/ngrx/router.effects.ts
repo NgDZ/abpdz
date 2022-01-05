@@ -27,8 +27,14 @@ export class RouterEffects {
           (data) =>
             `${this.transalte.instant(
               this.options.environment?.application.abrivation
-            )} - ${this.transalte.instant(data['title'])}`
+            )}`
         ),
+        // map(
+        //   (data) =>
+        //     `${this.transalte.instant(
+        //       this.options.environment?.application.abrivation
+        //     )} - ${this.transalte.instant(data['title'])}`
+        // ),
         tap((title) => this.titleService.setTitle(title))
       ),
     {

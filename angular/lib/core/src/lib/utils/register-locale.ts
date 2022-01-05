@@ -1,4 +1,3 @@
-import { registerLocaleData } from '@angular/common';
 import { isDevMode } from '@angular/core';
 
 export const differentLocales = {
@@ -31,13 +30,17 @@ export function registerLocale(
 ) {
   return (locale: string): Promise<any> => {
     localeMap = { ...differentLocales, ...cultureNameLocaleFileMap };
-
+    const l = localeMap[locale] || locale;
     return new Promise((resolve, reject) => {
       return import(
         /* webpackChunkName: "_locale-[request]"*/
         /* webpackInclude: /[/\\](ar-DZ|en|fr).js/ */
         /* webpackExclude: /[/\\]global|extra/ */
-        `@angular/common/locales/${localeMap[locale] || locale}.js`
+        l === 'fr'
+          ? `@angular/common/locales/fr`
+          : l === 'ar'
+          ? `@angular/common/locales/ar`
+          : `@angular/common/locales/en`
       )
         .then(resolve)
         .catch((error) => {

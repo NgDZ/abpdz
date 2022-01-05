@@ -1,4 +1,9 @@
-<mat-toolbar id="toolbar" class="p-0 mat-elevation-z1">
+<mat-toolbar
+  id="toolbar"
+  class="p-0 mat-elevation-z1"
+  color="primary"
+  style="max-height: 50px !important; background-color: rgb(27, 27, 112)"
+>
   <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch">
     <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start stretch">
       <button mat-button (click)="toggleNav.emit(true)" class="h-full">
@@ -29,6 +34,7 @@
         </button>
         <ng-template #loginBtn>
           <button (click)="authService.login()" class="h-full" mat-button>
+            <mat-icon class="s-16" fxHide.xs>login</mat-icon>
             {{ "AbpAccount::Login" | abpLocalization }}
           </button>
         </ng-template>

@@ -14,8 +14,7 @@ import { map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'abp-manage-profile',
-  templateUrl: './manage-profile.component.html',
-
+  templateUrl: './manage-profile.component.html', 
   animations: abpAnimations,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [

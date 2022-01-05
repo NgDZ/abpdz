@@ -85,7 +85,7 @@ export function abpReducer(state, action) {
   return _abpReducer(state, action);
 }
 
-export const selectAbpFeatureKey = createFeatureSelector<any, AbpState>(
+export const selectAbpFeatureKey = createFeatureSelector< AbpState>(
   abpFeatureKey
 );
 

@@ -45,9 +45,7 @@ const _themeReducer = createReducer(
 export function themeReducer(state, action) {
   return _themeReducer(state, action);
 }
-export const selectTheme = createFeatureSelector<any, ThemeState>(
-  themeFeatureKey
-);
+export const selectTheme = createFeatureSelector<ThemeState>(themeFeatureKey);
 
 export const selectBreakPoints = createSelector(
   selectTheme,

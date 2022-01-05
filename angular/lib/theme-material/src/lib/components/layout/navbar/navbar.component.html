@@ -1,4 +1,4 @@
-<mat-nav-list class="nav-menu">
+<mat-nav-list class="nav-menu" >
   <ng-container
     *ngFor="let route of routes.visible$ | async; trackBy: trackByFn"
     [ngTemplateOutlet]="isDropdown(route) ? dropdownLink : defaultLink"

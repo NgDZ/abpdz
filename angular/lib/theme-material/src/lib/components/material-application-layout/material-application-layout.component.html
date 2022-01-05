@@ -4,15 +4,15 @@
     (toggleNav)="drawer.toggle()"
     (toggleQuickPannel)="drawerQuickPannel.toggle()"
   ></mtheme-toolbar>
-
+ 
   <mat-drawer-container class="flex-grow">
     <mat-drawer
       #drawer
       [(opened)]="opendDrawer"
-      class="sidenav"
+      class="sidenav" 
       fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [mode]="(isHandset$ | async) ? 'over' : 'over'"
     >
       <mtheme-navbar></mtheme-navbar>
     </mat-drawer>
